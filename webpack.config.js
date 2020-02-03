@@ -1,6 +1,7 @@
 const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 
 module.exports = {
+  lintOnSave: false,
   plugins: [
     new MonacoEditorPlugin({
       // https://github.com/Microsoft/monaco-editor-webpack-plugin#options
@@ -10,5 +11,16 @@ module.exports = {
       // Languages are loaded on demand at runtime
       languages: ['verilog', 'css', 'html', 'typescript']
     })
+  ],
+  rules: [
+    {
+      test: /\.vue$/,
+      exclude: /node_modules/,
+      loader: "eslint-loader",
+      options: {
+        emitWarning: true,
+        failOnError: false
+      }
+    }
   ]
 }

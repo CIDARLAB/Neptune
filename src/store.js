@@ -8,6 +8,8 @@ export default new Vuex.Store({
     barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
     barImage: './images/CNCpic.png',
     drawer: null,
+    isLoggedIn: false,
+    userID: '007',
   },
   mutations: {
     SET_BAR_IMAGE (state, payload) {
@@ -19,6 +21,14 @@ export default new Vuex.Store({
     SET_SCRIM (state, payload) {
       state.barColor = payload
     },
+    updateUser(state, id){
+      state.userID = id
+      state.isLoggedIn = true
+    },  
+  },
+  getters: {
+    userID: state => state.userID,
+    isLoggedIn: state => state.isLoggedIn,  
   },
   actions: {
 

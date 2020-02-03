@@ -58,6 +58,7 @@
               color=""
               depressed
               class="v-btn--text success--text"
+              v-on:click="login"
             >
               Let's Go
             </pages-btn>
@@ -69,6 +70,8 @@
 </template>
 
 <script>
+  import router from '../../router'
+  import axios from 'axios'
   export default {
     name: 'PagesLogin',
 
@@ -77,20 +80,35 @@
     },
 
     data: () => ({
-      socials: [
-        {
-          href: '#',
-          icon: 'mdi-facebook-box',
-        },
-        {
-          href: '#',
-          icon: 'mdi-twitter',
-        },
-        {
-          href: '#',
-          icon: 'mdi-github-box',
-        },
-      ],
+      email: 'rkrishnasanka@gmail.com',
+      password: 'potter',
     }),
+
+    methods: {
+      login: function(event) {
+        event.preventDefault()
+        console.log(this.email, this.password)
+        // let email = "rkrishnasanka@gmail.com"   
+        // let password = "potter"
+
+        let data = {    
+            email: this.email,    
+            password: this.password    
+        }
+        let self = this
+
+        axios.post("/api/v2/login", data)    
+            .then((response) => {    
+                console.log("Logged in",response)
+                self.$store.commit('updateUser', response.data.user)    
+                router.push("/dashboard")
+                console.log("Testing store access2", self.$store.getters.isLoggedIn)
+
+            })    
+            .catch((errors) => {    
+                console.log("Cannot log in", errors)    
+            })    
+      }
+    }
   }
 </script>
