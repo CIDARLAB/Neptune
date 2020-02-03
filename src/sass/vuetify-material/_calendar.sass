@@ -1,0 +1,30 @@
+#calendar
+  .v-sheet .v-toolbar__content .theme--light.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) .v-icon
+    color: #fff
+
+.v-calendar .v-event.v-event-end
+  width: 100
+
+.v-calendar-weekly__head-weekday
+  font-weight: 700
+
+.theme--light
+  .v-calendar-weekly__head-weekday
+    &.v-present
+      color: #333 !important
+  .v-calendar-weekly__day-label
+    .v-btn.transparent
+      margin-right: 0 !important
+      .v-btn__content
+        color: #333 !important
+    .v-btn--fab
+      margin-right: 0 !important
+      .v-btn__content
+        color: #fff !important
+
+.theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday
+  border-right: none
+  border-bottom: #e0e0e0 1px solid
+
+.theme--light.v-calendar-weekly .v-calendar-weekly__head-weekday.v-outside
+  background: #fff
