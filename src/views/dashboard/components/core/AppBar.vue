@@ -30,7 +30,7 @@
 
     <v-spacer />
 
-    <v-text-field
+    <!-- <v-text-field
       :label="$t('search')"
       color="secondary"
       hide-details
@@ -49,7 +49,7 @@
           <v-icon>mdi-magnify</v-icon>
         </v-btn>
       </template>
-    </v-text-field>
+    </v-text-field> -->
 
     <div class="mx-3" />
 
@@ -78,13 +78,11 @@
         >
           <v-badge
             color="red"
+            :content="totalNotifications"
+            :value="totalNotifications"
             overlap
             bordered
           >
-            <template v-slot:badge>
-              <span>5</span>
-            </template>
-
             <v-icon>mdi-bell</v-icon>
           </v-badge>
         </v-btn>
@@ -99,8 +97,22 @@
             v-for="(n, i) in notifications"
             :key="`item-${i}`"
           >
-            <v-list-item-title v-text="n" />
+            <v-list-item-title v-text="n.text" />
           </app-bar-item>
+          
+          <v-divider
+            class="mb-2 mt-2"
+          />
+
+          <app-bar-item
+            :key="3"
+          >
+            <v-list-item-title
+            v-text="'Clear Notifications'" 
+            v-on:click="clearNotifications"            
+            />
+          </app-bar-item>
+
         </div>
       </v-list>
     </v-menu>
@@ -130,7 +142,35 @@
         flat
         nav
       >
-        <template v-for="(p, i) in profile">
+          <app-bar-item
+            :key="1"
+          >
+            <v-list-item-title
+            v-text="'Profile'" 
+            />
+          </app-bar-item>
+          <app-bar-item
+            :key="2"
+          >
+            <v-list-item-title
+            v-text="'Settings'" 
+            />
+          </app-bar-item>
+          
+          <v-divider
+            class="mb-2 mt-2"
+          />
+
+          <app-bar-item
+            :key="3"
+          >
+            <v-list-item-title
+            v-text="'Logout'" 
+            v-on:click="logout"            
+            />
+          </app-bar-item>
+
+        <!-- <template v-for="(p, i) in profile">
           <v-divider
             v-if="p.divider"
             :key="`divider-${i}`"
@@ -140,11 +180,13 @@
           <app-bar-item
             v-else
             :key="`item-${i}`"
-            to="/"
           >
-            <v-list-item-title v-text="p.title" />
+            <v-list-item-title
+            v-text="p.title" 
+            v-on:click="itemClick"            
+            />
           </app-bar-item>
-        </template>
+        </template> -->
       </v-list>
     </v-menu>
   </v-app-bar>
@@ -157,6 +199,10 @@
   // Utilities
   import { mapState, mapMutations } from 'vuex'
 
+  import axios from 'axios'
+  import router from '../../../../router'
+
+  let self = this
   export default {
     name: 'DashboardCoreAppBar',
 
@@ -195,28 +241,64 @@
 
     data: () => ({
       notifications: [
-        'Mike John Responded to your email',
-        'You have 5 new tasks',
-        'You\'re now friends with Andrew',
-        'Another Notification',
-        'Another one',
+        {
+          text: "This is a test notification",
+          jobid: 0,
+        },
+        {
+          text: "This is also a test notification",
+          jobid: 1,
+        }
       ],
       profile: [
         { title: 'Profile' },
         { title: 'Settings' },
         { divider: true },
-        { title: 'Log out' },
+        { title: 'Log out',
+          action: 'logout' 
+        },
       ],
     }),
 
     computed: {
       ...mapState(['drawer']),
+      totalNotifications: function() {
+        return this.notifications.length
+      }
     },
 
     methods: {
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
       }),
+
+      logout: function(event, context) {
+        const config = {
+          withCredentials: true,
+          crossorigin: true,
+          headers: {
+            'Content-Type': 'application/json' //,
+            // 'Access-Control-Allow-Origin': 'http://localhost:8080',
+            // 'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+            // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+            // 'Access-Control-Allow-Credentials': 'true'
+          },
+        }
+
+        axios.get("/api/v2/logout", config)
+          .then((response)=>{
+            console.log(response)
+            router.push('/login')
+          })
+          .catch((error)=>{
+            console.log(error)
+          })
+      },
+
+      clearNotifications: function(event){
+        console.log("test", this)
+        this.notifications = []
+      }
     },
   }
 </script>

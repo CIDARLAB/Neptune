@@ -101,8 +101,8 @@
             .then((response) => {    
                 console.log("Logged in",response)
                 self.$store.commit('updateUser', response.data.user)    
-                router.push("/dashboard")
                 console.log("Testing store access2", self.$store.getters.isLoggedIn)
+                router.push("/dashboard")
 
             })    
             .catch((errors) => {    

@@ -28,7 +28,7 @@ export default new Vuex.Store({
   },
   getters: {
     userID: state => state.userID,
-    isLoggedIn: state => state.isLoggedIn,  
+    isLoggedIn: state => state.isLoggedIn,
   },
   actions: {
 

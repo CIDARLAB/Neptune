@@ -619,9 +619,38 @@
 </template>
 
 <script>
+  import axios from 'axios'
   export default {
     name: 'DashboardDashboard',
 
+    mounted: function() {
+      console.log(this.$store.getters.userID)
+      let data = { 
+        user: { 
+          _id: this.$store.getters.userID
+          }
+      } 
+      
+      const config = {
+        withCredentials: true,
+        crossorigin: true,
+        headers: {
+          'Content-Type': 'application/json' //,
+          // 'Access-Control-Allow-Origin': 'http://localhost:8080',
+          // 'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+          // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+          // 'Access-Control-Allow-Credentials': 'true'
+        },
+      }
+
+      axios.get("/api/v1/workspaces", config)
+        .then((response)=>{
+          console.log(response)
+        })
+        .catch((error)=>{
+          console.log(error)
+        })
+    },
     data () {
       return {
         countryData: {

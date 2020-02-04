@@ -20,6 +20,7 @@ export default new Router({
           name: 'Login',
           path: 'login',
           component: () => import('@/views/pages/Login'),
+          meta: { requiresAuth: false }
         },
         {
           name: 'Pricing',
@@ -30,11 +31,12 @@ export default new Router({
           name: 'Register',
           path: 'register',
           component: () => import('@/views/pages/Register'),
+          meta: { requiresAuth: false }
         },
       ],
     },
     {
-      path: '/',
+      path: '',
       component: () => import('@/views/dashboard/Index'),
       children: [
         // Dashboard
@@ -42,12 +44,27 @@ export default new Router({
           name: 'Dashboard',
           path: 'dashboard',
           component: () => import('@/views/dashboard/Dashboard'),
+          meta: { requiresAuth: true }
         },
         {
           name: 'Editor',
           path: 'editor',
           component: () => import('@/views/dashboard/Editor'),
+          meta: { requiresAuth: true }
         },
+        {
+          name: 'Solutions',
+          path: 'solutions',
+          component: () => import('@/views/dashboard/Solutions'),
+          meta: { requiresAuth: true }
+        },
+        {
+          name: 'Component Library',
+          path: 'library',
+          component: () => import('@/views/dashboard/Library'),
+          meta: { requiresAuth: true }
+        },
+
         // Pages
         {
           name: 'RTL',
@@ -58,6 +75,7 @@ export default new Router({
           name: 'User Profile',
           path: 'user',
           component: () => import('@/views/dashboard/pages/UserProfile'),
+          meta: { requiresAuth: true }
         },
         {
           name: 'Timeline',

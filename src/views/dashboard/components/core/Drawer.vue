@@ -76,6 +76,8 @@
 </template>
 
 <script>
+  import { mdiFileMultipleOutline } from '@mdi/js';
+  import { mdiDatabase } from '@mdi/js';
   // Utilities
   import {
     mapState,
@@ -103,6 +105,16 @@
           icon: 'mdi-code-tags',
           title: 'Editor',
           to: '/editor',
+        },
+        {
+          icon: mdiFileMultipleOutline,
+          title: 'Solutions',
+          to: '/solutions',
+        },
+        {
+          icon: mdiDatabase,
+          title: 'Component Library',
+          to: '/library',
         },
         {
           group: '',
