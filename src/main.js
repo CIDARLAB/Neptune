@@ -25,44 +25,35 @@ import i18n from './i18n'
 Vue.config.productionTip = false
 
 
-router.beforeEach((to, from, next) => {
-  const authRequired = to.matched.some((route) => route.meta.requiresAuth)
-  const loggedin = store.getters.isLoggedIn
-  console.log("To:", to.path, "loggedin:",loggedin, "AuthReq:", authRequired)
+// router.beforeEach((to, from, next) => {
+//   const authRequired = to.matched.some((route) => route.meta.requiresAuth)
+//   const loggedin = store.getters.isLoggedIn
+//   console.log("To:", to.path, "loggedin:",loggedin, "AuthReq:", authRequired)
 
-  if (loggedin && authRequired) {
-    console.log("Case 0")
-    next()
-  }
+//   if (loggedin && authRequired) {
+//     console.log("Case 0")
+//     next()
+//   }
 
-  if (!loggedin && !authRequired) {
-    console.log("Case 1")
-    // if (to.path !== '/login') {
-    //   console.log("Case 2")
-    //   next('/login')
-    // } else {
-      // console.log("Case 3")
-      next()
-    // }
-} else if (!loggedin && authRequired) {
-      if (to.path !== '/login') {
-        console.log("Case 4")
-        next('/login')
-      } else {
-        console.log("Case 5")
-        next()
-      }
-  }
-
-
-  // if(!authRequired && to.path !== '/login'){
-  //   next()
-  // }else if(authRequired && !loggedin && to.path !== '/login'){
-  //   next('/login')
-  // }else{
-  //   next()
-  // }
-})
+//   if (!loggedin && !authRequired) {
+//     console.log("Case 1")
+//     // if (to.path !== '/login') {
+//     //   console.log("Case 2")
+//     //   next('/login')
+//     // } else {
+//       // console.log("Case 3")
+//       next()
+//     // }
+// } else if (!loggedin && authRequired) {
+//       if (to.path !== '/login') {
+//         console.log("Case 4")
+//         next('/login')
+//       } else {
+//         console.log("Case 5")
+//         next()
+//       }
+//   }
+// })
 
 new Vue({
   router,

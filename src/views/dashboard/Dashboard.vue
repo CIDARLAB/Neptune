@@ -5,7 +5,7 @@
     tag="section"
   >
     <v-row>
-      <v-col cols="12">
+      <!-- <v-col cols="12">
         <base-material-card
           icon="mdi-earth"
           title="Global Sales by Top Locations"
@@ -50,277 +50,63 @@
             </v-col>
           </v-row>
         </base-material-card>
-      </v-col>
-
-      <v-col
+      </v-col> -->
+      <v-col 
         cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="emailsSubscriptionChart.data"
-          :options="emailsSubscriptionChart.options"
-          :responsive-options="emailsSubscriptionChart.responsiveOptions"
-          color="primary"
-          hover-reveal
-          type="Bar"
+        v-if="selectedworkspace == null"
         >
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  color="info"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon
-                    color="info"
-                  >
-                    mdi-refresh
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Refresh</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Change Date</span>
-            </v-tooltip>
-          </template>
-
-          <h4 class="card-title font-weight-light mt-2 ml-2">
-            Website Views
-          </h4>
-
-          <p class="d-inline-flex font-weight-light ml-2 mt-1">
-            Last Campaign Performance
-          </p>
-
-          <template v-slot:actions>
-            <v-icon
-              class="mr-1"
-              small
-            >
-              mdi-clock-outline
-            </v-icon>
-            <span class="caption grey--text font-weight-light">updated 10 minutes ago</span>
-          </template>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="dailySalesChart.data"
-          :options="dailySalesChart.options"
-          color="success"
-          hover-reveal
-          type="Line"
+        <v-card
         >
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  color="info"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon
-                    color="info"
-                  >
-                    mdi-refresh
-                  </v-icon>
-                </v-btn>
-              </template>
+          
+            <!-- <v-list-item three-line>
+              <v-list-item-content>
+                <v-list-item-title class="headline mb-1">Getting Started</v-list-item-title>
+              </v-list-item-content>
 
-              <span>Refresh</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Change Date</span>
-            </v-tooltip>
-          </template>
-
-          <h4 class="card-title font-weight-light mt-2 ml-2">
-            Daily Sales
-          </h4>
-
-          <p class="d-inline-flex font-weight-light ml-2 mt-1">
-            <v-icon
-              color="green"
-              small
+              <v-list-item-avatar
+                tile
+                size="64"
+              >
+              <img
+                src="/images/NeptuneLogo.png"
+                alt="John"
+              >
+              </v-list-item-avatar>
+            </v-list-item>
+            -->
+        <v-card-title>
+            <span class="headline mb-1">Getting Started</span>
+        </v-card-title>
+          <v-card-text>
+            <v-row>
+            <v-col
+              cols="12"
+              md="6"
+              class="mt-10"
             >
-              mdi-arrow-up
-            </v-icon>
-            <span class="green--text">55%</span>&nbsp;
-            increase in today's sales
-          </p>
+              <iframe width="100%" height="300px" src="https://www.youtube.com/embed/WO4xAA6XlrY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-          <template v-slot:actions>
-            <v-icon
-              class="mr-1"
-              small
+
+            </v-col>
+
+            <v-col
+              cols="12"
+              md="6"
             >
-              mdi-clock-outline
-            </v-icon>
-            <span class="caption grey--text font-weight-light">updated 4 minutes ago</span>
-          </template>
-        </base-material-chart-card>
+              <img src="/images/neptunedark.png" width="100%" />
+              <br />
+              <br />
+              <br />
+              <p>
+                Neptune is really cool its a tool that lets you synthesize microfluidic designs from a high level specification system.
+              </p>
+            </v-col>
+          </v-row>
+
+          </v-card-text>
+        </v-card>
       </v-col>
 
-      <v-col
-        cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="dataCompletedTasksChart.data"
-          :options="dataCompletedTasksChart.options"
-          hover-reveal
-          color="info"
-          type="Line"
-        >
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  color="info"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon
-                    color="info"
-                  >
-                    mdi-refresh
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Refresh</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-pencil</v-icon>
-                </v-btn>
-              </template>
-
-              <span>Change Date</span>
-            </v-tooltip>
-          </template>
-
-          <h3 class="card-title font-weight-light mt-2 ml-2">
-            Completed Tasks
-          </h3>
-
-          <p class="d-inline-flex font-weight-light ml-2 mt-1">
-            Last Last Campaign Performance
-          </p>
-
-          <template v-slot:actions>
-            <v-icon
-              class="mr-1"
-              small
-            >
-              mdi-clock-outline
-            </v-icon>
-            <span class="caption grey--text font-weight-light">campaign sent 26 minutes ago</span>
-          </template>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="info"
-          icon="mdi-twitter"
-          title="Followers"
-          value="+245"
-          sub-icon="mdi-clock"
-          sub-text="Just Updated"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="primary"
-          icon="mdi-poll"
-          title="Website Visits"
-          value="75.521"
-          sub-icon="mdi-tag"
-          sub-text="Tracked from Google Analytics"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="success"
-          icon="mdi-store"
-          title="Revenue"
-          value="$ 34,245"
-          sub-icon="mdi-calendar"
-          sub-text="Last 24 Hours"
-        />
-      </v-col>
-
-      <v-col
-        cols="12"
-        sm="6"
-        lg="3"
-      >
-        <base-material-stats-card
-          color="orange"
-          icon="mdi-sofa"
-          title="Bookings"
-          value="184"
-          sub-icon="mdi-alert"
-          sub-icon-color="red"
-          sub-text="Get More Space..."
-        />
-      </v-col>
 
       <v-col
         cols="12"
@@ -329,11 +115,298 @@
           class="font-weight-light mt-1"
           style="font-size: 25px"
         >
-          Manage Listings
+          Workspaces
         </div>
       </v-col>
 
       <v-col
+        cols="12"
+        lg="3"
+        v-for="(workspace, i) in workspaces" :key="i"
+      >
+        <base-material-workspace-chart-card
+          :id="workspace._id"
+          hover-reveal
+          color="info"
+          type="Line"
+        >
+          <template v-slot:reveal-actions>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  v-bind="attrs"
+                  color="info"
+                  icon
+                  v-on="on"
+                >
+                  <v-icon
+                    color="info"
+                  >
+                    mdi-refresh
+                  </v-icon>
+                </v-btn>
+              </template>
+
+              <span>Refresh</span>
+            </v-tooltip>
+
+            <v-tooltip bottom>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  v-bind="attrs"
+                  light
+                  icon
+                  v-on="on"
+                  v-on:click="selectworkspace(workspace._id)"
+                >
+                  <v-icon>mdi-view-split-vertical</v-icon>
+                </v-btn>
+              </template>
+
+              <span>View Files</span>
+            </v-tooltip>
+          </template>
+
+          <h3 class="card-title font-weight-light mt-2 ml-2">
+            {{workspace.name}}
+          </h3>
+          <template v-slot:actions>
+            <v-icon
+              class="mr-1"
+              small
+            >
+              mdi-clock-outline
+            </v-icon>
+            <span class="caption grey--text font-weight-light">Last Update: {{workspace.updated_at}}</span>
+          </template>
+        </base-material-workspace-chart-card>
+      </v-col>
+
+        <v-col
+            cols="12"
+            sm="3"
+            lg="3"
+            align="center"
+        >
+            <div class="my-2">
+            <v-tooltip top>
+                <template v-slot:activator="{ on }">
+                <v-btn 
+                    v-on="on" 
+                    class="newbutton" 
+                    color="success" 
+                    fab 
+                    x-large 
+                    dark
+                    @click="newworkspacedialog = true"
+                    >
+                    <v-icon>mdi-plus</v-icon>
+                </v-btn>
+                </template>
+                <span>Create New Workspace</span>
+            </v-tooltip>
+                            <v-dialog
+                    v-model="newworkspacedialog"
+                    max-width="300px"
+                    >
+                    <v-card>
+                    <v-card-title>
+                        Create New Workspace
+                    </v-card-title>
+                    <v-card-text>
+                        <v-text-field
+                            v-model="newworkspacename"
+                            label="Workspace Name"
+                            ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="success"
+                            text
+                            @click="createworkspace()"
+                            >
+                            Create
+                        </v-btn>
+
+                        <v-btn
+                            color="primary"
+                            text
+                            @click="newworkspacedialog = false"
+                            >
+                            Cancel
+                        </v-btn>
+
+                    </v-card-actions>
+                    </v-card>
+                </v-dialog>
+
+
+            </div>
+        </v-col>
+
+    </v-row>
+            <v-row
+                v-if="files.length > 0"
+                >
+                <v-col
+                    cols="12"
+                    
+                >
+                    <div
+                    class="font-weight-light mt-1"
+                    style="font-size: 25px"
+                    >
+                        {{ selectedworkspace }} > Files
+                    </div>
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="3"
+                    lg="3"
+                    v-for="(file, i) in files" :key="i"
+                >
+                    <base-material-workspace-stats-card
+                        color="info"
+                        icon="mdi-file"
+                        title="File Type:"
+                        :value="file.ext"
+                        :name="file.name"
+                        sub-icon="mdi-clockwise-outline"
+                        :sub-text="file.updated_at"
+                        :id="file.id"
+                        :workspaceid="selectedworkspace._id"
+                    />
+                </v-col>
+                <v-col
+                    cols="12"
+                    sm="3"
+                    lg="3"
+                    v-if="files.length > 0"
+                    align="center"
+                >
+                    <div class="my-2">
+                    <v-tooltip top>
+                        <template v-slot:activator="{ on }">
+                        <v-btn 
+                            v-on="on" 
+                            class="newbutton" 
+                            color="success" 
+                            fab 
+                            x-large 
+                            dark
+                            @click="newfiledialog = true"
+                            >
+                            <v-icon>mdi-plus</v-icon>
+                        </v-btn>
+                        </template>
+                        <span>Create New File</span>
+                    </v-tooltip>
+                                    <v-dialog
+                    v-model="newfiledialog"
+                    max-width="300px"
+                    >
+                    <v-card>
+                    <v-card-title>
+                        Create New File
+                    </v-card-title>
+                    <v-card-text>
+                        <v-text-field
+                            v-model="newfilename"
+                            label="File Name"
+                            ></v-text-field>
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            color="success"
+                            text
+                            @click="createfile()"
+                            >
+                            Create
+                        </v-btn>
+
+                        <v-btn
+                            color="primary"
+                            text
+                            @click="newfiledialog = false"
+                            >
+                            Cancel
+                        </v-btn>
+
+                    </v-card-actions>
+                    </v-card>
+                </v-dialog>
+
+            </div>
+        </v-col>
+
+
+      <!-- <v-col
+        cols="12"
+        lg="3"
+      >
+        <base-material-workspace-chart-card
+          :data="dataCompletedTasksChart.data"
+          :options="dataCompletedTasksChart.options"
+          :id="selectedworkspace._id"
+          hover-reveal
+          color="info"
+          type="Line"
+        >
+          <template v-slot:reveal-actions>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  v-bind="attrs"
+                  color="info"
+                  icon
+                  v-on="on"
+                >
+                  <v-icon
+                    color="info"
+                  >
+                    mdi-refresh
+                  </v-icon>
+                </v-btn>
+              </template>
+
+              <span>Refresh</span>
+            </v-tooltip>
+
+            <v-tooltip bottom>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  v-bind="attrs"
+                  light
+                  icon
+                  v-on="on"
+                  v-on:click="selectworkspace(selectedworkspace._id)"
+                >
+                  <v-icon>mdi-view-split-vertical</v-icon>
+                </v-btn>
+              </template>
+
+              <span>View Files</span>
+            </v-tooltip>
+          </template>
+
+          <h3 class="card-title font-weight-light mt-2 ml-2">
+            {{selectedworkspace.name}}
+          </h3>
+          <template v-slot:actions>
+            <v-icon
+              class="mr-1"
+              small
+            >
+              mdi-clock-outline
+            </v-icon>
+            <span class="caption grey--text font-weight-light">Last Update: {{workspace.updated_at}}</span>
+          </template>
+        </base-material-workspace-chart-card>
+      </v-col> -->
+
+      <!-- <v-col
         sm="12"
         md="4"
       >
@@ -426,194 +499,7 @@
           </template>
         </base-material-card>
       </v-col>
-
-      <v-col
-        sm="12"
-        md="4"
-      >
-        <base-material-card
-          color="transparent"
-          hover-reveal
-          image
-        >
-          <template v-slot:image>
-            <v-img
-              src="https://demos.creative-tim.com/vue-material-dashboard-pro/img/card-3.jpg"
-            />
-          </template>
-
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="mx-1"
-                  v-bind="attrs"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-view-split-vertical</v-icon>
-                </v-btn>
-              </template>
-
-              <span>View</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="success"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="success--text">
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Edit</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="error"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="error--text">
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Remove</span>
-            </v-tooltip>
-          </template>
-
-          <v-card-title class="justify-center font-weight-light">
-            Office Studio
-          </v-card-title>
-
-          <v-card-text class="body-1 text-center mb-3 font-weight-light grey--text">
-            The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the night life in London, UK.
-          </v-card-text>
-
-          <template v-slot:actions>
-            <div class="display-2 font-weight-light grey--text">
-              $1.119/night
-            </div>
-
-            <v-spacer />
-
-            <span class="caption grey--text font-weight-light">
-              <v-icon small>mdi-map-marker</v-icon>
-
-              London, UK
-            </span>
-          </template>
-        </base-material-card>
-      </v-col>
-
-      <v-col
-        sm="12"
-        md="4"
-      >
-        <base-material-card
-          color="transparent"
-          hover-reveal
-          image
-        >
-          <template v-slot:image>
-            <v-img
-              src="https://demos.creative-tim.com/vue-material-dashboard-pro/img/card-1.jpg"
-            />
-          </template>
-
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="mx-1"
-                  v-bind="attrs"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-view-split-vertical</v-icon>
-                </v-btn>
-              </template>
-
-              <span>View</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="success"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="success--text">
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Edit</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="error"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="error--text">
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Remove</span>
-            </v-tooltip>
-          </template>
-
-          <v-card-title class="justify-center font-weight-light">
-            Beautiful Castle
-          </v-card-title>
-
-          <v-card-text class="body-1 text-center mb-3 font-weight-light grey--text">
-            The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Milan.
-          </v-card-text>
-
-          <template v-slot:actions>
-            <div class="display-2 font-weight-light grey--text">
-              $459/night
-            </div>
-
-            <v-spacer />
-
-            <span class="caption grey--text font-weight-light">
-              <v-icon small>mdi-map-marker</v-icon>
-
-              Milan, Italy
-            </span>
-          </template>
-        </base-material-card>
-      </v-col>
+ -->
     </v-row>
   </v-container>
 </template>
@@ -623,7 +509,7 @@
   export default {
     name: 'DashboardDashboard',
 
-    mounted: function() {
+    mounted: async function() {
       console.log(this.$store.getters.userID)
       let data = { 
         user: { 
@@ -646,200 +532,48 @@
       axios.get("/api/v1/workspaces", config)
         .then((response)=>{
           console.log(response)
+          console.log("TEST:", this.workspaces)
+          for (let wid of response.data){
+            console.log(wid)
+            axios.get('/api/v1/workspace',{
+              params: {
+                workspace_id: wid
+              }}).then((response)=>{
+                console.log(response.data)
+                this.workspaces.push(response.data)
+              })
+              .catch((error)=>{console.log(error)})
+            }
         })
         .catch((error)=>{
           console.log(error)
-        })
+        });
+
     },
     data () {
       return {
-        countryData: {
-          US: 2920,
-          DE: 1390,
-          AU: 760,
-          GB: 690,
-          RO: 600,
-          BR: 550,
-        },
-        dailySalesChart: {
-          data: {
-            labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
-            series: [
-              [12, 17, 7, 17, 23, 18, 38],
-            ],
-          },
-          options: {
-            lineSmooth: this.$chartist.Interpolation.cardinal({
-              tension: 0,
-            }),
-            low: 0,
-            high: 50, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-            chartPadding: {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
+        newworkspacename: '',
+        newworkspacedialog: false,
+        newfilename: '',
+        newfiledialog: false,
+        selectedworkspace: {},          
+        files: [],
+        workspaces:[ ],
+        actions: [
+            {
+            color: 'info',
+            icon: 'mdi-account',
             },
-          },
-        },
-        dataCompletedTasksChart: {
-          data: {
-            labels: ['12am', '3pm', '6pm', '9pm', '12pm', '3am', '6am', '9am'],
-            series: [
-              [230, 750, 450, 300, 280, 240, 200, 190],
-            ],
-          },
-          options: {
-            lineSmooth: this.$chartist.Interpolation.cardinal({
-              tension: 0,
-            }),
-            low: 0,
-            high: 1000, // creative tim: we recommend you to set the high sa the biggest value + something for a better look
-            chartPadding: {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
+            {
+            color: 'success',
+            icon: 'mdi-pencil',
             },
-          },
-        },
-        emailsSubscriptionChart: {
-          data: {
-            labels: ['Ja', 'Fe', 'Ma', 'Ap', 'Mai', 'Ju', 'Jul', 'Au', 'Se', 'Oc', 'No', 'De'],
-            series: [
-              [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895],
+            {
+            color: 'error',
+            icon: 'mdi-close',
+            },
+        ],
 
-            ],
-          },
-          options: {
-            axisX: {
-              showGrid: false,
-            },
-            low: 0,
-            high: 1000,
-            chartPadding: {
-              top: 0,
-              right: 5,
-              bottom: 0,
-              left: 0,
-            },
-          },
-          responsiveOptions: [
-            ['screen and (max-width: 640px)', {
-              seriesBarDistance: 5,
-              axisX: {
-                labelInterpolationFnc: function (value) {
-                  return value[0]
-                },
-              },
-            }],
-          ],
-        },
-        headers: [
-          {
-            sortable: false,
-            text: 'ID',
-            value: 'id',
-          },
-          {
-            sortable: false,
-            text: 'Name',
-            value: 'name',
-          },
-          {
-            sortable: false,
-            text: 'Salary',
-            value: 'salary',
-            align: 'right',
-          },
-          {
-            sortable: false,
-            text: 'Country',
-            value: 'country',
-            align: 'right',
-          },
-          {
-            sortable: false,
-            text: 'City',
-            value: 'city',
-            align: 'right',
-          },
-        ],
-        items: [
-          {
-            id: 1,
-            name: 'Dakota Rice',
-            country: 'Niger',
-            city: 'Oud-Tunrhout',
-            salary: '$35,738',
-          },
-          {
-            id: 2,
-            name: 'Minerva Hooper',
-            country: 'Curaçao',
-            city: 'Sinaai-Waas',
-            salary: '$23,738',
-          },
-          {
-            id: 3,
-            name: 'Sage Rodriguez',
-            country: 'Netherlands',
-            city: 'Overland Park',
-            salary: '$56,142',
-          },
-          {
-            id: 4,
-            name: 'Philip Chanley',
-            country: 'Korea, South',
-            city: 'Gloucester',
-            salary: '$38,735',
-          },
-          {
-            id: 5,
-            name: 'Doris Greene',
-            country: 'Malawi',
-            city: 'Feldkirchen in Kārnten',
-            salary: '$63,542',
-          },
-        ],
-        sales: [
-          {
-            country: 'USA',
-            flag: 'https://demos.creative-tim.com/vue-material-dashboard-pro/img/flags/US.png',
-            salesInM: 2920,
-          },
-          {
-            country: 'Germany',
-            flag: 'https://demos.creative-tim.com/vue-material-dashboard-pro/img/flags/DE.png',
-            salesInM: 1300,
-          },
-          {
-            country: 'Australia',
-            flag: 'https://demos.creative-tim.com/vue-material-dashboard-pro/img/flags/AU.png',
-            salesInM: 760,
-          },
-          {
-            country: 'United Kingdom',
-            flag: 'https://demos.creative-tim.com/vue-material-dashboard-pro/img/flags/GB.png',
-            salesInM: 690,
-          },
-          {
-            country: 'Romania',
-            flag: 'https://demos.creative-tim.com/vue-material-dashboard-pro/img/flags/RO.png',
-            salesInM: 600,
-          },
-          {
-            country: 'Brasil',
-            flag: 'https://demos.creative-tim.com/vue-material-dashboard-pro/img/flags/BR.png',
-            salesInM: 550,
-          },
-        ],
-        tabs: 0,
-        list: {
-          0: false,
-          1: false,
-          2: false,
-        },
       }
     },
 
@@ -850,9 +584,84 @@
     },
 
     methods: {
-      complete (index) {
-        this.list[index] = !this.list[index]
-      },
+        createworkspace() {
+            const config = {
+                withCredentials: true,
+                crossorigin: true,
+                headers: { 'Content-Type': 'application/json' },
+                name: this.newworkspacename,
+            }
+            console.log(config)
+             axios.post('/api/v1/workspace', config)
+                .then((response) => {
+                    console.log("Created new file", response)
+                })
+                .catch((errors) => {
+                    console.log("Could not create file:", errors)
+                })
+            this.newworkspacedialog = false
+        },
+        createfile() {
+            const config = {
+                withCredentials: true,
+                crossorigin: true,
+                headers: { 'Content-Type': 'application/json' },
+                file_name: this.newfilename,
+                ext: this.newfilename.match(/\.[0-9a-z]+$/i)[0],
+                workspaceid: this.$store.getters.currentWorkspace
+            }
+            console.log(config)
+            axios.post('/api/v1/file', config)
+                .then((response) => {
+                    console.log("Created new file", response)
+                })
+                .catch((errors) => {
+                    console.log("Could not create file:", errors)
+                })
+            this.newfiledialog = false
+        },
+        complete (index) {
+            this.list[index] = !this.list[index]
+        },
+        selectworkspace(workspace_id){
+            this.selectedworkspace = workspace_id
+            const config = {
+                withCredentials: true,
+                crossorigin: true,
+                headers: { 'Content-Type': 'application/json' },
+            }
+            console.log("Setting workspace", workspace_id)
+            this.$store.commit('SET_WORKSPACE', workspace_id)
+            axios.get('/api/v1/files',{
+                params: {
+                    id: workspace_id
+                }})
+                .then((response)=>{
+                    console.log("File Data",response.data)
+                    this.files=[]
+                    for(let f of response.data){
+                        axios.get('/api/v1/file',{
+                            params: {
+                                id: f
+                            }})
+                            .then((response)=>{
+                                console.log(response.data)
+                                this.files.push(response.data)
+                                console.log("File Data",this.files)
+                            })
+                            .catch((error)=>{console.log(error)})
+                    }
+                    
+                })
+                .catch((error)=>{ console.log(error) })
+            
+        }
     },
+
   }
 </script>
+<style>
+    .newbutton{
+        margin-top: 85px;
+    }
+</style>

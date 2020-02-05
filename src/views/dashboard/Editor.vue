@@ -1,93 +1,67 @@
 <template>
-  <v-container fill-height fluid grid-list-xl>
-    <v-layout justify-center wrap>
-      <v-flex xs12 md8>
-        <material-card color="green">
-          <div slot="header">
-            <div class="title font-weight-light mb-2">Design Editor</div>
-            <div class="category font-weight-thin">
-              --File Name--
-              <v-btn absolute dark fab top right color="pink" v-on:click="createfile">
-                <v-icon>mdi-plus</v-icon>
-              </v-btn>
+  <v-container
+    id="grid"
+    fluid
+    tag="section"
+  >
+    <v-row>
 
-              <v-btn
-                absolute
-                dark
-                fab
-                top
-                right
-                color="grey"
-                v-on:click="downloadfile"
-                style="right: 90px"
-              >
-                <v-icon>mdi-cloud-download</v-icon>
-              </v-btn>
-              <v-btn
-                absolute
-                dark
-                fab
-                top
-                right
-                color="red"
-                v-on:click="deletefile"
-                style="right: 165px"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+      <v-col
+        cols="12"
+        sm="9"
+        class="pt-0"
+      >
+        <v-btn color="success" v-on:click="savefile"><v-icon small left light>mdi-content-save</v-icon> Save</v-btn>
+        <v-btn color="info" v-on:click="compilefile"><v-icon small left light>mdi-play</v-icon> Compile</v-btn>
+        <v-btn color="error" v-on:click="deletefile"><v-icon small left light>mdi-delete</v-icon> Delete</v-btn>
+        <v-btn color="secondary" v-on:click="downloadfile"><v-icon small left light>mdi-cloud-download</v-icon> Download</v-btn>
+        <v-btn color="secondary" v-on:click="createfile"><v-icon small left light>mdi-cloud-upload</v-icon> Upload</v-btn>
+            
+      </v-col>
+    </v-row>
 
-              <v-btn
-                absolute
-                dark
-                fab
-                top
-                right
-                color="blue"
-                @click="dialog2 = true"
-                style="right: 240px"
-              >
-                <v-icon>mdi-play-circle</v-icon>
-              </v-btn>
-              <v-btn
-                absolute
-                dark
-                fab
-                top
-                right
-                color="lime"
-                v-on:click="savefile"
-                style="right: 315px"
-              >
-                <v-icon>mdi-content-save</v-icon>
-              </v-btn>
-            </div>
-          </div>
+    <v-row>
 
-          <MonacoEditor class="editor" v-model="code" language="javascript" />
-        </material-card>
-      </v-flex>
-      <v-flex xs12 md4>
-        <VueTerminal :intro="intro" console-sign="$" allow-arbitrary height="5000px" width="500px"></VueTerminal>
+      <v-col
+        cols="12"
+        sm="8"
+        class="pt-0"
+      >
+        <v-card class="mt-0">
+          <v-list-item three-line>
+            <v-list-item-content>
+              <v-list-item-title class="headline mb-1">Filename</v-list-item-title>
+              <v-list-item-subtitle>Workspace Job ID</v-list-item-subtitle>
+            </v-list-item-content>
 
-          <div>
-            <v-dialog v-model="dialog2" max-width="500px">
-              <v-card>
-                <v-card-title>Compile</v-card-title>
-                <v-card-text>
-                  <span class="subtitle-2">Compiling:</span>
-                  <span class="body-2">{{filename}}</span>
-                  <v-select :items="select" label="Select Config File"></v-select>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="primary" text @click="dialog2 = false">Close</v-btn>
-                  <v-btn color="primary" text v-on:click="compilefile">Compile</v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </div>
-      </v-flex>
-    </v-layout>
+            <!-- <v-list-item-avatar
+              tile
+              size="80"
+              color="grey"
+            ></v-list-item-avatar> -->
+          </v-list-item>
+
+          <v-card-text class="red--text text--darken-4">
+            <MonacoEditor class="editor" v-model="code" language="javascript" />
+          </v-card-text>
+        </v-card>
+
+      </v-col>
+      <v-col
+        cols="12"
+        sm="4"
+        class="pt-0"
+      >
+        <v-card class="mt-0">
+          <v-card-text class="red--text text--darken-4">
+            col-sm-4
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+
   </v-container>
+
 </template>      
 
 <script>
@@ -151,7 +125,8 @@ export default {
 
 <style>
 .editor {
-  height: 500px;
+  height: 400px;
+  width: 100%;
 }
 
 .terminal {

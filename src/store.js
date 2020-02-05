@@ -10,6 +10,8 @@ export default new Vuex.Store({
     drawer: null,
     isLoggedIn: false,
     userID: '007',
+    currentFile: null,
+    currentWorkspace: null,
   },
   mutations: {
     SET_BAR_IMAGE (state, payload) {
@@ -24,11 +26,19 @@ export default new Vuex.Store({
     updateUser(state, id){
       state.userID = id
       state.isLoggedIn = true
-    },  
+    },
+    updateCurrentFile(state, fid) {
+      state.currentFile = fid
+    },
+    SET_WORKSPACE (state, payload) {
+      state.currentWorkspace = payload
+    }
   },
   getters: {
     userID: state => state.userID,
     isLoggedIn: state => state.isLoggedIn,
+    currentFile: state => state.currentFile,
+    currentWorkspace: state => state.currentWorkspace,
   },
   actions: {
 
