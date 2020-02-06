@@ -571,7 +571,8 @@
                     workspace_id: wid
                 }}).then((response)=>{
                     console.log(response.data)
-                    this.workspaces[response.data._id] = (response.data)
+                    this.workspaces.push(response.data)
+                    this.workspacesobjects[response.data._id] = (response.data)
                 })
                 .catch((error)=>{console.log(error)})
             }
@@ -592,7 +593,8 @@
         newfiledialog: false,
         selectedworkspace: {},          
         files: [],
-        workspaces:{},
+        workspaces:[],
+        workspacesobjects: {},
         actions: [
             {
             color: 'info',
@@ -676,14 +678,15 @@
             this.list[index] = !this.list[index]
         },
         selectworkspace(workspace_id){
-            this.selectedworkspace = workspace_id
+            console.log("Select workspace event",workspace_id)
+            this.selectedworkspace = this.workspacesobjects[workspace_id]
             const config = {
                 withCredentials: true,
                 crossorigin: true,
                 headers: { 'Content-Type': 'application/json' },
             }
             console.log("Setting workspace", workspace_id)
-            this.$store.commit('SET_WORKSPACE', workspace_id)
+            this.$store.commit('SET_WORKSPACE', this.workspacesobjects[workspace_id])
             axios.get('/api/v1/files',{
                 params: {
                     id: workspace_id
