@@ -118,11 +118,26 @@
           Workspaces
         </div>
       </v-col>
+      <!-- TEST -->
+      <v-col
+        cols="12"
+      >
+        <div
+        >
+          <ul>
+          <li
+            v-for="(workpace, key, i) in workspaces" 
+            :key="i"
+          > {{workspaces}} {{key}} {{i}} </li>
+          </ul>
+        </div>
+      </v-col>
 
       <v-col
         cols="12"
         lg="3"
-        v-for="(workspace, i) in workspaces" :key="i"
+        v-for="(workspace, key, i) in workspaces" 
+        :key="i"
       >
         <base-material-workspace-chart-card
           :id="workspace._id"
@@ -164,6 +179,22 @@
               </template>
 
               <span>View Files</span>
+            </v-tooltip>
+
+            <v-tooltip bottom>
+              <template v-slot:activator="{ attrs, on }">
+                <v-btn
+                  v-bind="attrs"
+                  light
+                  icon
+                  v-on="on"
+                  v-on:click="deleteworkspace(workspace._id)"
+                >
+                  <v-icon color="error">mdi-delete</v-icon>
+                </v-btn>
+              </template>
+
+              <span>Delete Workspace</span>
             </v-tooltip>
           </template>
 
@@ -257,7 +288,7 @@
                     class="font-weight-light mt-1"
                     style="font-size: 25px"
                     >
-                        {{ selectedworkspace }} > Files
+                    Files
                     </div>
                 </v-col>
                 <v-col
@@ -531,19 +562,22 @@
 
       axios.get("/api/v1/workspaces", config)
         .then((response)=>{
-          console.log(response)
-          console.log("TEST:", this.workspaces)
-          for (let wid of response.data){
-            console.log(wid)
-            axios.get('/api/v1/workspace',{
-              params: {
-                workspace_id: wid
-              }}).then((response)=>{
-                console.log(response.data)
-                this.workspaces.push(response.data)
-              })
-              .catch((error)=>{console.log(error)})
+            console.log(response)
+            console.log("TEST:", this.workspaces)
+            for (let wid of response.data){
+                console.log(wid)
+                axios.get('/api/v1/workspace',{
+                params: {
+                    workspace_id: wid
+                }}).then((response)=>{
+                    console.log(response.data)
+                    this.workspaces[response.data._id] = (response.data)
+                })
+                .catch((error)=>{console.log(error)})
             }
+
+            console.log(this.workspaces)
+
         })
         .catch((error)=>{
           console.log(error)
@@ -558,7 +592,7 @@
         newfiledialog: false,
         selectedworkspace: {},          
         files: [],
-        workspaces:[ ],
+        workspaces:{},
         actions: [
             {
             color: 'info',
@@ -584,6 +618,24 @@
     },
 
     methods: {
+        deleteworkspace (wid){
+            console.log(wid)
+            const config = {
+                data: {
+                    id: wid
+                },
+                withCredentials: true,
+                crossorigin: true,
+                headers: { 'Content-Type': 'application/json' },
+            }
+
+            axios.delete('/api/v1/workspace', config)
+                .then((response)=>{
+                    console.log("Delete Data",response)
+                })
+                .catch((error)=>{ console.log(error) })
+        },
+
         createworkspace() {
             const config = {
                 withCredentials: true,

@@ -8,7 +8,7 @@ export default new Vuex.Store({
     barColor: 'rgba(0, 0, 0, .8), rgba(0, 0, 0, .8)',
     barImage: './images/CNCpic.png',
     drawer: null,
-    isLoggedIn: false,
+    isLoggedIn: true,
     userID: '007',
     currentFile: null,
     currentWorkspace: null,
@@ -32,6 +32,9 @@ export default new Vuex.Store({
     },
     SET_WORKSPACE (state, payload) {
       state.currentWorkspace = payload
+    },
+    SET_CURRENT_FILE(state, payload) {
+      state.currentFile = payload
     }
   },
   getters: {

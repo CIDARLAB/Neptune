@@ -27,8 +27,6 @@
         >
       </span> 
       <span class="text--darken-4"> {{ name }} </span>
-      <span class="text--darken-4"> {{ id }} </span>
-      <span class="text--darken-4"> {{ name }} </span>
       <v-btn 
         text 
         icon 
@@ -67,6 +65,7 @@
 <script>
   import Card from './Card'
   import axios from 'axios'
+  import router from '../../router'
 
   export default {
     name: 'MaterialStatsCard',
@@ -143,6 +142,8 @@
       },
       editfile(id){
         console.log("edit:",id)
+        this.$store.commit('SET_CURRENT_FILE', id)
+        router.push('/editor')
       }
     }
   }
