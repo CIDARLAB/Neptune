@@ -526,48 +526,54 @@
     name: 'DashboardDashboard',
 
     mounted: async function() {
-      console.log(this.$store.getters.userID)
-      let data = { 
-        user: { 
-          _id: this.$store.getters.userID
-          }
-      } 
-      
-      const config = {
-        withCredentials: true,
-        crossorigin: true,
-        headers: {
-          'Content-Type': 'application/json' //,
-          // 'Access-Control-Allow-Origin': 'http://localhost:8080',
-          // 'Access-Control-Allow-Headers': 'Content-Type,Authorization',
-          // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
-          // 'Access-Control-Allow-Credentials': 'true'
-        },
-      }
-
-      axios.get("/api/v1/workspaces", config)
-        .then((response)=>{
-            console.log(response)
-            console.log("TEST:", this.workspaces)
-            for (let wid of response.data){
-                console.log(wid)
-                axios.get('/api/v1/workspace',{
-                params: {
-                    workspace_id: wid
-                }}).then((response)=>{
-                    console.log(response.data)
-                    this.workspaces.push(response.data)
-                    this.workspacesobjects[response.data._id] = (response.data)
-                })
-                .catch((error)=>{console.log(error)})
+        let currentworkspace = this.$store.getters.currentWorkspace
+        if (currentworkspace != null){
+            this.selectedworkspace = currentworkspace
+            this.selectworkspace(currentworkspace._id)
+        }
+        // console.log('Selected Workspace:', this.selectedworkspace, currentworkspace)
+        // console.log(this.$store.getters.userID)
+        let data = { 
+            user: { 
+            _id: this.$store.getters.userID
             }
+        } 
+        
+        const config = {
+            withCredentials: true,
+            crossorigin: true,
+            headers: {
+            'Content-Type': 'application/json' //,
+            // 'Access-Control-Allow-Origin': 'http://localhost:8080',
+            // 'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+            // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+            // 'Access-Control-Allow-Credentials': 'true'
+            },
+        }
 
-            console.log(this.workspaces)
+        axios.get("/api/v1/workspaces", config)
+            .then((response)=>{
+                console.log(response)
+                console.log("TEST:", this.workspaces)
+                for (let wid of response.data){
+                    console.log(wid)
+                    axios.get('/api/v1/workspace',{
+                    params: {
+                        workspace_id: wid
+                    }}).then((response)=>{
+                        console.log(response.data)
+                        this.workspaces.push(response.data)
+                        this.workspacesobjects[response.data._id] = (response.data)
+                    })
+                    .catch((error)=>{console.log(error)})
+                }
 
-        })
-        .catch((error)=>{
-          console.log(error)
-        });
+                console.log(this.workspaces)
+
+            })
+            .catch((error)=>{
+            console.log(error)
+            });
 
     },
     data () {
@@ -576,7 +582,7 @@
         newworkspacedialog: false,
         newfilename: '',
         newfiledialog: false,
-        selectedworkspace: {},          
+        selectedworkspace: null,          
         files: [],
         workspaces:[],
         workspacesobjects: {},

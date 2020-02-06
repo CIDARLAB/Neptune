@@ -30,8 +30,8 @@
         <v-card class="mt-0">
           <v-list-item three-line>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-1">Filename</v-list-item-title>
-              <v-list-item-subtitle>Workspace Job ID</v-list-item-subtitle>
+              <v-list-item-title class="headline mb-1">{{ fileobject.name }}</v-list-item-title>
+              <v-list-item-subtitle>Workspace: {{ currentworkspace.name }}</v-list-item-subtitle>
             </v-list-item-content>
 
             <!-- <v-list-item-avatar
@@ -167,27 +167,26 @@ export default {
     savefile: function(event) {
       console.log("save the file", this.code);
       console.log(this.$store.getters.userID)
-
+      console.log(this.fileobject)
       const config = {
         withCredentials: true,
         crossorigin: true,
-        headers: { 'Content-Type': 'application/json' },
-      }
-      let data = {
-        fileid: currentfile._id,
-        name: currentfile._id,
-        body: code,
+        headers: { 'Content-Type': 'application/json' }
       }
 
       // console.log("fileid: " + req.body.fileid);
       // console.log("name: " + req.body.name);
       // console.log("name: " + req.body.text);
 
-      axios.put('/api/v1/file', config, data)
+      axios.put('/api/v1/file',{
+        fileid: this.fileobject.id,
+        name: this.fileobject.name,
+        text: this.code,
+      }, config)
         .then((response) => {
           console.log(response)
         })
-        .error((error) => {
+        .catch((error) => {
           console.log(error)
         })
 
