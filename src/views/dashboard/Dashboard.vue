@@ -118,21 +118,6 @@
           Workspaces
         </div>
       </v-col>
-      <!-- TEST -->
-      <v-col
-        cols="12"
-      >
-        <div
-        >
-          <ul>
-          <li
-            v-for="(workpace, key, i) in workspaces" 
-            :key="i"
-          > {{workspaces}} {{key}} {{i}} </li>
-          </ul>
-        </div>
-      </v-col>
-
       <v-col
         cols="12"
         lg="3"
@@ -710,7 +695,7 @@
                 })
                 .catch((error)=>{ console.log(error) })
             
-        }
+            }
     },
 
   }

@@ -83,11 +83,14 @@ export default {
 
 
     let currentfile = this.$store.getters.currentFile
+    this.currentworkspace = this.$store.getters.currentWorkspace
+    console.log("Currnet workspace:",this.currentworkspace,this.currentworkspace._id )
     if (currentfile == null || currentfile === ''){
       return
     }
     console.log("Opened the editor: ", currentfile)
-    const config = {
+
+    let config = {
         withCredentials: true,
         crossorigin: true,
         headers: { 'Content-Type': 'application/json' },
@@ -96,20 +99,50 @@ export default {
         }
     }
 
-    axios.get('/api/v1/fs', config)
-      .then((response) => {
-        console.log(response)
-        this.code = JSON.stringify(response.data)
+    axios.get('/api/v1/file',{
+        params: {
+            id: currentfile
+        }})
+        .then((response)=>{
+            console.log(response.data)
+            this.fileobject = (response.data)
+        })
+        .catch((error)=>{console.log(error)})
+
+    
+    axios.get('/api/v1/fs',{
+      params: {
+          id: currentfile
+      }})
+      .then((response)=>{
+          console.log(response.data)
+          if (typeof response.data !== 'string'){
+            alert('Cannot open file in default editor')
+            //this.code = response.data
+          }else{
+            this.code = response.data
+          }
       })
-      .error((error) => {
-        console.log(error)
-      })
+      .catch((error)=>{console.log(error)})
+           
+            
+
+    // axios.get('/api/v1/fs', config)
+    //   .then((response) => {
+    //     console.log(response)
+    //     this.code = JSON.stringify(response.data)
+    //   })
+    //   .error((error) => {
+    //     console.log(error)
+    //   })
   },
   data() {
     return {
+      currentworkspace: null,
       filename: "Test File",
       code: '',
       fileid: '',
+      fileobject: null,
       dialog: false,
       dialog2: false,
       dialog3: false,
