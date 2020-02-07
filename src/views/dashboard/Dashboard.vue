@@ -51,7 +51,7 @@
           </v-row>
         </base-material-card>
       </v-col> -->
-      <v-col 
+      <!-- <v-col 
         cols="12"
         v-if="selectedworkspace == null"
         >
@@ -74,7 +74,7 @@
               </v-list-item-avatar>
             </v-list-item>
             -->
-        <v-card-title>
+        <!-- <v-card-title>
             <span class="headline mb-1">Getting Started</span>
         </v-card-title>
           <v-card-text>
@@ -105,7 +105,7 @@
 
           </v-card-text>
         </v-card>
-      </v-col>
+      </v-col> -->
 
 
       <v-col
@@ -560,6 +560,12 @@ import { log } from 'util'
                         console.log(response.data)
                         this.workspaces.push(response.data)
                         this.workspacesobjects[response.data._id] = (response.data)
+
+                        if (this.$store.getters.currentWorkspace != null && this.$store.getters.currentWorkspace != undefined){
+                            console.log(" current workspace",this.$store.getters.currentWorkspace, this.selectedworkspace)
+                            this.selectworkspace(this.$store.getters.currentWorkspace._id)
+                        }
+
                     })
                     .catch((error)=>{console.log(error)})
                 }
@@ -570,14 +576,6 @@ import { log } from 'util'
             .catch((error)=>{
             console.log(error)
             });
-
-        if (this.$store.getters.currentWorkspace != null && this.$store.getters.currentWorkspace != undefined){
-            this.selectedworkspace = this.$store.getters.currentWorkspace._id
-            console.log(" current workspace",this.$store.getters.currentWorkspace, this.selectedworkspace)
-            this.selectworkspace(this.selectedworkspace._id)
-        }
-
-
     },
     data () {
       return {
@@ -684,7 +682,9 @@ import { log } from 'util'
             }
             console.log("Setting workspace", workspace_id)
             let obj = this.workspacesobjects[workspace_id]
-            this.$store.commit('SET_WORKSPACE', obj)
+            if (obj != null && obj != undefined){
+              this.$store.commit('SET_WORKSPACE', obj)
+            }
             // alert("TEST")
             axios.get('/api/v1/files',{
                 params: {

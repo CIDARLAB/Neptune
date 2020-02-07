@@ -5,6 +5,14 @@
         cols="12"
         lg="4"
       >
+        <ul>
+          <li v-for="(job, i) in jobs" :key="i">{{ job }}</li>
+        </ul>
+      </v-col>
+      <v-col
+        cols="12"
+        lg="4"
+      >
         <base-material-chart-card
           :data="dailySalesChart.data"
           :options="dailySalesChart.options"
@@ -201,6 +209,7 @@
   export default {
     data () {
       return {
+        jobs: [],
         colouredLine: {
           data: {
             labels: ["'06", "'07", "'08", "'09", "'10", "'11", "'12", "'13", "'14", "'15"],
@@ -425,6 +434,9 @@
           2: false,
         },
       }
+    },
+    mounted: function(){
+      
     },
     methods: {
       complete (index) {

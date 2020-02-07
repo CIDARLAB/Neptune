@@ -65,10 +65,11 @@
 </template>      
 
 <script>
-import MonacoEditor from "vue-monaco";
-import VueTerminal from "vue-terminal-ui";
-import axios from "axios"
-import { Terminal } from 'xterm';
+import MonacoEditor from 'vue-monaco'
+import VueTerminal from 'vue-terminal-ui'
+import axios from 'axios'
+import { Terminal } from 'xterm'
+import router from '../../router'
 
 export default {
   name: "Editor",
@@ -141,11 +142,10 @@ export default {
       currentworkspace: {
         name:''
       },
-      filename: "Test File",
       code: '',
-      fileid: '',
       fileobject: {
-        name: ''
+        name: '',
+        id: ''
       },
       dialog: false,
       dialog2: false,
@@ -200,15 +200,48 @@ export default {
       this.dialog2 = false;
     },
     deletefile: function(event) {
-      console.log("delete the file");
-      axios.get("/api/v1/workspaces")
-        .then((response)=>{
-          console.log(response)
-        })
+        let fid = this.fileobject.id
+        let wid = this.$store.getters.currentWorkspace._id
+        console.log(fid, wid)
+        const config = {
+          data: {
+            fileid: fid,
+            workspaceid: wid
+          },
+          withCredentials: true,
+          crossorigin: true,
+          headers: { 'Content-Type': 'application/json' },
+        }
+
+        axios.delete('/api/v1/file', config)
+              .then((response)=>{
+                console.log("Delete Data",response)
+                router.push('/dashboard')
+              })
+              .catch((error)=>{ console.log(error) })
+
     },
     downloadfile: function(event) {
       console.log("download the file");
-    }
+      var fileurl = new URL("/api/v1/downloadFile?id=" + this.fileobject.id, document.baseURI);
+      console.log('currentfile: ',this.fileobject.id);
+      // window.open(fileurl, '_blank');
+      let self = this
+      axios({
+        method: 'get',
+        url: fileurl,
+        responseType: 'arraybuffer'
+      })
+        .then(function(response) {
+          //response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+          const url = window.URL.createObjectURL(new Blob([response.data]))
+          const link = document.createElement('a')
+          link.href = url
+          link.setAttribute('download', self.fileobject.name) //or any other extension
+          document.body.appendChild(link)
+          link.click()
+      })
+    },
   }
 }
 </script>
