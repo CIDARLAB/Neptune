@@ -1,7 +1,7 @@
 const MonacoEditorPlugin = require('monaco-editor-webpack-plugin')
 
 module.exports = {
-  lintOnSave: false,
+  lintOnSave: true,
   plugins: [
     new MonacoEditorPlugin({
       // https://github.com/Microsoft/monaco-editor-webpack-plugin#options

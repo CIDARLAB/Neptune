@@ -522,15 +522,11 @@
 
 <script>
   import axios from 'axios'
+import { log } from 'util'
   export default {
     name: 'DashboardDashboard',
 
     mounted: async function() {
-        let currentworkspace = this.$store.getters.currentWorkspace
-        if (currentworkspace != null){
-            this.selectedworkspace = currentworkspace
-            this.selectworkspace(currentworkspace._id)
-        }
         // console.log('Selected Workspace:', this.selectedworkspace, currentworkspace)
         // console.log(this.$store.getters.userID)
         let data = { 
@@ -575,6 +571,13 @@
             console.log(error)
             });
 
+        if (this.$store.getters.currentWorkspace != null && this.$store.getters.currentWorkspace != undefined){
+            this.selectedworkspace = this.$store.getters.currentWorkspace._id
+            console.log(" current workspace",this.$store.getters.currentWorkspace, this.selectedworkspace)
+            this.selectworkspace(this.selectedworkspace._id)
+        }
+
+
     },
     data () {
       return {
@@ -582,7 +585,10 @@
         newworkspacedialog: false,
         newfilename: '',
         newfiledialog: false,
-        selectedworkspace: null,          
+        selectedworkspace: {
+            name: '',
+            id: '',
+        },          
         files: [],
         workspaces:[],
         workspacesobjects: {},
@@ -677,7 +683,9 @@
                 headers: { 'Content-Type': 'application/json' },
             }
             console.log("Setting workspace", workspace_id)
-            this.$store.commit('SET_WORKSPACE', this.workspacesobjects[workspace_id])
+            let obj = this.workspacesobjects[workspace_id]
+            this.$store.commit('SET_WORKSPACE', obj)
+            // alert("TEST")
             axios.get('/api/v1/files',{
                 params: {
                     id: workspace_id

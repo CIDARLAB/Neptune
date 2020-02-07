@@ -30,8 +30,8 @@
         <v-card class="mt-0">
           <v-list-item three-line>
             <v-list-item-content>
-              <v-list-item-title class="headline mb-1">{{ fileobject.name }}</v-list-item-title>
-              <v-list-item-subtitle>Workspace: {{ currentworkspace.name }}</v-list-item-subtitle>
+              <v-list-item-title class="headline mb-1" > <span v-text="fileobject.name"></span> </v-list-item-title>
+              <v-list-item-subtitle>Workspace: <span v-text="currentworkspace.name"></span></v-list-item-subtitle>
             </v-list-item-content>
 
             <!-- <v-list-item-avatar
@@ -138,11 +138,15 @@ export default {
   },
   data() {
     return {
-      currentworkspace: null,
+      currentworkspace: {
+        name:''
+      },
       filename: "Test File",
       code: '',
       fileid: '',
-      fileobject: null,
+      fileobject: {
+        name: ''
+      },
       dialog: false,
       dialog2: false,
       dialog3: false,

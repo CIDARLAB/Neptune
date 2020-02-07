@@ -1,6 +1,9 @@
 module.exports = {
   lintOnSave: true,
   
+  configureWebpack:{
+    devtool: 'source-map'
+  },
   devServer: {
     disableHostCheck: true,
     proxy: 'http://localhost:8080'
