@@ -242,6 +242,9 @@ export default {
           link.click()
       })
     },
+    uploadfile: function(event){
+      alert("Feature not yet implemented !")
+    }
   }
 }
 </script>

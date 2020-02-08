@@ -547,7 +547,7 @@ import { log } from 'util'
             },
         }
 
-        axios.get("/api/v1/workspaces", config)
+        axios.get('/api/v1/workspaces', config)
             .then((response)=>{
                 console.log(response)
                 console.log("TEST:", this.workspaces)

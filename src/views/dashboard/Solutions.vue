@@ -3,213 +3,164 @@
     <v-row>
       <v-col
         cols="12"
-        lg="4"
+        lg="12"
       >
-        <ul>
-          <li v-for="(job, i) in jobs" :key="i">{{ job }}</li>
-        </ul>
+
+    <base-material-card
+      color="success"
+      icon="mdi-clipboard-text"
+      inline
+      title="Jobs"
+      class="px-5 py-3 mb-5"
+    >
+      <v-simple-table
+        height="300px"
+      >
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Last Updated</th>
+            <th># Files</th>
+            <th class="text-right">
+              Actions
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+
+          <tr
+            v-for="(job, ijk) in jobs" 
+            :key="ijk"
+          >
+            <td>{{ job.name }}</td>
+            <td>{{ job.created_at }}</td>
+            <td>{{ job.files.length }}</td>
+            <td class="text-right">
+              <v-btn
+                color="green"
+                class="ml-1"
+                fab
+                icon
+                x-small
+                @click="downloadjobfiles(job.id)"
+              >
+                <v-icon
+                  small
+                >
+                mdi-download
+              </v-icon>
+              </v-btn>
+              <v-btn
+                color="blue"
+                class="ml-1"
+                fab
+                icon
+                x-small
+                @click="viewjobfiles(job.id)"
+              >
+                <v-icon
+                  small
+                >
+                mdi-view-split-vertical
+                </v-icon>
+              </v-btn>
+              <v-btn
+                color="red"
+                class="ml-1"
+                fab
+                icon
+                x-small
+                @click="deletejob(job.id)"
+              >
+                <v-icon
+                  small
+                >
+                mdi-delete
+                </v-icon>
+              </v-btn>
+
+            </td>
+          </tr>
+
+        </tbody>
+      </v-simple-table>
+    </base-material-card>
+
       </v-col>
+      
       <v-col
-        cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="dailySalesChart.data"
-          :options="dailySalesChart.options"
+        col="12"
+        sm="5"
+        v-for="(file, i) in fileobjects" 
+        :key="i"
+        >
+        <base-material-card
           color="success"
-          type="Line"
+          icon="mdi-file"
+          :title="file.name"
           class="px-4 py-3"
         >
-          <h4 class="display-1 font-weight-light mt-2">
-            Rounded Line Chart
-          </h4>
-
-          <div class="grey--text font-weight-light">
-            Line Chart
-          </div>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="emailsSubscriptionChart.data"
-          :options="emailsSubscriptionChart.options"
-          :responsive-options="emailsSubscriptionChart.responsiveOptions"
-          color="orange darken-1"
-          type="Line"
-          class="px-4 py-3"
-        >
-          <h4 class="display-1 font-weight-light mt-2">
-            Line Chart With Points
-          </h4>
-
-          <div class="grey--text font-weight-light">
-            Straight Lines Chart
-          </div>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="4"
-      >
-        <base-material-chart-card
-          :data="dataCompletedTasksChart.data"
-          :options="dataCompletedTasksChart.options"
-          color="info"
-          type="Bar"
-          class="px-4 py-3"
-        >
-          <h4 class="display-1 font-weight-light mt-2">
-            Simple Bar Chart
-          </h4>
-
-          <div class="grey--text font-weight-light">
-            Last Last Campaign Performance
-          </div>
-        </base-material-chart-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="6"
-      >
-        <base-material-card
-          id="coloured-line"
-          color="info"
-          icon="mdi-chart-timeline-variant"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 mt-2 font-weight-light">
-              Coloured Line Chart
-              <span class="subtitle-1">— Rounded</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="colouredLine.data"
-            :options="colouredLine.options"
-            type="Line"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-        <div class="py-3" />
-        <base-material-card
-          id="coloured-line"
-          color="warning"
-          icon="mdi-chart-timeline-variant"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 font-weight-light mt-2">
-              Coloured Line Chart
-              <span class="subtitle-1">— Multiple</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="multipleLine.data"
-            :options="multipleLine.options"
-            type="Line"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-      </v-col>
-
-      <v-col
-        cols="12"
-        lg="6"
-      >
-        <base-material-card
-          id="multiple-bar"
-          color="success"
-          icon="mdi-poll-box"
-          class="px-4 py-3"
-        >
-          <template v-slot:after-heading>
-            <div class="display-1 mt-2 font-weight-light">
-              Multiple Bars Chart
-              <span class="subtitle-1">— Bar Chart</span>
-            </div>
-          </template>
-
-          <chartist
-            :data="multipleBar.data"
-            :options="multipleBar.options"
-            type="Bar"
-            style="max-height: 150px;"
-            class="mt-3"
-          />
-        </base-material-card>
-        <div class="py-3" />
-
-        <base-material-card
-          id="pie"
-          color="success"
-          icon="mdi-chart-pie"
-          title="Pie Chart"
-          class="px-4 py-3"
-        >
-          <chartist
-            :data="pie.data"
-            :options="pie.options"
-            type="Pie"
-            style="max-height: 250px;"
-          />
-
           <v-divider class="ma-3" />
 
           <div class="px-3">
             <div class="body-2 text-uppercase grey--text font-weight-bold mb-3">
-              Legend
+              Actions
             </div>
 
             <v-row
               align="center"
               class="ma-0"
             >
-              <v-avatar
-                class="mr-1"
-                color="info"
-                size="12"
-              />
-
-              <span class="mr-3 font-weight-light">Apple</span>
-
-              <v-avatar
-                class="mr-1"
-                color="warning"
-                size="12"
-              />
-
-              <span class="mr-3 font-weight-light">Samsung</span>
-
-              <v-avatar
-                class="mr-1"
-                color="red"
-                size="12"
-              />
-
-              <span class="mr-3 font-weight-light">Windows Phone</span>
+              <v-btn
+                color="green"
+                class="ml-1"
+                fab
+                icon
+                x-small
+                @click="downloadfile(file.id)"
+              >
+                <v-icon
+                  small
+                >
+                mdi-download
+              </v-icon>
+              </v-btn>
+              <v-btn
+                color="blue"
+                class="ml-1"
+                fab
+                icon
+                x-small
+                @click="openpreview(file.id)"
+              >
+                <v-icon
+                  small
+                >
+                mdi-open-in-new
+                </v-icon>
+              </v-btn>
             </v-row>
           </div>
         </base-material-card>
+
       </v-col>
+
     </v-row>
   </v-container>
 </template>
 
 <script>
+  import axios from 'axios'
+  
   export default {
     data () {
       return {
-        jobs: [],
+        selectedjobid: '',
+        jobs : [],
+        fileobjects:[],
+        jobobjects: {},
         colouredLine: {
           data: {
             labels: ["'06", "'07", "'08", "'09", "'10", "'11", "'12", "'13", "'14", "'15"],
@@ -436,12 +387,91 @@
       }
     },
     mounted: function(){
-      
+      this.getAllJobs()
     },
     methods: {
+      downloadfile(fid){
+
+      },
+      openpreview(fid){
+        alert(fid)
+      },
+      deletejob (jid){
+        alert(jid)
+      },
+      viewjobfiles(jid){
+        this.selectedjobid = jid
+        this.fileobjects = []
+        for (let fid of this.jobobjects[jid].files){
+          axios.get('/api/v1/file', {
+            params: {
+              id: fid
+            }
+          })
+          .then((response) => {
+            console.log(response.data)
+            this.fileobjects.push(response.data)
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
+        }
+      },
+      downloadjobfiles(jid){
+        alert(jid)
+      },
       complete (index) {
         this.list[index] = !this.list[index]
       },
+      getAllJobs () {
+            // $.get('/api/v1/jobs',function (response) {
+            //     self.jobIDs.removeAll();
+            //     self.jobs.removeAll();
+            //     for(var i = 0 ; i<response.length;i++){
+            //         self.addJob(response[i]);
+            //         self.jobIDs.push(response[i]);
+            //     }
+            //     console.log("Jobs Found:", self.jobIDs());
+            // })
+        let config = {
+          withCredentials: true,
+          crossorigin: true,
+          headers: {
+          'Content-Type': 'application/json' //,
+          // 'Access-Control-Allow-Origin': 'http://localhost:8080',
+          // 'Access-Control-Allow-Headers': 'Content-Type,Authorization',
+          // 'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,OPTIONS',
+          // 'Access-Control-Allow-Credentials': 'true'
+          },
+        }
+
+        let self = this
+        axios.get('/api/v1/jobs', config)
+          .then((response)=>{
+            console.log(response.data)
+            self.jobs = []
+            self.jobobjects = {}
+            for (let jobid of response.data){
+              axios.get('/api/v1/job', {
+                params: {
+                  job_id: jobid
+                }
+              })
+              .then((response)=>{
+                console.log(response.data)
+                self.jobs.push(response.data)
+                self.jobobjects[response.data.id] = response.data
+              })
+              .catch((error) => {
+                console.log(error)
+              })
+            }
+          }).catch((error) => {
+            console.log(error)
+          })
+
+      }
     },
   }
 </script>
