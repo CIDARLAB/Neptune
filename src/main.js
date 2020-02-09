@@ -21,9 +21,20 @@ import './plugins/vee-validate'
 import './plugins/vue-world-map'
 import vuetify from './plugins/vuetify'
 import i18n from './i18n'
+import VueSocketIO from 'vue-socket.io'
 
 Vue.config.productionTip = false
 
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: "http://" + window.location.hostname + ':3000',
+  // vuex: {
+  //     store,
+  //     actionPrefix: 'SOCKET_',
+  //     mutationPrefix: 'SOCKET_'
+  // },
+  // options: { path: "/my-app/" } //Optional options
+}))
 
 router.beforeEach((to, from, next) => {
   const authRequired = to.matched.some((route) => route.meta.requiresAuth)

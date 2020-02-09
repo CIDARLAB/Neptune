@@ -12,7 +12,7 @@
         class="pt-0"
       >
         <v-btn color="success" v-on:click="savefile"><v-icon small left light>mdi-content-save</v-icon> Save</v-btn>
-        <v-btn color="info" v-on:click="compilefile"><v-icon small left light>mdi-play</v-icon> Compile</v-btn>
+        <v-btn color="info" @click="compiledialog = true"><v-icon small left light>mdi-play</v-icon> Compile</v-btn>
         <v-btn color="error" v-on:click="deletefile"><v-icon small left light>mdi-delete</v-icon> Delete</v-btn>
         <v-btn color="secondary" v-on:click="downloadfile"><v-icon small left light>mdi-cloud-download</v-icon> Download</v-btn>
         <v-btn color="secondary" v-on:click="createfile"><v-icon small left light>mdi-cloud-upload</v-icon> Upload</v-btn>
@@ -60,6 +60,43 @@
       </v-col>
     </v-row>
 
+  <v-dialog
+          v-model="compiledialog"
+          max-width="500px"
+        >
+        <v-card>
+          <v-card-title>
+            Compile
+          </v-card-title>
+          <v-card-text>
+            <v-select
+              :items="configfiles"
+              label="Select Confg File"
+              item-value="id"
+              item-text="name"
+              v-model="selectedconfig"
+              :return-object="true"
+            ></v-select>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn
+              color="primary"
+              text
+              @click="compiledialog = false"
+            >
+              Close
+            </v-btn>
+            <v-btn
+              color="info"
+              text
+              @click="compilefile"
+            >
+              Compile
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
   </v-container>
 
 </template>      
@@ -71,6 +108,8 @@ import axios from 'axios'
 import { Terminal } from 'xterm'
 import router from '../../router'
 
+const term = new Terminal();
+
 export default {
   name: "Editor",
   components: {
@@ -78,11 +117,12 @@ export default {
     VueTerminal,
   },
   mounted: function() {
-    var term = new Terminal();
-    term.open(document.getElementById('terminal'));
-    term.write('Neptune Console $ ')
+    term.open(document.getElementById('terminal'))
+    term.setOption('fontSize', 10 )
+   
+    // setOption(key: 'fontSize' | 'letterSpacing' | 'lineHeight' | 'tabStopWidth' | 'scrollback', value: number): void; 
 
-
+    term.writeln('Neptune Console $\n')
     let currentfile = this.$store.getters.currentFile
     this.currentworkspace = this.$store.getters.currentWorkspace
     console.log("Currnet workspace:",this.currentworkspace,this.currentworkspace._id )
@@ -99,7 +139,6 @@ export default {
           id: currentfile
         }
     }
-
     axios.get('/api/v1/file',{
         params: {
             id: currentfile
@@ -127,7 +166,7 @@ export default {
       .catch((error)=>{console.log(error)})
            
             
-
+    this.downloadconfigfiles()
     // axios.get('/api/v1/fs', config)
     //   .then((response) => {
     //     console.log(response)
@@ -139,6 +178,8 @@ export default {
   },
   data() {
     return {
+      selectedconfig: '',
+      compiledialog: false,
       currentworkspace: {
         name:''
       },
@@ -147,6 +188,7 @@ export default {
         name: '',
         id: ''
       },
+      configfiles: [],
       dialog: false,
       dialog2: false,
       dialog3: false,
@@ -164,7 +206,70 @@ export default {
       ]
     };
   },
+  sockets: {
+    // //This signals the end of the output
+    // socket.on('EOP', function(data){
+    //     //TODO: Figure out how to close the monitoring
+    //     editorViewModel.updateJobs();
+    //     setTimeout(function() {
+    //         //self.jobs()[0]
+    //         editorViewModel.setAsCurrentJob(editorViewModel.currentJob());
+    //     },1000);
+    // });
+    stdout: function(data){
+      //console.log(data)
+      term.write(data.replace(/\n/g, '\n\r'))
+
+    },
+  
+    EOP: function(data){
+      console.log(data)
+    }
+
+  },
   methods: {
+    downloadconfigfiles: function(event){
+      this.configfiles= []
+      const config = {
+        withCredentials: true,
+        crossorigin: true,
+        headers: { 'Content-Type': 'application/json' },
+        params: {
+          id: this.$store.getters.currentWorkspace._id
+        }
+      }
+      let self = this
+      axios.get('/api/v1/files', config)
+        .then((response) => {
+          console.log(response)
+          for(let fid of response.data){
+            console.log("FID:" , fid)
+            const config = {
+              withCredentials: true,
+              crossorigin: true,
+              headers: { 'Content-Type': 'application/json' },
+              params: {
+                id: fid
+              }
+            }
+            console.log("Config:", config)
+            axios.get('/api/v1/file',config)
+              .then((response)=>{
+                  console.log(response.data)
+                  let ext = response.data.ext
+                  if( ext === '.ini' || ext === '.json' ){
+                    self.configfiles.push(response.data)
+                  }
+                  
+              })
+              .catch((error)=>{console.log(error)})
+
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+    },
     createfile: function(event) {
       console.log("TEST");
     },
@@ -196,8 +301,52 @@ export default {
 
     },
     compilefile: function(event) {
+      let self = this
       console.log("compile the file");
-      this.dialog2 = false;
+      this.compiledialog = false;
+      // $.post('/api/v1/fluigi', {
+      //             sourcefileid: (self.currentFile()).id,
+      //             sourcefilename: (self.currentFile()).name,
+      //             configfileid: (self.currentConfigFile()).id,
+      //             configfilename: (self.currentConfigFile()).name,
+      //             workspace:    (self.currentWorkSpace()).id,
+      //             user:          localStorage.Email
+      //         },
+      //         function(response){
+      //             //TODO - Connect to fluigicad's console output based on job id.
+      //             console.log("jobid: " + response);
+      //             socket.emit('monitor', response);
+      //             NProgress.done();
+      //             //self.setAsCurrentWorkSpace(self.currentWorkSpace());
+      //         });
+      const config = {
+        withCredentials: true,
+        crossorigin: true,
+        headers: { 'Content-Type': 'application/json' }
+      }
+
+      console.log("Selected config",this.$store.getters.currentWorkspace)
+      let data = {
+        sourcefileid: this.fileobject.id,   //(self.currentFile()).id,
+        sourcefilename: this.fileobject.name,   //(self.currentFile()).name,
+        configfileid: this.selectedconfig.id,   //(self.currentConfigFile()).id,
+        configfilename: this.selectedconfig.name,   //(self.currentConfigFile()).name,
+        workspace:    this.$store.getters.currentWorkspace._id,
+        user: this.$store.getters.currentUser.email,           //localStorage.Email
+      }
+
+      axios.post('/api/v1/fluigi', data, config)
+        .then((response) => {
+          console.log('Jobid:', response.data)
+          let jobid = response.data
+          self.$socket.emit('monitor', jobid)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+
+      //we get jobid from the response
+      
     },
     deletefile: function(event) {
         let fid = this.fileobject.id

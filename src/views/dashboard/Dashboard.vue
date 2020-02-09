@@ -522,7 +522,8 @@
 
 <script>
   import axios from 'axios'
-import { log } from 'util'
+  import { log } from 'util'
+
   export default {
     name: 'DashboardDashboard',
 
@@ -546,6 +547,15 @@ import { log } from 'util'
             // 'Access-Control-Allow-Credentials': 'true'
             },
         }
+
+        axios.get('/api/v2/user', config)
+          .then((response) => {
+            console.log('User info:', response.data)
+            this.$store.commit('SET_CURRENT_USER', response.data)
+          })
+          .catch((error) => {
+            console.error(error)
+          })
 
         axios.get('/api/v1/workspaces', config)
             .then((response)=>{
@@ -705,7 +715,6 @@ import { log } from 'util'
                             })
                             .catch((error)=>{console.log(error)})
                     }
-                    
                 })
                 .catch((error)=>{ console.log(error) })
             
