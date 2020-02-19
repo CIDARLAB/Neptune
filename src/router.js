@@ -12,20 +12,10 @@ export default new Router({
       component: () => import('@/views/pages/Index'),
       children: [
         {
-          name: 'Lock',
-          path: 'lock',
-          component: () => import('@/views/pages/Lock'),
-        },
-        {
           name: 'Login',
           path: 'login',
           component: () => import('@/views/pages/Login'),
           meta: { requiresAuth: false }
-        },
-        {
-          name: 'Pricing',
-          path: 'pricing',
-          component: () => import('@/views/pages/Pricing'),
         },
         {
           name: 'Register',

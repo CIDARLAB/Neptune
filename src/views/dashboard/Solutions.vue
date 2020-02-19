@@ -92,7 +92,7 @@
       
       <v-col
         col="12"
-        sm="5"
+        sm="6"
         v-for="(file, i) in files" 
         :key="i"
         >

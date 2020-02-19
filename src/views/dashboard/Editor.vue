@@ -304,21 +304,6 @@ export default {
       let self = this
       console.log("compile the file");
       this.compiledialog = false;
-      // $.post('/api/v1/fluigi', {
-      //             sourcefileid: (self.currentFile()).id,
-      //             sourcefilename: (self.currentFile()).name,
-      //             configfileid: (self.currentConfigFile()).id,
-      //             configfilename: (self.currentConfigFile()).name,
-      //             workspace:    (self.currentWorkSpace()).id,
-      //             user:          localStorage.Email
-      //         },
-      //         function(response){
-      //             //TODO - Connect to fluigicad's console output based on job id.
-      //             console.log("jobid: " + response);
-      //             socket.emit('monitor', response);
-      //             NProgress.done();
-      //             //self.setAsCurrentWorkSpace(self.currentWorkSpace());
-      //         });
       const config = {
         withCredentials: true,
         crossorigin: true,
@@ -335,7 +320,18 @@ export default {
         user: this.$store.getters.currentUser.email,           //localStorage.Email
       }
 
-      axios.post('/api/v1/fluigi', data, config)
+      let endpoint = ''
+
+      if (this.fileobject.name.match(/\.[0-9a-z]+$/i)[0] === '.uf' || this.fileobject.name.match(/\.[0-9a-z]+$/i)[0] === '.mint'){
+        endpoint = '/api/v1/fluigi'
+      }else if(this.fileobject.name.match(/\.[0-9a-z]+$/i)[0] === '.lfr' || this.fileobject.name.match(/\.[0-9a-z]+$/i)[0] === '.v'){
+        endpoint = '/api/v1/mushroommapper'
+      }else{
+        alert('Unknown File Type !')
+        return
+      }
+
+      axios.post(endpoint, data, config)
         .then((response) => {
           console.log('Jobid:', response.data)
           let jobid = response.data

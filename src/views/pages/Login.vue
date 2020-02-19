@@ -80,16 +80,14 @@
     },
 
     data: () => ({
-      email: 'rkrishnasanka@gmail.com',
-      password: 'potter',
+      email: '',
+      password: '',
     }),
 
     methods: {
       login: function(event) {
         event.preventDefault()
         console.log(this.email, this.password)
-        // let email = "rkrishnasanka@gmail.com"   
-        // let password = "potter"
 
         let data = {    
             email: this.email,    

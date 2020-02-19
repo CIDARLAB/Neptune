@@ -8,7 +8,7 @@
         'v-image--sm': this.$vuetify.breakpoint.smAndDown,
         'v-image--md': this.$vuetify.breakpoint.mdAndDown
       }"
-      :src="require(`@/assets/${src || 'clint-mckoy.jpg'}`)"
+      :src="require(`@/assets/${src || 'WiresPic.png'}`)"
       gradient="to top, rgba(0, 0, 0, .5), rgba(0, 0, 0, .5)"
       min-height="100%"
     >
