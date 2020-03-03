@@ -35,7 +35,7 @@
             :key="ijk"
           >
             <td>{{ job.name }}</td>
-            <td>{{ job.created_at }}</td>
+            <td>{{ formattimestamp(job.created_at) }}</td>
             <td>{{ job.files.length }}</td>
             <td class="text-right">
               <v-btn
@@ -153,6 +153,7 @@
 
 <script>
   import axios from 'axios'
+  import * as Utils from '../../utils'
   
   export default {
     data () {
@@ -167,6 +168,9 @@
       this.getAllJobs()
     },
     methods: {
+      formattimestamp(datestring){
+        return Utils.getprettytimestamp(datestring)
+      },
       downloadfile(file){
         var fileurl = new URL("/api/v1/downloadFile?id=" + file.id, document.baseURI);
         console.log('downloading file: ',file.id);

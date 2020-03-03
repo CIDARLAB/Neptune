@@ -193,7 +193,7 @@
             >
               mdi-clock-outline
             </v-icon>
-            <span class="caption grey--text font-weight-light">Last Update: {{workspace.updated_at}}</span>
+            <span class="caption grey--text font-weight-light">Last Update: {{formattimestamp(workspace.updated_at)}}</span>
           </template>
         </base-material-workspace-chart-card>
       </v-col>
@@ -221,7 +221,7 @@
                 </template>
                 <span>Create New Workspace</span>
             </v-tooltip>
-                            <v-dialog
+                <v-dialog
                     v-model="newworkspacedialog"
                     max-width="300px"
                     >
@@ -289,7 +289,7 @@
                         :value="file.ext"
                         :name="file.name"
                         sub-icon="mdi-clockwise-outline"
-                        :sub-text="file.updated_at"
+                        :sub-text=" 'Modified: ' + formattimestamp(file.updated_at)"
                         :id="file.id"
                         :workspaceid="selectedworkspace._id"
                     />
@@ -356,166 +356,6 @@
 
             </div>
         </v-col>
-
-
-      <!-- <v-col
-        cols="12"
-        lg="3"
-      >
-        <base-material-workspace-chart-card
-          :data="dataCompletedTasksChart.data"
-          :options="dataCompletedTasksChart.options"
-          :id="selectedworkspace._id"
-          hover-reveal
-          color="info"
-          type="Line"
-        >
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  color="info"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon
-                    color="info"
-                  >
-                    mdi-refresh
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Refresh</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  light
-                  icon
-                  v-on="on"
-                  v-on:click="selectworkspace(selectedworkspace._id)"
-                >
-                  <v-icon>mdi-view-split-vertical</v-icon>
-                </v-btn>
-              </template>
-
-              <span>View Files</span>
-            </v-tooltip>
-          </template>
-
-          <h3 class="card-title font-weight-light mt-2 ml-2">
-            {{selectedworkspace.name}}
-          </h3>
-          <template v-slot:actions>
-            <v-icon
-              class="mr-1"
-              small
-            >
-              mdi-clock-outline
-            </v-icon>
-            <span class="caption grey--text font-weight-light">Last Update: {{workspace.updated_at}}</span>
-          </template>
-        </base-material-workspace-chart-card>
-      </v-col> -->
-
-      <!-- <v-col
-        sm="12"
-        md="4"
-      >
-        <base-material-card
-          color="transparent"
-          image
-          hover-reveal
-        >
-          <template v-slot:image>
-            <v-img
-              src="https://demos.creative-tim.com/vue-material-dashboard-pro/img/card-2.jpg"
-            />
-          </template>
-
-          <template v-slot:reveal-actions>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  class="mx-1"
-                  v-bind="attrs"
-                  icon
-                  v-on="on"
-                >
-                  <v-icon>mdi-view-split-vertical</v-icon>
-                </v-btn>
-              </template>
-
-              <span>View</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="success"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="success--text">
-                    mdi-pencil
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Edit</span>
-            </v-tooltip>
-
-            <v-tooltip bottom>
-              <template v-slot:activator="{ attrs, on }">
-                <v-btn
-                  v-bind="attrs"
-                  class="mx-1"
-                  color="error"
-                  light
-                  icon
-                  v-on="on"
-                >
-                  <v-icon class="error--text">
-                    mdi-close
-                  </v-icon>
-                </v-btn>
-              </template>
-
-              <span>Remove</span>
-            </v-tooltip>
-          </template>
-
-          <v-card-title class="justify-center font-weight-light">
-            Cozy 5 Stars Apartment
-          </v-card-title>
-
-          <v-card-text class="body-1 text-center mb-3 font-weight-light grey--text">
-            The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the life in Barcelona.
-          </v-card-text>
-
-          <template v-slot:actions>
-            <div class="display-2 font-weight-light grey--text">
-              $899/night
-            </div>
-
-            <v-spacer />
-
-            <span class="caption grey--text font-weight-light">
-              <v-icon small>mdi-map-marker</v-icon>
-
-              Barcelona, Spain
-            </span>
-          </template>
-        </base-material-card>
-      </v-col>
- -->
     </v-row>
   </v-container>
 </template>
@@ -523,6 +363,7 @@
 <script>
   import axios from 'axios'
   import { log } from 'util'
+  import * as Utils from '../../utils'
 
   export default {
     name: 'DashboardDashboard',
@@ -530,6 +371,50 @@
     mounted: async function() {
         // console.log('Selected Workspace:', this.selectedworkspace, currentworkspace)
         // console.log(this.$store.getters.userID)
+        this.refreshworkspacedata()
+    },
+    data () {
+      return {
+        newworkspacename: '',
+        newworkspacedialog: false,
+        newfilename: '',
+        newfiledialog: false,
+        selectedworkspace: {
+            name: '',
+            id: '',
+        },          
+        files: [],
+        workspaces:[],
+        workspacesobjects: {},
+        actions: [
+            {
+            color: 'info',
+            icon: 'mdi-account',
+            },
+            {
+            color: 'success',
+            icon: 'mdi-pencil',
+            },
+            {
+            color: 'error',
+            icon: 'mdi-close',
+            },
+        ],
+
+      }
+    },
+
+    computed: {
+      totalSales () {
+        return this.sales.reduce((acc, val) => acc + val.salesInM, 0)
+      },
+    },
+
+    methods: {
+      formattimestamp(datestring){
+        return Utils.getprettytimestamp(datestring)
+      },
+        refreshworkspacedata(){
         let data = { 
             user: { 
             _id: this.$store.getters.userID
@@ -586,45 +471,8 @@
             .catch((error)=>{
             console.log(error)
             });
-    },
-    data () {
-      return {
-        newworkspacename: '',
-        newworkspacedialog: false,
-        newfilename: '',
-        newfiledialog: false,
-        selectedworkspace: {
-            name: '',
-            id: '',
-        },          
-        files: [],
-        workspaces:[],
-        workspacesobjects: {},
-        actions: [
-            {
-            color: 'info',
-            icon: 'mdi-account',
-            },
-            {
-            color: 'success',
-            icon: 'mdi-pencil',
-            },
-            {
-            color: 'error',
-            icon: 'mdi-close',
-            },
-        ],
 
-      }
-    },
-
-    computed: {
-      totalSales () {
-        return this.sales.reduce((acc, val) => acc + val.salesInM, 0)
-      },
-    },
-
-    methods: {
+        },
         deleteworkspace (wid){
             console.log(wid)
             const config = {
@@ -639,6 +487,7 @@
             axios.delete('/api/v1/workspace', config)
                 .then((response)=>{
                     console.log("Delete Data",response)
+                    this.refreshworkspacedata()
                 })
                 .catch((error)=>{ console.log(error) })
         },
@@ -654,6 +503,7 @@
              axios.post('/api/v1/workspace', config)
                 .then((response) => {
                     console.log("Created new file", response)
+                    this.refreshworkspacedata()
                 })
                 .catch((errors) => {
                     console.log("Could not create file:", errors)
@@ -673,6 +523,7 @@
             axios.post('/api/v1/file', config)
                 .then((response) => {
                     console.log("Created new file", response)
+                    this.refreshworkspacedata()
                 })
                 .catch((errors) => {
                     console.log("Could not create file:", errors)

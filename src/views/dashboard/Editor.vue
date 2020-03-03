@@ -28,6 +28,11 @@
         class="pt-0"
       >
         <v-card class="mt-0">
+          <v-progress-linear
+            :indeterminate="isloading"
+            :hidden="!isloading"
+            color="blue darken-2"
+          ></v-progress-linear>
           <v-list-item three-line>
             <v-list-item-content>
               <v-list-item-title class="headline mb-1" > <span v-text="fileobject.name"></span> </v-list-item-title>
@@ -40,7 +45,6 @@
               color="grey"
             ></v-list-item-avatar> -->
           </v-list-item>
-
           <v-card-text class="red--text text--darken-4">
             <MonacoEditor class="editor" v-model="code" language="javascript" />
           </v-card-text>
@@ -178,6 +182,7 @@ export default {
   },
   data() {
     return {
+      isloading: false,
       selectedconfig: '',
       compiledialog: false,
       currentworkspace: {
@@ -224,6 +229,7 @@ export default {
   
     EOP: function(data){
       console.log(data)
+      this.isloading = false
     }
 
   },
@@ -274,6 +280,8 @@ export default {
       console.log("TEST");
     },
     savefile: function(event) {
+      let self = this
+      self.isloading = true
       console.log("save the file", this.code);
       console.log(this.$store.getters.userID)
       console.log(this.fileobject)
@@ -294,6 +302,7 @@ export default {
       }, config)
         .then((response) => {
           console.log(response)
+          self.isloading = false
         })
         .catch((error) => {
           console.log(error)
@@ -303,6 +312,7 @@ export default {
     compilefile: function(event) {
       let self = this
       console.log("compile the file");
+      self.isloading = true
       this.compiledialog = false;
       const config = {
         withCredentials: true,

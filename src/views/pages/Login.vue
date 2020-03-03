@@ -43,6 +43,7 @@
               color="secondary"
               label="Email..."
               prepend-icon="mdi-email"
+              v-model="email"
             />
 
             <v-text-field
@@ -51,6 +52,7 @@
               label="Password..."
               prepend-icon="mdi-lock-outline"
               type="password"
+              v-model="password"
             />
 
             <pages-btn
