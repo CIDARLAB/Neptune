@@ -33,11 +33,7 @@
           md="auto"
         >
           <div class="body-1 font-weight-light pt-6 pt-md-0 text-center">
-            &copy; 2019, made with
-            <v-icon size="20">
-              mdi-heart
-            </v-icon>
-            by Creative Tim for a better web.
+            &copy; 2020, CIDAR Lab, theme by <a href="https://www.creative-tim.com/">Creative Tim</a>.
           </div>
         </v-col>
       </v-row>
@@ -52,16 +48,16 @@
     data: () => ({
       links: [
         {
-          href: '#',
-          text: 'Creative Tim',
+          href: 'http://cidarlab.org',
+          text: 'CIDAR Lab',
         },
         {
-          href: '#',
-          text: 'About Us',
+          href: '/about',
+          text: 'About',
         },
         {
-          href: '#',
-          text: 'Blog',
+          href: 'https://github.com/CIDARLAB/',
+          text: 'Github',
         },
         {
           href: '#',

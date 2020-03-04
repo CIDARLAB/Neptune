@@ -415,6 +415,8 @@
         return Utils.getprettytimestamp(datestring)
       },
         refreshworkspacedata(){
+          this.workspaces = []
+          this.workspacesobjects = {}
         let data = { 
             user: { 
             _id: this.$store.getters.userID

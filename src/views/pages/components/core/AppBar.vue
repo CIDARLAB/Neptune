@@ -43,11 +43,6 @@
     data: () => ({
       items: [
         {
-          icon: 'mdi-view-dashboard',
-          text: 'Dashboard',
-          to: '/dashboard',
-        },
-        {
           icon: 'mdi-account-multiple-plus',
           text: 'Register',
           to: '/register',

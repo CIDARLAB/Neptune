@@ -99,9 +99,8 @@
 
         axios.post("/api/v2/login", data)    
             .then((response) => {    
-                console.log("Logged in",response)
+                // console.log("Logged in",response)
                 self.$store.commit('updateUser', response.data.user)    
-                console.log("Testing store access2", self.$store.getters.isLoggedIn)
                 router.push("/dashboard")
 
             })    

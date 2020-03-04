@@ -29,8 +29,8 @@
 
     data: () => ({
       srcs: {
-        '/login': 'login.jpg',
-        '/register': 'register.jpg',
+        '/login': 'WiresPic.png',
+        '/register': 'WiresPic.png',
       },
     }),
 

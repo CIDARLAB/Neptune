@@ -172,6 +172,7 @@
             .then(response => {
                 console.log(response)
                 //TODO: If successful create the user and forward the person the login sreen
+                this.$store.commit('updateUser', response.data.user)
                 this.$router.push('/dashboard')
             })
             .catch(e => {

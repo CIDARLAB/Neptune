@@ -57,7 +57,8 @@
         class="pt-0"
       >
         <v-card class="mt-0">
-          <v-card-text class="red--text text--darken-4">
+          <v-card-text class="subtitle-1">
+            Neptune Console
             <div id="terminal"></div>
           </v-card-text>
         </v-card>
@@ -125,8 +126,6 @@ export default {
     term.setOption('fontSize', 10 )
    
     // setOption(key: 'fontSize' | 'letterSpacing' | 'lineHeight' | 'tabStopWidth' | 'scrollback', value: number): void; 
-
-    term.writeln('Neptune Console $\n')
     let currentfile = this.$store.getters.currentFile
     this.currentworkspace = this.$store.getters.currentWorkspace
     console.log("Currnet workspace:",this.currentworkspace,this.currentworkspace._id )
