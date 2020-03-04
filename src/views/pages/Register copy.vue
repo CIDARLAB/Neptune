@@ -55,26 +55,36 @@
                 cols="12"
                 md="6"
               >
-                  <v-alert
-                    v-if="alertmessage!=''"
-                    type="error">
-                    {{ alertmessage }}
-                  </v-alert>
-
                 <div class="text-center">
+                  <v-btn
+                    v-for="(social, i) in socials"
+                    :key="i"
+                    :color="social.iconColor"
+                    class="my-2 mr-1"
+                    dark
+                    depressed
+                    fab
+                    small
+                  >
+                    <v-icon v-text="social.icon" />
+                  </v-btn>
 
                   <div class="my-2" />
 
                   <div class="text-center grey--text body-1 font-weight-light">
-                    Sign up here...
+                    Or Be Classical
                   </div>
 
+                  <v-text-field
+                    color="secondary"
+                    label="First Name..."
+                    prepend-icon="mdi-face"
+                  />
 
                   <v-text-field
-                    color="primary"
+                    color="secondary"
                     label="Email..."
                     prepend-icon="mdi-email"
-                    v-model="email"
                   />
 
                   <v-text-field
@@ -82,17 +92,6 @@
                     color="secondary"
                     label="Password..."
                     prepend-icon="mdi-lock-outline"
-                    type="password"
-                    v-model="password"
-                  />
-
-                  <v-text-field
-                    class="mb-8"
-                    color="secondary"
-                    label="Repeat Password..."
-                    prepend-icon="mdi-lock-outline"
-                    type="password"
-                    v-model="repeat_password"
                   />
 
                   <v-checkbox
@@ -111,7 +110,7 @@
                     </template>
                   </v-checkbox>
 
-                  <pages-btn color="success" @click="registerUser">
+                  <pages-btn color="success">
                     Get Started
                   </pages-btn>
                 </div>
@@ -125,62 +124,55 @@
 </template>
 
 <script>
-    import axios from 'axios'
-    import router from '../../router'
-    export default {
-        name: 'PagesRegister',
+  export default {
+    name: 'PagesRegister',
 
-        components: {
-        PagesBtn: () => import('./components/Btn'),
-        PagesHeading: () => import('./components/Heading'),
+    components: {
+      PagesBtn: () => import('./components/Btn'),
+      PagesHeading: () => import('./components/Heading'),
+    },
+
+    data: () => ({
+      sections: [
+        {
+          icon: 'mdi-chart-timeline-variant',
+          iconColor: 'primary',
+          title: 'Marketing',
+          text: 'We\'ve created the marketing campaign of the website. It was a very interesting collaboration.',
+        },
+        {
+          icon: 'mdi-code-tags',
+          iconColor: 'secondary',
+          title: 'Fully Coded in HTML5',
+          text: 'We\'ve developed the website with HTML5 and CSS3. The client has access to the code using GitHub.',
+        },
+        {
+          icon: 'mdi-account-multiple',
+          iconColor: 'cyan',
+          title: 'Built Audience',
+          text: 'There is also a Fully Customizable CMS Admin Dashboard for this product.',
+        },
+      ],
+      socials: [
+        {
+          href: '#',
+          icon: 'mdi-twitter',
+          iconColor: '#1DA1F2',
+        },
+        {
+          href: '#',
+          icon: 'mdi-dribbble',
+          iconColor: '#ea4c89',
+        },
+        {
+          href: '#',
+          icon: 'mdi-facebook',
+          iconColor: '#3B5998',
         },
 
-        data: () => ({
-        email: '',
-        password: '',
-        repeat_password: '',
-        alertmessage: '',
-        sections: [
-            {
-            icon: 'mdi-code-tags',
-            iconColor: 'primary',
-            title: 'Open Source',
-            text: 'Source code available at https://github.com/CIDARLAB',
-            },
-            {
-            icon: 'mdi-code-tags',
-            iconColor: 'secondary',
-            title: 'Automated Design Generation',
-            text: 'Create devices sytematically using the automated tools',
-            },
-        ],
-        }),
-
-        methods:{
-        registerUser: function(){
-            //Check if the passwords match
-            if(this.password !== this.repeat_password){
-            this.alertmessage = 'Passwords do not match'
-            return
-            }
-
-            //Since the passwords are correct, we are going to post the registration
-            axios.post('/api/v2/register', {
-                'email': this.email,
-                'password': this.password
-            })
-            .then(response => {
-                console.log(response)
-                //TODO: If successful create the user and forward the person the login sreen
-                this.$router.push('/dashboard')
-            })
-            .catch(e => {
-                console.error(e.message)
-                this.alertmessage = e.message
-            })
-        }
-        }
-    }
+      ],
+    }),
+  }
 </script>
 
 <style lang="sass">
