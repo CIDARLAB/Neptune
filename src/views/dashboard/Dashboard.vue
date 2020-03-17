@@ -292,6 +292,7 @@
                         :sub-text=" 'Modified: ' + formattimestamp(file.updated_at)"
                         :id="file.id"
                         :workspaceid="selectedworkspace._id"
+                        v-on:onFileDeleted="refreshFiles"
                     />
                 </v-col>
                 <v-col
@@ -417,7 +418,9 @@
         refreshworkspacedata(){
           this.workspaces = []
           this.workspacesobjects = {}
-        let data = { 
+          this.files =[]
+          this.workspacesobjects = {}
+          let data = { 
             user: { 
             _id: this.$store.getters.userID
             }
@@ -490,6 +493,8 @@
                 .then((response)=>{
                     console.log("Delete Data",response)
                     this.refreshworkspacedata()
+                    console.log("Selected workspace:", this.selectworkspace.id)
+                    this.selectworkspace(this.selectedworkspace.id)
                 })
                 .catch((error)=>{ console.log(error) })
         },
@@ -535,7 +540,13 @@
         complete (index) {
             this.list[index] = !this.list[index]
         },
+
+        refreshFiles(id){
+          console.log("Refreshing Files", this.selectedworkspace.id)
+          this.selectworkspace(id)
+        },
         selectworkspace(workspace_id){
+            let self = this
             console.log("Select workspace event",workspace_id)
             this.selectedworkspace = this.workspacesobjects[workspace_id]
             const config = {
@@ -555,7 +566,7 @@
                 }})
                 .then((response)=>{
                     console.log("File Data",response.data)
-                    this.files=[]
+                    self.files=[]
                     for(let f of response.data){
                         axios.get('/api/v1/file',{
                             params: {

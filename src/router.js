@@ -13,6 +13,12 @@ export default new Router({
       children: [
         {
           name: 'Login',
+          path: '',
+          component: () => import('@/views/pages/Login'),
+          meta: { requiresAuth: false }
+        },
+        {
+          name: 'Login',
           path: 'login',
           component: () => import('@/views/pages/Login'),
           meta: { requiresAuth: false }

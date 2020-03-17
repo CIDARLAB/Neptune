@@ -1,7 +1,8 @@
 <template>
   <v-container fluid>
     <v-row>
-      <v-col
+      <span class="display-4">COMING SOON... </span>
+      <!-- <v-col
         cols="12"
         lg="4"
       >
@@ -192,7 +193,7 @@
             </v-row>
           </div>
         </base-material-card>
-      </v-col>
+      </v-col> -->
     </v-row>
   </v-container>
 </template>

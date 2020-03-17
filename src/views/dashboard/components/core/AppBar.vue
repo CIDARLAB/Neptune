@@ -56,6 +56,7 @@
     <v-btn
       class="ml-2"
       min-width="0"
+      v-on:click="$router.push('dashboard')"
       text
     >
       <v-icon>mdi-view-dashboard</v-icon>
@@ -241,14 +242,10 @@
 
     data: () => ({
       notifications: [
-        {
-          text: "This is a test notification",
-          jobid: 0,
-        },
-        {
-          text: "This is also a test notification",
-          jobid: 1,
-        }
+        // {
+        //   text: "This is a test notification",
+        //   jobid: 0,
+        // },
       ],
       profile: [
         { title: 'Profile' },

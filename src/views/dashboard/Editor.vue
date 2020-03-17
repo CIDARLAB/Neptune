@@ -15,7 +15,7 @@
         <v-btn color="info" @click="compiledialog = true"><v-icon small left light>mdi-play</v-icon> Compile</v-btn>
         <v-btn color="error" v-on:click="deletefile"><v-icon small left light>mdi-delete</v-icon> Delete</v-btn>
         <v-btn color="secondary" v-on:click="downloadfile"><v-icon small left light>mdi-cloud-download</v-icon> Download</v-btn>
-        <v-btn color="secondary" v-on:click="createfile"><v-icon small left light>mdi-cloud-upload</v-icon> Upload</v-btn>
+        <v-btn color="secondary" v-on:click="uploadfile"><v-icon small left light>mdi-cloud-upload</v-icon> Upload</v-btn>
             
       </v-col>
     </v-row>
@@ -133,7 +133,8 @@ export default {
       return
     }
     console.log("Opened the editor: ", currentfile)
-
+    let self = this
+    self.isloading = true
     let config = {
         withCredentials: true,
         crossorigin: true,
@@ -159,6 +160,7 @@ export default {
       }})
       .then((response)=>{
           console.log(response.data)
+          self.isloading = false
           if (typeof response.data !== 'string'){
             alert('Cannot open file in default editor')
             //this.code = response.data

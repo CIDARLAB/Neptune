@@ -137,6 +137,7 @@
         axios.delete('/api/v1/file', config)
               .then((response)=>{
                 console.log("Delete Data",response)
+                this.$emit('onFileDeleted', this.workspaceid)
               })
               .catch((error)=>{ console.log(error) })
       },
