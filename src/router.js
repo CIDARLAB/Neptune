@@ -14,7 +14,7 @@ export default new Router({
         {
           name: 'Login',
           path: '',
-          component: () => import('@/views/pages/Login'),
+          component: () => import('@/views/pages/Landing'),
           meta: { requiresAuth: false }
         },
         {
