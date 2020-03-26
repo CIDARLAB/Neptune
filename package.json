@@ -1,7 +1,7 @@
 {
-  "name": "vuetify-material-dashboard-pro",
-  "version": "2.1.0",
-  "private": true,
+  "name": "neptune-ui",
+  "version": "0.0.1",
+  "private": false,
   "scripts": {
     "dev": "vue-cli-service serve --open",
     "serve": "vue-cli-service serve",
