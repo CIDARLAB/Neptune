@@ -1,0 +1,6 @@
+[submodule "Neptune-UI"]
+	path = Neptune-UI
+	url = https://github.com/CIDARLAB/Neptune-UI.git
+[submodule "Fluigi-Cloud"]
+	path = Fluigi-Cloud
+	url = https://github.com/CIDARLAB/Fluigi-Cloud.git
