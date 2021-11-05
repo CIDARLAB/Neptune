@@ -328,9 +328,14 @@
                         Create New File
                     </v-card-title>
                     <v-card-text>
+                      Please add a file extension name at the end of the filename: .lfr or .mint
+                    </v-card-text>
+                    <v-card-text>
                         <v-text-field
                             v-model="newfilename"
                             label="File Name"
+                            :rules="rules"
+                            hide-details="auto"
                             ></v-text-field>
                     </v-card-text>
                     <v-card-actions>
@@ -374,8 +379,13 @@
         // console.log(this.$store.getters.userID)
         this.refreshworkspacedata()
     },
-    data () {
-      return {
+    data: () => ({
+      // set rules for the file extension
+      rules: [
+        value => !!value || 'Required.',
+        value => (value && (value.includes("."))) || 'Add an extension name',
+        value => (value && (value.includes(".lfr") || value.includes(".mint"))) || 'Invalid extension name',
+      ],
         newworkspacename: '',
         newworkspacedialog: false,
         newfilename: '',
@@ -401,10 +411,7 @@
             icon: 'mdi-close',
             },
         ],
-
-      }
-    },
-
+    }),
     computed: {
       totalSales () {
         return this.sales.reduce((acc, val) => acc + val.salesInM, 0)
@@ -527,15 +534,17 @@
                 workspaceid: this.$store.getters.currentWorkspace
             }
             console.log(config)
-            axios.post('/api/v1/file', config)
-                .then((response) => {
-                    console.log("Created new file", response)
-                    this.refreshworkspacedata()
-                })
-                .catch((errors) => {
-                    console.log("Could not create file:", errors)
-                })
-            this.newfiledialog = false
+            if (config.ext === ".lfr" || config.ext === ".mint"){
+              axios.post('/api/v1/file', config)
+                  .then((response) => {
+                      console.log("Created new file", response)
+                      this.refreshworkspacedata()
+                  })
+                  .catch((errors) => {
+                      console.log("Could not create file:", errors)
+                  })
+              this.newfiledialog = false
+            }
         },
         complete (index) {
             this.list[index] = !this.list[index]
