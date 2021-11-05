@@ -12,7 +12,7 @@
         class="pt-0"
       >
         <v-btn color="success" v-on:click="savefile"><v-icon small left light>mdi-content-save</v-icon> Save</v-btn>
-        <v-btn color="info" v-on:click="savefile(), compiledialog = true"><v-icon small left light>mdi-play</v-icon> Compile</v-btn>
+        <v-btn color="info" v-on:click="savefile(), compiledialog = true"><v-icon small left light>mdi-play</v-icon> Save and Compile</v-btn>
         <v-btn color="error" v-on:click="deletefile"><v-icon small left light>mdi-delete</v-icon> Delete</v-btn>
         <v-btn color="secondary" v-on:click="downloadfile"><v-icon small left light>mdi-cloud-download</v-icon> Download</v-btn>
         <v-btn color="secondary" v-on:click="uploadfile"><v-icon small left light>mdi-cloud-upload</v-icon> Upload</v-btn>
