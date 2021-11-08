@@ -190,7 +190,6 @@
             document.body.appendChild(link)
             link.click()
         })
-
       },
       openpreview(fid){
         alert(fid)
@@ -218,7 +217,23 @@
         }
       },
       downloadjobfiles(jid){
-        alert(jid)
+        // alert(jid);
+        for (let fid of this.jobobjects[jid].files){
+          axios.get('/api/v1/file', {
+            params: {
+              id: fid
+            }
+          })
+          .then((response) => {
+            var fileData = response.data;
+            console.log(fileData)
+            this.downloadfile(fileData);
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+
+        }
       },
       complete (index) {
         this.list[index] = !this.list[index]
