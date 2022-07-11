@@ -1,0 +1,5 @@
+    <ul id="filehbs" data-bind="foreach: files">
+        <li id="file_tree">
+            <a><i class="fa fa-file-code-o"></i> <span data-bind="text:name, click: $parent.setAsCurrentFile"></span></a>
+        </li>
+    </ul>

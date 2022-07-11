@@ -1,0 +1,22 @@
+<div id="new_workspace" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 class="modal-title">Create a new workspace:</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="setwrk_in">Workspace name: </label>
+                    <input type="text" class="form-control" id="setwrk_in" data-bind="value : newWorkSpaceName">
+                </div>
+                Please enter the name of your new workspace. This workspace will be populated with
+                a single file that you can begin editing.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> Cancel </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click: createNewWorkSpace"> Create Workspace </button>
+            </div>
+        </div>
+    </div>
+</div>

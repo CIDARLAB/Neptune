@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title> {{title}} </title>
+    {{> favicon }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script type="text/javascript">
+        function terminalLog(string){
+            SpecifyTerminal.echo(string);
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+    <script type="text/javascript" src="../javascripts/specifyDesign/actionCenterSupport.js"></script>
+
+    <!-- CDNS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.0/metisMenu.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/timelinejs/2.36.0/css/timeline.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/3.3.7+1/css/sb-admin-2.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/css/bootstrap-tour.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/js/bootstrap-tour.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript" src="../javascripts/specifyDesign/svg-pan-zoom.min.js"></script>
+
+    <!--Local files-->
+
+    <!-- Local Dependencies-->
+    <script src="/javascripts/styles/jquery.min.js"></script>
+    <script src="/javascripts/styles/bootstrap.min.js"></script>
+    <script src="/javascripts/styles/metisMenu.min.js"></script>
+    <script src="/javascripts/styles/raphael-min.js"></script>
+    <script src="/javascripts/styles/morris.min.js"></script>
+    <script src="/javascripts/styles/sb-admin-2.js"></script>
+    <script src="/javascripts/common/knockout-3.4.2.js"></script>
+    <script src="/javascripts/common/socket.io.js"></script>
+
+
+    <script src='/javascripts/common/nprogress.js'></script>
+    <link rel='stylesheet' href='/javascripts/styles/nprogress.css'/>
+
+    <script type="text/javascript">
+            toastr.options = {
+                "closeButton": false,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+            var editor_specify;
+            var mint_sesh;      //= ace.createEditSession('mint',"ace/mode/mint");
+            var verilog_sesh;   // = ace.createEditSession('verilog',"ace/mode/verilog");
+            var json_sesh ;     // = ace.createEditSession('json',"ace/mode/json");
+            var ini_sesh;       //= ace.createEditSession('ini',"ace/mode/ini");
+    </script>
+
+    <style>
+        body {  padding: 0 !important;  }
+    </style>
+
+</head>
+
+<body>
+    <div id="wrapper">
+
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <img class="pull-left" height="40" width="40" style="margin-top: 5px; margin-left: 5px;" src="../images/NeptuneLogo.png">
+                <a class="navbar-brand" style="font-family: 'Open Sans'"> NEPTUNE </a>
+            </div>
+
+            <ul class="nav navbar-top-links navbar-right">
+            </ul>
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav" id="file_trees">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="/profile"><i class="fa fa-home fa-fw"></i> Home </a>
+                        </li>
+                        <li id="1">
+                            <a><i class="fa fa-external-link-square"></i> Workspaces: <span class="fa plus-square-o"></span></a>
+                        </li>
+
+                        {{> workspaceNavigationBar}}
+
+                        <li id="1">
+                            <a><i class="fa fa-folder-open"></i> Files in Workspace: <span class="fa plus-square-o"></span></a>
+                        </li>
+
+                        {{> fileNavigationBar}}
+
+                        <li id="1">
+                            <a><i class="fa fa-spinner "></i> Solutions: <span class="fa plus-square-o"></span></a>
+                        </li>
+
+                        {{> jobNavigationBar}}
+
+                        <li id="1">
+                            <a><i class="fa fa-spinner "></i> Solution Files: <span class="fa plus-square-o"></span></a>
+                        </li>
+
+                        {{> jobFileNavigationBar}}
+
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1></h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8">
+
+                    <div class = "row"> <label id="filename" for="editor_specify">File Name: <span data-bind="text: currentFileName"/></label> </div>
+                    <div class = "row"> <label id="workspacename" for="editor_specify">Workspace: <span data-bind="text: currentWorkSpaceName"/></label></div>
+                    <div class = "row"> <label id="jobname" for="editor_specify">Job: <span data-bind="text: currentJobName"/></label></div>
+                    <div class = "row"> <label id="solutionname" for="editor_specify">Solution: <span data-bind="text: currentJobFileName"/></label></div>
+                    <div class="panel with-nav-tabs panel-default">
+                        <div class="panel-heading">
+
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" class="btn btn-secondary btn-success" data-bind="click: saveFile"> Save </button>
+                                        <button type="button" class="btn btn-secondary btn-info" data-toggle="modal" data-target="#selectConfig"> Compile </button>
+                                        <button type="button" class="btn btn-secondary btn-danger" data-bind="click: deleteFile"> Delete </button>
+                                        <button type="button" class="btn btn-secondary" data-bind="click: downloadFile">  Download </button>
+
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                                        <a href="#new_workspace" class="btn btn-secondary" data-target="#new_workspace" data-toggle="modal"><i class="fa fa-plus-square"></i> New Workspace <span class="fa plus-square-o"></span></a>
+                                        <a href="#new_file" class="btn btn-secondary" data-target="#new_file" data-bind="visible: currentWorkSpaceName" data-toggle="modal"><i class="fa fa-plus-square"></i> New File <span class="fa plus-square"></span></a>
+
+                                    </div>
+                                    <script type="text/javascript">
+                                function togglelfr(){
+                                    localStorage.jobType = 'lfr';
+                                }
+                                function togglemint(){
+                                    localStorage.jobType = 'mint';
+                                }
+                            </script>
+                        </div>
+
+                        <div class="panel-body" >
+                            <div id="editor_specify" style="height:690px"></div>
+                        </div>
+
+                        <div class="panel-footer" >
+                            <div id="solution_viewer" style="height:400px"></div>
+                        </div>
+
+                    </div>
+                    <div class="text-center"></div>
+                </div>
+
+                <div class="col-lg-4">
+                    {{>terminal}}
+                </div>
+                <script src="/javascripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+                {{>newFileModal}}
+                {{>newWorkspace}}
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script src="/javascripts/styles/jquery.terminal-0.10.12.min.js"></script>
+<script src="/javascripts/styles/jquery.mousewheel.min.js"></script>
+<link href="/javascripts/styles/jquery.terminal-0.10.12.min.css" rel="stylesheet"/>
+
+<script type="text/javascript">
+        $(document).ready(function() {
+            Terminal = $('#terminal').terminal(function(command, term) {
+                if (command !== '') {
+                    try {
+                        var result = window.eval(command);
+                        if (result !== undefined) {
+                            term.echo(new String(result));
+                        }
+                    } catch(e) {
+                        term.error(new String(e));
+                    }
+                } else {
+                }
+            }, {
+                greetings: 'Fluigi Translator',
+                name: 'terminal',
+                height: 400,
+                prompt: 'μF> '
+            });
+        });
+    </script>
+
+</html>
+
+    <style type="text/css">
+
+        .top-buffer { margin-top:20px; }
+
+        .modal-header-success {
+            color:#fff;
+            padding:9px 15px;
+            border-bottom:1px solid #eee;
+            background-color: #5cb85c;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .modal-header-warning {
+            color:#fff;
+            padding:9px 15px;
+            border-bottom:1px solid #eee;
+            background-color: #f0ad4e;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .modal-header-danger {
+            color:#fff;
+            padding:9px 15px;
+            border-bottom:1px solid #eee;
+            background-color: #d9534f;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .modal-header-info {
+            color:#fff;
+            padding:9px 15px;
+            border-bottom:1px solid #eee;
+            background-color: #5bc0de;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .modal-header-primary {
+            color:#fff;
+            padding:9px 15px;
+            border-bottom:1px solid #eee;
+            background-color: #428bca;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+        .modal-header-custom-blue {
+            padding:9px 15px;
+            border-bottom:1px solid #eee;
+            background-color: #0480be;
+            -webkit-border-top-left-radius: 5px;
+            -webkit-border-top-right-radius: 5px;
+            -moz-border-radius-topleft: 5px;
+            -moz-border-radius-topright: 5px;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+        }
+    </style>
+
+<div id="compileModal" >
+    {{> compileModal }}
+</div>
+
+<!-- {> jobSelector }-->
+
+<label data-bind="text: currentWorkSpace.name"/>
+<label data-bind="text: currentFile.name"/>
+<ul data-bind="foreach: { data: files, as: 'id'}">
+    <li data-bind="text: name"></li>
+</ul>
+
+<script type="text/javascript">
+
+    var socket =  io("http://" + window.location.hostname + ':3000'); //This is gonna connects it to the server
+
+    socket.on('stdout', function (data) {
+       Terminal.echo(data.toString());
+    });
+
+    //This signals the end of the output
+    socket.on('EOP', function(data){
+        //TODO: Figure out how to close the monitoring
+        editorViewModel.updateJobs();
+        setTimeout(function() {
+            //self.jobs()[0]
+            editorViewModel.setAsCurrentJob(editorViewModel.currentJob());
+        },1000);
+    });
+
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(window.location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    };
+
+    function containsObject(obj, list) {
+        var i;
+        for (i = 0; i < list.length; i++) {
+            if (list[i] === obj) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /* This is the knockout viewmodel for the page */
+
+    function WorkspaceItemModel(name, id, ext)
+    {
+        var self = this;
+        self.name = name;
+        self.id = id;
+        self.ext = ext;
+    }
+
+    function FileItemModel(name, id , ext , link)
+    {
+        var self = this;
+        self.name = name;
+        self.id = id;
+        self.ext = ext;
+        self.link = link;
+    }
+
+    function JobItemModel(name, id, ext)
+    {
+        var self = this;
+        self.name = name;
+        self.id = id;
+        self.ext = ext;
+    }
+
+    function JobFileItemModel(name, id , ext , link)
+    {
+        var self = this;
+        self.name = name;
+        self.id = id;
+        self.ext = ext;
+        self.link = link;
+    }
+
+    function EditorViewModel()
+    {
+        var self = this;
+        /* self.editorText = ko.observable("");*/
+        self.editorObject;
+
+        self.newWorkSpaceName       = ko.observable("");
+        self.workSpaceIDs           = ko.observableArray([]);
+        self.workSpaces             = ko.observableArray([]);
+        self.jobs                   = ko.observableArray([]);
+        self.jobIDs                 = ko.observableArray([]);
+
+        self.currentFile            =  ko.observable("");
+        self.currentWorkSpace       =  ko.observable("");
+        self.currentUser            =  ko.observable("");
+        self.currentJob             =  ko.observable("");
+        self.currentJobFile         =  ko.observable("");
+
+        self.newFileExt             = ko.observable("");
+        self.newFileName            = ko.observable("");
+
+        self.currentWorkSpaceName   = ko.observable("");
+        self.currentFileName        = ko.observable("");
+        self.currentConfigFile      = ko.observable("");
+        self.currentJobName         = ko.observable("");
+        self.currentJobFileName     = ko.observable("");
+
+        self.files                  = ko.observableArray([]);
+        self.jobFiles               = ko.observableArray([]);
+
+        self.createNewWorkSpace = function() {
+            var workspace_name = self.newWorkSpaceName();
+            NProgress.start();
+            $.post('/api/v1/workspace',
+                    {
+                        name: workspace_name
+                    },
+                    function(workspace_id)
+                    {
+                        console.log("Created Workspace: " + workspace_id);
+                        self.updateWorkSpaces();
+                        self.setAsCurrentWorkSpace(workspace_id);
+                    }
+            );
+        };
+
+        self.updateWorkSpaces = function(){
+            console.log("Getting all the new workspaces :"  );
+            NProgress.start();
+            $.get('/api/v1/workspaces',function (response) {
+                self.workSpaceIDs.removeAll();
+                self.workSpaces.removeAll();
+                for(var i = 0 ; i<response.length;i++){
+                    self.addWorkSpace(response[i]);
+                    self.workSpaceIDs.push(response[i]);
+                }
+                console.log(self.workSpaceIDs());
+            });
+        };
+
+        self.updateJobs = function(){
+            console.log("Getting all the new jobs :"  );
+            $.get('/api/v1/jobs',function (response) {
+                self.jobIDs.removeAll();
+                self.jobs.removeAll();
+                for(var i = 0 ; i<response.length;i++){
+                    self.addJob(response[i]);
+                    self.jobIDs.push(response[i]);
+                }
+                console.log("Jobs Found:", self.jobIDs());
+            })
+        };
+
+        self.addFile = function(id){
+            NProgress.start();
+            $.get('/api/v1/file', {id:id}, function(response){
+                console.log(response);
+                NProgress.done();
+                self.files.push(new FileItemModel(response.name, response.id , response.ext, response.link));
+            });
+        };
+
+        self.addJobFile = function(id){
+            $.get('/api/v1/file', {id:id}, function(response){
+                console.log(response);
+                self.jobFiles.push(new JobFileItemModel(response.name, response.id , response.ext, response.link));
+            });
+        };
+
+        self.updateFiles = function(){
+            var workspace = self.currentWorkSpace();
+            console.log("Getting all the files in this workspace" + workspace);
+            self.files.removeAll();
+            NProgress.start();
+            $.get('/api/v1/files', {id: workspace.id}, function (response) {
+                console.log(response);
+                NProgress.done();
+                for(var i = 0; i<response.length; i++){
+                    self.addFile(response[i]);
+                }
+            });
+        };
+
+        self.updateJobFiles = function(){
+            var job = self.currentJob();
+            console.log("Getting all the files in this job" + job);
+            self.jobFiles.removeAll();
+            $.get('/api/v1/jobfiles', {id: job.id}, function (response) {
+                console.log(response);
+                for(var i = 0; i<response.length; i++){
+                    self.addJobFile(response[i]);
+                }
+            });
+        };
+
+        self.addWorkSpace = function (id) {
+            NProgress.start();
+            $.getJSON('/api/v1/workspace', {workspace_id:id}, function (workspace) {
+                console.log(workspace);
+                NProgress.done();
+                console.log('Binding workspace name: ',workspace.name);
+                self.workSpaces.push(new WorkspaceItemModel(workspace.name, workspace.id));
+            });
+        };
+
+        self.addJob = function (id) {
+            NProgress.start();
+            $.getJSON('/api/v1/job', {job_id:id}, function (job) {
+                console.log(job);
+                NProgress.done();
+                console.log('Binding job name: ',job.name);
+                self.jobs.push(new JobItemModel(job.name, job.id));
+            });
+        };
+
+        self.setAsCurrentWorkSpace = function(workspace){
+            self.currentWorkSpace(workspace);
+            self.currentWorkSpaceName(workspace.name);
+            self.updateFiles();
+            setTimeout(function()
+            {
+                console.log("Setting the first file in current workspace");
+                var setfile_index = 0;
+                for (var j = 0; j < (self.files()).length; j++) {
+                    if ( !( typeof (self.files()[j]) === 'undefined' ) && ( j === setfile_index) ) {
+                        self.setAsCurrentFile(self.files()[j]);
+                    }
+                }
+            }, 750);
+        };
+
+        self.setAsCurrentJob = function(job){
+            if ( !( typeof job === 'undefined' ) ) {
+                self.currentJob(job);
+                self.currentJobName(job.name);
+                self.updateJobFiles();
+            }
+        };
+
+        self.setAsCurrentFile = function(file){
+            if ( !( typeof file === 'undefined' ) ) {
+                self.currentFile(file);
+                self.currentFileName(file.name);
+                self.loadFile(file.id, file.ext, file.name);
+
+                switch (file.ext)
+                {
+                    case '.v':
+                        self.editorObject = {editor: editor_specify, session: verilog_sesh};
+                        editor_specify.setSession(verilog_sesh);
+                        break;
+                    case '.uf':
+                        self.editorObject = {editor: editor_specify, session: mint_sesh};
+                        editor_specify.setSession(mint_sesh);
+                        break;
+                    case '.json':
+                        self.editorObject = {editor: editor_specify, session: json_sesh};
+                        editor_specify.setSession(json_sesh);
+                        break;
+                    case '.ini':
+                        editor_specify.setSession(ini_sesh);
+                        self.editorObject = {editor: editor_specify, session: ini_sesh};
+                        break;
+                }
+            }
+        };
+
+        self.setAsCurrentJobFile = function(jobFile){
+            //TODO: Filter for log and text based files, and toss those into editor if they are clicked on (self.loadFile, commented out below, should do the trick)
+
+            self.currentJobFile(jobFile);
+            self.currentJobFileName(jobFile.name);
+
+            //TODO: using jobFile.link, pull svg from s3, and then display it!
+
+            self.loadFile(jobFile.id , jobFile.ext, jobFile.name);
+            
+            //TODO: This needs to change
+            self.currentFile(jobFile);
+            self.currentFileName(jobFile.name);
+
+        };
+
+
+        self.loadFile = function(id, ext, name){
+            if(id == null){
+                console.error("Link for downloading the file is null");
+                return;
+            }
+            switch(ext) {
+                case ".svg":
+                    $.get('/api/v1/download',{ id:id , name:name , ext:ext }, function(data){
+                        var downloadPath = window.location.origin + '/api/v1/download' + '?id=' + id + '&name=' + name + '&ext=' + ext;
+                        window.open(downloadPath,'_blank');
+                        NProgress.done();
+                    });
+                    break;
+                case ".eps":
+                    $.get('/api/v1/download',{ id:id , name:name , ext:ext }, function(data){
+                        var downloadPath = window.location.origin + '/api/v1/download' + '?id=' + id + '&name=' + name + '&ext=' + ext;
+                        window.open(downloadPath,'_blank');
+                        NProgress.done();
+                    });
+                    break;
+                default:
+                    NProgress.start();
+                    $.get('/api/v1/fs',{ id:id }, function(data) {
+                        console.log(data);
+                        self.editorObject.session.setValue(data);
+                        NProgress.done();
+                    });
+            }
+        };
+
+        self.createFile = function(){
+            //TODO:
+            NProgress.start();
+            $.post('/api/v1/file', {
+                workspaceid: (self.currentWorkSpace()).id,
+                ext: self.newFileExt(),
+                file_name: self.newFileName()
+            },
+            function(response){
+                console.log(response);
+                NProgress.done();
+                self.updateFiles();
+            });
+        };
+
+        self.saveFile = function(){
+            //TODO: Send the put command
+            NProgress.start();
+            $.ajax( {
+                url : '/api/v1/file',
+                type: 'PUT',
+                data: {
+                    fileid: (self.currentFile()).id,
+                    name: self.currentFileName(),
+                    text: self.editorObject.session.getValue()
+                },
+                success : function (response) {
+                    console.log(response);
+                    NProgress.done();
+                    //self.updateFiles();
+                }
+            });
+        };
+
+        self.deleteFile = function(){
+            //TODO: Send delete command
+            NProgress.start();
+            $.ajax( {
+                url : '/api/v1/file',
+                type: 'DELETE',
+                data: {
+                    workspaceid: (self.currentWorkSpace()).id,
+                    fileid: (self.currentFile()).id
+                },
+                success : function (response) {
+                    console.log(response);
+                    NProgress.done();
+                    self.updateFiles();
+                }
+            });
+        };
+
+        self.downloadFile = function(){
+            var fileurl = new URL("/api/v1/downloadFile?id=" + (self.currentFile()).id, document.baseURI);
+            console.log('currentfile: ',self.currentFile.toString());
+            window.open(fileurl, '_blank');
+        };
+
+        self.compileLFR = function(){
+            console.log("Compiling lfr");
+            NProgress.start();
+            $.post('/api/v1/mushroommapper', {
+                        sourcefileid: (self.currentFile()).id,
+                        sourcefilename: (self.currentFile()).name,
+                        configfileid: (self.currentConfigFile()).id,
+                        configfilename: (self.currentConfigFile()).name,
+                        workspace:    (self.currentWorkSpace()).id,
+                        user:          localStorage.Email
+                    },
+                    function(response){
+                        //TODO - Connect to fluigicad's console output based on job id.
+                        console.log("jobid: " + response);
+                        self.setAsCurrentWorkSpace(self.currentWorkSpace());
+                        NProgress.done();
+                    });
+
+        };
+
+        self.compileMINT = function(){
+            console.log("Compiling mint");
+            console.log("Compiling lfr");
+            NProgress.start();
+            $.post('/api/v1/fluigi', {
+                        sourcefileid: (self.currentFile()).id,
+                        sourcefilename: (self.currentFile()).name,
+                        configfileid: (self.currentConfigFile()).id,
+                        configfilename: (self.currentConfigFile()).name,
+                        workspace:    (self.currentWorkSpace()).id,
+                        user:          localStorage.Email
+                    },
+                    function(response){
+                        //TODO - Connect to fluigicad's console output based on job id.
+                        console.log("jobid: " + response);
+                        socket.emit('monitor', response);
+                        NProgress.done();
+                        //self.setAsCurrentWorkSpace(self.currentWorkSpace());
+                    });
+        };
+
+        self.compile = function(){
+            //TODO: Send file id that has to be compiled.
+            var currentfile = self.currentFile();
+            var currentconfigfile = self.currentConfigFile();
+            switch (currentfile.ext){
+                case ".uf":
+                    console.log("Config file :" + currentconfigfile.ext);
+                    if(!(".INI" === currentconfigfile.ext || ".ini" === currentconfigfile.ext )){
+                        toastr.error("Invalid Configuration File");
+                        return;
+                    }
+                    self.compileMINT();
+                    break;
+                case ".v":
+                    console.log("Config file :" + currentconfigfile.ext);
+                    if(!(".JSON" === currentconfigfile.ext || ".json" === currentconfigfile.ext )){
+                        toastr.error("Invalid Configuration File");
+                        return;
+                    }
+                    self.compileLFR();
+            }
+
+        };
+
+        self.initEditor = function(){
+            //TODO: Make the sessions more atomic keeping track of each of the files that being edited.
+
+            ////Initializing the editor//////
+            editor_specify = ace.edit("editor_specify");
+            editor_specify.setTheme("ace/theme/crimson_editor");
+            editor_specify.setOptions({
+                fontFamily: "monospace",
+                fontSize: "12pt"
+            });
+            var MainSession = ace.createEditSession('MainSession', "ace/mode/verilog");
+            editor_specify.setSession(MainSession);
+
+            mint_sesh       = ace.createEditSession('mint_sesh',"ace/mode/mint");
+            verilog_sesh    = ace.createEditSession('verilog_sesh',"ace/mode/verilog");
+            json_sesh       = ace.createEditSession('json_sesh',"ace/mode/json");
+            ini_sesh        = ace.createEditSession('ini_sesh',"ace/mode/ini");
+
+            self.editorObject = {editor: editor_specify, session: MainSession};
+        };
+
+        self.initPage = function(){
+            self.updateWorkSpaces();
+            self.updateJobs();
+            self.initEditor();
+            setTimeout(function()
+            {
+                var setindex_workspace = 0;
+                var setjob_index       = 0;
+                var setfile_index      = 0;
+                console.log("Setting the first workspace");
+                for (var i = 0; i < (self.workSpaces()).length; i++) {
+                    if ( !( typeof (self.workSpaces()[i]) === 'undefined' ) && ( i === setindex_workspace) )  {
+                        self.setAsCurrentWorkSpace((self.workSpaces())[i]);
+                    }
+                }
+                //self.updateFiles();
+                if ( !( typeof (self.jobs()[setjob_index ]) === 'undefined' ) ) {
+                    self.setAsCurrentJob((self.jobs()[setjob_index]));
+                }
+                setTimeout(function()
+                {
+                    console.log("Setting the first file in current workspace");
+                    for (var j = 0; j < (self.files()).length; j++) {
+                        if ( !( typeof (self.files()[j]) === 'undefined' ) && ( j === setfile_index) ) {
+                            self.setAsCurrentFile(self.files()[j]);
+                        }
+                    }
+                }, 1000);
+            }, 1000);
+        };
+    }
+
+    var editorViewModel = new EditorViewModel();
+    ko.applyBindings(editorViewModel);
+
+    editorViewModel.initPage();
+
+</script>

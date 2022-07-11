@@ -1,0 +1,6 @@
+    <ul id="workhbs" data-bind="foreach: workSpaces " >
+        <li id="file_tree">
+            <a><i class="fa fa-folder-o"></i><span data-bind="text:name, click: $parent.setAsCurrentWorkSpace"></span></a>
+        </li>
+    </ul>
+

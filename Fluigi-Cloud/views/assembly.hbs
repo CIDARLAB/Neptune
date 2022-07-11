@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title> {{title}} </title>
+    {{> favicon }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--Style CDNs and Libraries-->
+    <link href="../stylesheets/build.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link href="../stylesheets/metisMenu.min.css" rel="stylesheet">
+    <link href="../stylesheets/timeline.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.3/toastr.min.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+
+    <!--Tour-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/css/bootstrap-tour.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/js/bootstrap-tour.js"></script>
+    <script src="../javascripts/index/tour.js"></script>
+
+</head>
+<body style="padding-top: 0px;">
+
+{{> topBar}}
+
+
+<script>
+    $(document).ready(function(){/* activate sidebar */
+        /* smooth scrolling sections */
+        $('a[href*=#]:not([href=#])').click(function() {
+            if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top - 50
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+</script>
+
+<!--main-->
+<div class="container" style="padding-top: 30px; margin-right: 100px; margin-left: 50px; width: 100%">
+
+    <h1>Assembly</h1>
+    <!--<div class="row">-->
+        <!--left-->
+        <div class="navbar-default sidebar" style="position: fixed; background: none; border: none;">
+            <ul class="nav nav-stacked" id="links">
+                <li><a href="#sec0">Step 1</a></li>
+                <li><a href="#sec1">Step 2</a></li>
+                <li><a href="#sec2">Step 3</a></li>
+                <li><a href="#sec3">Step 4</a></li>
+                <li><a href="#sec4">Step 5</a></li>
+                <li><a href="#sec5">Step 6</a></li>
+                <li><a href="#sec6">Moving Forward</a></li>
+            </ul>
+        </div><!--/left-->
+
+        <!--right-->
+        <div class="col-md-9" style="margin-left:250px">
+            <h2 id="sec0">Step 1: Order Your Parts</h2>
+
+            <p> First, order all of your parts. We need all of the parts to create the entire setup. </p>
+            <p> Next, depending on what CNC mill you have, and 3D printer you have, download the open-source
+                software you need.
+                The Ultimaker 2 uses <a href="https://ultimaker.com/en/products/cura-software">Cura</a>, and the
+                OtherMill uses <a href="https://othermachine.co/otherplan/">Otherplan.</a>
+                <br><br>
+            </p>
+            <div style="text-align: center;">
+                <!--<iframe width="854" height="480" src="https://www.youtube.com/embed/vVoBc4fET_U?list=UUAmSyv1xQXCg9-jRaxpA4qg" frameborder="0" allowfullscreen></iframe>-->
+                <img src="../images/build/allparts.jpg" height="480">
+            </div>
+            <hr>
+
+            <h2 id="sec1">Step 2: Make</h2>
+            <p> First, 3D print all the parts provided to you. To do so, simply drag and drop the .stl files
+                into your 3D printer program.
+                The configuration file specific to the Ultimaker 2 is available
+                <a href="https://github.com/CIDARLAB/Neptune-Hardware/blob/master/Syringe%20Pump/Mechanical/ABS_iGEM.ini">here.</a>
+                Cura for the Ultimaker will place the object on the 3D printing bed.
+                The user can adjust the location of the object to be printed, and select the density of
+                material.
+                Then, you would simply need to send the job to the machine by printing to it.
+                Objects to be printed include the piston arm, servo holder, syringe attachment, and syringe
+                holder available </p> <a href="https://github.com/CIDARLAB/Neptune-Hardware/tree/master/Syringe%20Pump/Mechanical">here.</a>
+            <p> The quantities of each depend on how many setups you have.</p>
+            <p> Next, CNC mill the microfluidic chip by dragging and dropping the .svg file into the mill
+                program. You will need to mill out both the control layer and the flow layer.
+                The Otherplan requires a material and tool configuration. Set the material size and the
+                thickness on the software, and send the job to the OtherMill.
+                You should use a small endmill to carve out the small valves within your microfluidic chip.
+                After milling out the chip, mill out the MEC base board to place the setup on. The files are
+                available on Github
+                <a href="https://github.com/CIDARLAB/Neptune-Hardware/tree/master/Mounting%20Board">here.</a>
+                <br><br><br>
+            </p>
+            <br><br>
+            <div style="text-align: center;">
+                <img src="../images/build/machines.jpg" height="480">
+            </div>
+
+            <hr>
+
+            <h2 id="sec2"> Step 3: Connect </h2>
+            <p>
+                We now need to set up the arduino. Place the arduino shield on top of the arduino and connect
+                the servos to the arduino based on the <a href="../control">Control page</a> of Neptune.
+                Then, upload the following <a
+                    href="https://github.com/CIDARLAB/Neptune-Hardware/tree/master/Syringe%20Pump/Firmware">firmware </a>to
+                the arduino so that it can start receiving commands and control the syringes accordingly.
+
+            </p>
+            <p>
+                Also, in the settings popup of the same page,
+                Neptune will provide you with pin numbers that correspond to where you should connect the servos
+                on the arduino board.
+                Each servo controls a specific valve on the microfluidic chip, and to control the valve, it
+                needs to be connected to the right pin on the arduino.
+                Currently implemented, this firmware has the capability to work with both digital and analog
+                servos, up to 13 servo shields stacked on top of the Arduino Mega (enabling the control of over
+                200 servos at once), control valves with instant motion, and control dispensers with variable
+                flow-rates.
+                <br><br><br>
+            </p>
+            <div style="text-align: center;">
+                <img src="../images/build/arduino.jpg" height="480">
+            </div>
+
+            <hr>
+
+            <h2 id="sec3">Step 4: Assemble</h2>
+            <p>To assemble the entire structure, Neptune uses an MEC board which is a new emerging standard in
+                microfluidics. The pre-drilled holes ensure proper component alignment and spacing, further
+                adding to Neptune’s ease-of-use.
+                The entire servo-syringe setup will be mounted onto the MEC board. Neptune uses a piston-rod
+                concept to control the mechanical motion of the servos.
+                <br><br>
+                First, put the servos inside their holder, and attach the servos to the syringe using the
+                syringe attachment and arm.
+                Power the servos as well by connecting the arduino to a power supply.
+                The power is delivered through 5v 10W laptop power supplies which are readily available, safe,
+                and deliver enough power to control up to 16 servos at once.
+                Set the servo arm at 180 degrees so that the arm attached to the syringe is pushed forward to
+                its maximum.
+                So, the syringe would be at 0ml. Alternatively, set the minimum point on the settings modal in
+                the control page.
+                <br> <br>
+                <b>(Optional) </b>Attach the peristaltic pump to the board using the preset holes.
+                <br> <br>
+            </p>
+
+            <div style="text-align: center;">
+                <br><br>
+                <img src="http://2016.igem.org/wiki/images/9/9b/T--BostonU_HW--hardwarek_priyak.jpg"
+                     height="480">
+            </div>
+            <hr>
+
+
+
+            <h2 id="sec4">Step 5: Microfluidic Chip</h2>
+            <p>
+                To setup your microfluidic chip, use the milled out control layer and flow layer.
+            </p>
+            <p> Use the PDMS to seal both layers using a vacuum chamber. This enables the chip to be sealed to
+                prevent liquid from flowing out.
+                Then add valves where needed to control the flow.
+                <br><br><br>
+            </p>
+            <div style="text-align: center;">
+                <img src="../images/build/chip.jpg" height="480">
+            </div>
+            <hr>
+
+            <h2 id="sec5">Step 6: Use</h2>
+            <p>
+                Now, proceed to the 'Control' page of Neptune and click on buttons to open and close valves to
+                push liquids through the microfluidic chip
+                <br><br><br>
+            </p>
+            <div style="text-align: center;">
+                <iframe width="854" height="480" src="https://www.youtube.com/embed/WO4xAA6XlrY" frameborder="0"
+                        allowfullscreen></iframe>
+            </div>
+            <br><br>
+            <p>
+                <br><br>
+                <a href="../profile" type="button" class="btn btn-default"
+                   style="background-color:rgba(19, 35, 47, 0.9); color: white;">Back to Profile </a>
+                <a href="../control" type="button" class="btn btn-default"
+                   style="background-color:rgba(19, 35, 47, 0.9); color: white;">Continue to Control Page </a>
+                <br><br>
+            </p>
+            <hr>
+
+            <h2 id="sec6">Moving Forward</h2>
+            <p>
+
+                Visit our iGEM wiki page where you can view more documentation, tutorial videos, and so on.
+                You could also reach out to the synthetic biology community to talk to other biologists and how
+                they used Neptune for their research experiments.
+                This interaction using Neptune would enable biologists around the world to share their ideas,
+                get feedback, and progress the advancement of science.
+                Reach out to us through our <a href="mailto:bu.igemhw2016@gmail.com">email</a>.
+            </p>
+            <p> Learn more about us on <a href="https://github.com/CIDARLAB/iGEM2016-GUI">GitHub</a>,
+                visit our <a href="http://2016.igem.org/Team:BostonU_HW">webpage</a>.
+                <br><br>
+            <div style="text-align: center;">
+
+                <button class="btn" onclick="window.location='mailto:bu.igemhw2016@gmail.com'"
+                        style="background-color:rgba(19, 35, 47, 0.9); color: white;">
+                    <a class="fa fa-envelope fa-2x" style="font-size: 40px; color: white;"></a>
+                    <!--Mail-->
+                </button>
+                <button class="btn" onclick="window.location='http://2016.igem.org/Team:BostonU_HW'"
+                        style="background-color:rgba(19, 35, 47, 0.9); color: white;">
+                    <a class="fa fa-file fa-2x" style="font-size: 40px; color: white;"></a>
+                    <!--website-->
+                </button>
+
+                <button class="btn" onclick="window.location='https://github.com/CIDARLAB/iGEM2016-GUI'"
+                        style="background-color:rgba(19, 35, 47, 0.9); color: white;">
+                    <a class="fa fa-github-square fa-2x" style="font-size: 40px; color: white;"></a>
+                    <!--github-->
+                </button>
+                <br><br>
+            </div>
+
+
+
+
+
+        </div><!--/right-->
+
+</div><!--/row-->
+
+</body>
+</html>

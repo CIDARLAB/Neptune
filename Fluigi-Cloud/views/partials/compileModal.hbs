@@ -1,0 +1,36 @@
+<div id="selectConfig" class="modal fade" role="dialog">
+    <div class="modal-dialog prj_select_dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 class="modal-title">Choose the configuration or constrain file to couple with your job: </h4>
+            </div>
+            <div class="modal-body" id="job_select">
+                Choose the configuration file to couple with your job.
+                This should be a User Constrain File (.json) for LFR jobs.
+                This should be a Initialization File (.ini)  for MINT jobs.
+                <br />
+                <br />
+                <select class="form-control" id="configFile" data-bind="options: files, value: currentConfigFile, optionsText: 'name' " ></select>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" data-bind="click: compile">Compile</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    #job_select
+    {
+        overflow-y: auto;
+    }
+    #selectJob
+    {
+        position: absolute !important;
+    }
+    .prj_select_dialog
+    {
+    }
+</style>

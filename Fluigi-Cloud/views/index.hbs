@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en" class="home_page">
+<head>
+
+    <!-- HEAD -->
+    <!-- NEEDS CLEANING: CONSOLIDATE AND SEGREGATE JAVASCRIPTS-->
+    <title>Neptune</title>
+    {{> favicon }}
+    <link rel="stylesheet" type="text/css" href="../stylesheets/main.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script type="text/javascript" src="../javascripts/index/handlebars-v4.0.5.js"></script>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
+    <!--Walkthrough tour-->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/css/bootstrap-tour.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/js/bootstrap-tour.js"></script>
+    <script src="../javascripts/index/tour.js"></script>
+
+    <link href="../stylesheets/toastr.css" rel="stylesheet"/>
+    <script src="../javascripts/index/toastr.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+
+
+
+    <script type="text/javascript">
+
+        var num;
+        var temp=0;
+        var speed=20000; /* this is set for 10 seconds, edit value to suit requirements */
+        var preloads=[];
+
+        /* add any number of images here */
+
+        preload(
+                '../images/index/NeptuneHome.png',
+                '../images/index/CNCpic.png',
+                '../images/index/UltimakerPic.png',
+                '../images/index/WiresPic.png'
+        );
+
+        function preload(){
+            for(var c=0;c<arguments.length;c++) {
+                preloads[preloads.length]=new Image();
+                preloads[preloads.length-1].src=arguments[c];
+            }
+        }
+
+        function rotateImages() {
+            num=Math.floor(Math.random()*preloads.length);
+            if(num==temp){
+                rotateImages();
+            }
+            else{
+                document.body.style.backgroundImage='url('+preloads[num].src+')';
+                temp=num;
+
+                setTimeout(function(){rotateImages()},speed);
+            }
+        }
+
+        if(window.addEventListener){
+            window.addEventListener('load',function(){setTimeout(function(){rotateImages()},speed)},false);
+        }
+        else {
+            if(window.attachEvent){
+                window.attachEvent('onload',function(){setTimeout(function(){rotateImages()},speed)});
+            }
+        }
+    </script>
+
+
+
+    <style>
+        body {
+            background: url(../images/index/CNCpic.png) no-repeat center center fixed;
+            background-color: black;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        #neptuneTitle {
+            margin-left:10%;
+            margin-top:10%;
+            color:white;
+        }
+        .getStarted {
+            /*margin-left:470px;*/
+            background-color: transparent;
+            border-bottom-style: solid;
+            border-right-style: solid;
+            border-width: medium;
+            border-color: white;
+            border-radius: 5px;
+            box-shadow: none;
+            font-family: "Open Sans";
+            width: 230px;
+            height: 60px;
+            font-size: 25px;
+            color: white;
+        }
+        .getStarted:active {
+            background-color: white;
+            color: black;
+            border-top-style: solid;
+            border-left-style: solid;
+        }
+        .getStarted:focus {
+            outline:none;
+        }
+
+        .selectProject {
+            /*margin-left:470px;*/
+            background-color: transparent;
+            border-bottom-style: solid;
+            border-right-style: solid;
+            border-width: medium;
+            border-color: white;
+            border-radius: 5px;
+            box-shadow: none;
+            font-family: "Open Sans";
+            width: 230px;
+            height: 60px;
+            font-size: 25px;
+            color: white;
+        }
+        .selectProject:active {
+            background-color: white;
+            color: black;
+            border-top-style: solid;
+            border-left-style: solid;
+        }
+        .selectProject:focus {
+            outline:none;
+        }
+
+        #instructions {
+            font-size: 30px;
+            padding-right: 250px;
+        }
+
+
+    </style>
+
+</head>
+
+
+<!-- BODY -->
+<body>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <div class="row" id="neptuneTitle">
+        <img src="../images/NEPTUNEtitle.png" width="700px">
+        <br><br><br>
+        <p id="instructions">To create a new design or open a previous one, start by selecting a project. Then get started working on your microfluidic system. </p>
+        <br>
+        <!--<a href="../dashboard"><button class="getStarted" >Get Started</button></a>-->
+        <button class="selectProject" data-toggle="modal" data-target="#login">Get Started</button>
+        <br><br>
+        <a href="https://github.com/CIDARLAB/Neptune/blob/master/README.md"><button class="getStarted" >Documentation</button></a>
+    </div>
+
+</body>
+
+<!-- MODALS -->
+
+<!-- Select Workspace Modal Javascript -->
+
+<div id="setWorkspace" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary"">
+                <h4 class="modal-title">Confirm Workspace</h4>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label for="setWorkspace_in">Your current workspace is located at:</label>
+                        <input type="text" class="form-control" id="setWorkspace_in">
+                    </div>
+
+                    Please confirm that this is your workspace folder.
+                    If this is not your workspace folder, please change the directory now.
+
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal" onclick="setNewSession();" > Start New Session </button>-->
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="workspace_set()"> Confirm Workspace </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function workspace_set()
+    {
+        localStorage.WORKSPACE = (document.getElementById('setWorkspace_in').value);//.replace(/\\/g,'\\\\');
+
+        $.post('/api/getProjects',{workspace:localStorage.WORKSPACE},function(data,error)
+        {
+            var json_dir = [];
+            var length = data.projects.length;
+            for(var i = 0; i < length; i++)
+            {
+                var single_stage = {directory:data.projects[i]};
+                json_dir.push(single_stage);
+            }
+            render_projects(json_dir);
+        });
+
+        $('#setProject').modal('show');
+    }
+</script>
+<script type="text/javascript">
+    function render_projects(json)
+    {
+        $.get('../javascripts/index/project_select_template.hbs', function (data)
+        {
+            var template = Handlebars.compile(data);
+            var myhtml = template(json);
+            $("#project_select").html(myhtml);
+
+        },'html');
+    }
+</script>
+<script type="text/javascript">
+    //
+    $(document).ready(function()
+    {
+        document.getElementById("setWorkspace_in").value = localStorage.WORKSPACE;
+    });
+</script>
+
+<!-- Select Project Modal -->
+<div id="login" class="modal fade" role="dialog">
+    <div class="modal-dialog prj_select_dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header modal-header-primary">
+                <h4 class="modal-title"><span class="fa fa-lock"></span> Fluigi Cloud</h4>
+            </div>
+
+            <div class="modal-body" align="center" id="beforelogin">
+                <p> Log in to an existing account, or register for a new one.</p>
+                <a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Login</a>
+                <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Register</a>
+                    <!--<a href="/dashboard" class="btn btn-default"><span class="fa fa-play"></span> Proceed As Guest</a>-->
+            </div>
+            <div class="modal-body" align="center" id="loggedin">
+                <p> If you've logged in, please proceed to your profile.</p>
+                <a href="/profile" class="btn btn-default"><span class="fa fa-user"></span> My Profile</a>
+                <!--<a href="/dashboard" class="btn btn-default"><span class="fa fa-play"></span> Proceed As Guest</a>-->
+            </div>
+            <div class="modal-footer">
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal" href="../" data-target=".bd-example-modal-sm"> Exit </button>-->
+                <!--&lt;!&ndash;<button type="button" class="btn btn-default" data-dismiss="modal" "> Load Project</button>&ndash;&gt;-->
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+    #project_select
+    {
+        height: 400px;
+        overflow-y: auto;
+    }
+    #setProject
+    {
+        position: absolute !important;
+    }
+    .prj_select_dialog
+    {
+
+    }
+</style>
+
+
+<div id='name_project' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header modal-header-primary">
+                <h4 class="modal-title">Name your project: </h4>
+            </div>
+
+            <div class="modal-body" id="project_select">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" onclick="generateNewProject()">Create Project</button>
+                    </span>
+                        <input id='projectNameInput' type="text" class="form-control" placeholder="Enter Project Name">
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <p>Select a project name. Neptune will generate a project folder in your workspace directory.</p>
+                <p>This project folder will be pre-configured with the files necessary for you to get started with your microfluidic chip design.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style type="text/css">
+    .modal-header-success {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #5cb85c;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-warning {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #f0ad4e;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-danger {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #d9534f;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-info {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #5bc0de;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-primary {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #428bca;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+</style>
+
+<style type="text/css">
+    .modal-header-success {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #5cb85c;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-warning {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #f0ad4e;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-danger {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #d9534f;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-info {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #5bc0de;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-primary {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #428bca;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-custom-blue {
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #0480be;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+</style>
+
+<!-- LEAVE JS FOR LAST - faster loading time -->
+<!-- Latest compiled and minified JavaScript -->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>-->
+<script src="/javascripts/styles/jquery.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/javascripts/styles/bootstrap.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/javascripts/styles/metisMenu.min.js"></script>
+<!-- Morris Charts JavaScript -->
+<script src="/javascripts/styles/raphael-min.js"></script>
+<script src="/javascripts/styles/morris.min.js"></script>
+<!--<script src="/javascripts/js/morris-data.js"></script>-->
+<!-- Custom Theme JavaScript -->
+<script src="/javascripts/styles/sb-admin-2.js"></script>
+<!-- *** END: DEPENDENCIES *** -->
+
+
+
+</html>
+

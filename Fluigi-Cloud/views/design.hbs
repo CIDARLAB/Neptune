@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title> {{title}} </title>
+    {{> favicon }}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- START: ALL PERSONAL JAVASCRIPTS HERE -->
+
+    <script type="text/javascript">
+        function terminalLog(string){
+            SpecifyTerminal.echo(string);
+        }
+    </script>
+    <!--<script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <!--<script>-->
+        <!--var SpecifyTerminal = null;-->
+        <!--var socket = io();-->
+        <!--socket.on('translate_console_readout', function(data){-->
+            <!--//$('.translate_readout').append(data + '<br><br>');-->
+            <!--terminalLog(data);-->
+        <!--});-->
+    <!--</script>-->
+
+    <script type="text/javascript" src="../javascripts/handlebars-v4.0.5.js"></script>
+    <script type="text/javascript" src="../javascripts/workflow_tracker.js"></script>
+    <script type="text/javascript" src="../javascripts/actionCenter_support.js"></script>
+    <script>
+        localStorage.specify_editor_state = 'specifyLFR';
+        localStorage.lfr_state = 'write';
+        localStorage.ucf_state = 'write';
+    </script>
+
+    <!-- JAVASCRIPT DEPENDENCIES -->
+    <script type="text/javascript" src="../javascripts/editor_support.js"></script>
+
+
+    <!-- CSS DEPENDENCIES -->
+
+    <!-- END: ALL PERSONAL JAVASCRIPTS HERE -->
+
+    <!-- FILE PREVIEW SCRIPTS START -->
+    <style type="text/css" media="screen">
+        #editor_specify {
+            height: 300px;
+        }
+    </style>
+    <style type="text/css" media="screen">
+        #editor_preview {
+            height: 800px;
+        }
+    </style>
+    <style type="text/css" media="screen">
+        #editor_previewMMOutput {
+            height: 600px;
+        }
+    </style>
+    <style type="text/css">
+        #myModal_translateCompleteComplete .modal-body
+        {
+            max-height: 1200px;
+        }
+    </style>
+
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/javascripts/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="/javascripts/bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="/javascripts/dist/css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/javascripts/dist/css/sb-admin-2.css" rel="stylesheet">
+
+
+    <!-- Morris Charts CSS -->
+    <!--<link href="/javascripts/bower_components/morrisjs/morris.css" rel="stylesheet">-->
+
+    <!-- Custom Fonts -->
+    <link href="/javascripts/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!--Walkthrough tour-->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/css/bootstrap-tour.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-tour/0.10.1/js/bootstrap-tour.js"></script>
+    <script src="../javascripts/tour.js"></script>
+    <script type="text/javascript" src="../javascripts/editor_support.js"></script>
+    <script type="text/javascript" src="../javascripts/file_navigator.js"></script>
+    <script src="../javascripts/BootstrapMenu.js"></script>
+
+    <link href="../stylesheets/toastr.css" rel="stylesheet"/>
+    <script src="../javascripts/toastr.js"></script>
+    <script type="text/javascript">
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }</script>
+
+    <style>
+        body {  padding: 0 !important;  }
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- *** START: THIS DIVISION WRAPS EVERYTHING *** -->
+<div id="wrapper">
+
+    <!-- START: THIS DIV HOSTS THE SIDE AND TOP NAVIGATION BARS -->
+    <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+
+        <!-- START: TOP LEFT HALF OF NAVIGATION BAR; WE CAN PUT OUR FLUIGI LOGOS HERE -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <img class="pull-left" height="40" width="40" style="margin-top: 5px; margin-left: 5px;" src="../images/NeptuneLogo.png">
+            <a class="navbar-brand" style="font-family: 'Open Sans'"> NEPTUNE </a>
+        </div>
+        <!-- END: TOP LEFT HALF OF NAVIGATION BAR; WE CAN PUT OUR FLUIGI LOGOS HERE -->
+
+        <!-- START: TOP RIGHT HALF OF NAVIGATION BAR; WE CAN PUT OUR LOGOUT, SETTINGS, ECT HERE -->
+        <ul class="nav navbar-top-links navbar-right">
+
+
+        </ul>
+        <!-- END: TOP RIGHT HALF OF NAVIGATION BAR; WE CAN PUT OUR LOGOUT, SETTINGS, ECT HERE -->
+
+        <!-- START: SIDE NAVIGATION BAR -->
+        <div class="navbar-default sidebar" role="navigation">
+            <div class="sidebar-nav navbar-collapse" id="file_tree">
+
+            </div>
+            <!-- /.sidebar-collapse -->
+        </div>
+        <!-- END: SIDE NAVIGATION BAR -->
+
+    </nav>
+    <!-- END: THIS DIV HOSTS THE SIDE AND TOP NAVIGATION BARS -->
+
+    <!-- START: PAGE WRAPER -->
+    <div id="page-wrapper">
+
+        <!-- PAGE TITLE START -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1></h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <!-- PAGE TITLE END -->
+
+
+        <!--PAGE CONTENT WRAP START: ALL PAGE CONTENT IS EMBEDDED BELOW -->
+        <div class="row">
+
+
+            <!-- START: LFR EDITOR & 2 other panels-->
+            <div class="col-lg-8">
+
+                <!-- START: LFR EDITOR -->
+                <div class="panel with-nav-tabs panel-default">
+                    <div class="panel-heading">
+                        <!--<i class="fa fa-bar-chart-o fa-fw"></i>-->
+
+                        <ul class="nav nav-tabs" id='tabs_drpdwn'>
+                            <div class="well well-sm project_title">
+                                <h4 class="prj"> <em id="pj_t"> Project: </em> </h4><span class="pull-right project_title" id="project_title"> </span>
+                            </div>
+                            <li id="LFRtab" class="active"><a id="LFRtab_t" onclick="changeSpecifyTabs(editor_specify,'LFRtab',[LFR_tab,UCF_tab])"></a></li>
+                            <li id="UCFtab"><a id="UCFtab_t" onclick="changeSpecifyTabs(editor_specify,'UCFtab',[LFR_tab,UCF_tab])"></a></li>
+                            <li> &nbsp &nbsp </li>
+                            <style>
+                                .prj {  text-align: center  }
+                            </style>
+                            <div class="pull-right">
+                                <button class="btn btn-default" onclick="saveEditorContent(editor_specify,localStorage.specify_editor_state)"> <i class="fa fa-floppy-o  fa-fw"></i></button>
+                                <button class="btn btn-default" data-toggle="modal" data-target="#name_outputMINT"> <i class="fa fa-play-circle-o  fa-fw"></i></button>
+                            </div>
+                        </ul>
+                    </div>
+
+                    <div class="panel-body" >
+                        <div id="editor_specify" style="height:690px"></div>
+                    </div>
+
+                </div>
+                <div class="text-center"></div>
+            </div>
+
+            <style type="text/css">
+                .project_title {
+                    font-family: "Arial";
+                    font-size:large;
+                }
+            </style>
+
+
+            <script src="/javascripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+            <script> var editor_specify = ace.edit("editor_specify"); editor_specify.setTheme("ace/theme/crimson_editor");
+            editor_specify.setOptions({
+                fontFamily: "monospace",
+                fontSize: "12pt"
+            });</script>
+            <script>
+                var LFR_tab = ace.createEditSession('LFR_tab',"ace/mode/verilog");
+                var UCF_tab = ace.createEditSession('UCF_tab',"ace/mode/json");
+                editor_specify.setSession(LFR_tab);
+            </script>
+            <!-- END: LFR EDITOR & 2 other panels-->
+
+            <!-- START: UPLOAD FORM, UCF SUMMARY, INI SUMMARY -->
+            <div class="col-lg-4">
+
+                <!-- START: TERMINAL -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-play fa-fw"></i> Terminal
+                    </div>
+                    <div class="panel-body">
+                        <div id="terminal_specify"></div>
+                    </div>
+                </div>
+                <!-- END: TERMINAL -->
+
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                        Actions
+                    </div>
+
+                    <div class="panel-body" id="ucf_maker" >
+                        <div class="col-sm-6">
+                            <button class="btn btn-primary" onclick="newFile('LFR')" >New LFR</button>
+
+                            <div class="col-sm-12">
+
+                            </div>
+
+                            <span class="pull-left top-buffer">
+                                <form class="form-inline" id="ucf_form">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="new_file_name" placeholder="file name">
+                                    </div>
+                                </form>
+                            </span>
+
+                        </div>
+
+                        <div class="col-sm-6">
+                            <button class="btn btn-primary" onclick="newFile('UCF')" >New UCF</button>
+                        </div>
+
+
+                    </div>
+
+                    <div class="panel-footer" id="footer">
+
+                    </div>
+
+                </div>
+
+                <script type="text/javascript">
+                    $("#ucf_form").submit(function(e){
+                        e.preventDefault();
+                    });
+                    function deleteOp(op)
+                    {
+                        var oops = '#' + op;
+                        $(oops).remove();
+                    }
+                </script>
+                <!-- END: ACTION CENTER -->
+
+            </div>
+
+
+            <!-- END: UPLOAD FORM, UCF SUMMARY, INI SUMMARY -->
+
+            <!-- ALL MODALS BELOW HERE -->
+            <!-- FILE PREVIEW MODAL -->
+            <div class="modal fade" id="preview_dashboard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title-prev modal-title" id="preview_title"></h4>
+                        </div>
+
+                        <div class="modal-body ace_preview_modal" id="editor_preview"></div>
+
+                        <div class="modal-footer" id="previewModalFooter">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="/javascripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+            <script> var editor_preview = ace.edit("editor_preview"); editor_preview.setTheme("ace/theme/crimson_editor");
+            editor_preview.setOptions({
+                fontFamily: "monospace",
+                fontSize: "12pt"
+            });</script>
+
+            <div class="modal fade" id="preview_dashboard_img" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title-prev modal-title" id="preview_title_img"></h4>
+                        </div>
+
+                        <div class="modal-body ace_preview_modal" id="img_here">
+
+                        </div>
+
+                        <div class="modal-footer" id="previewModalFooter_img">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id='name_outputMINT' class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+
+                    <div class="modal-content">
+
+                        <div class="modal- modal-header-primary">
+                            <h4 class="modal-title">Choose output MINT file name: </h4>
+                        </div>
+
+                        <div class="modal-body" id="project_select">
+                            <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" onclick="translateLFR(document.getElementById('outputMINTname').value)">Translate LFR</button>
+                    </span>
+                                <input id='outputMINTname' type="text" class="form-control" placeholder="MINT_result">
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <p>You are about to compile your LFR into a MINT file.</p>
+                            <p>Please enter the name of your output MINT file.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- Modal: Translate Actions -->
+            <div class="modal fade" id="myModal_translateComplete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="hideProceed()">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="myModalLabel"> Translation successful: MINT Output Preview </h4>
+                        </div>
+
+                        <div class="modal-body" id="editor_previewMMOutput">
+
+                        </div>
+                        <div class="modal-footer">
+                            <a>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="hideProceed()">
+                                    Close
+                                </button>
+                            </a>
+                            <div class="row"><br>
+                                <a href="../design">
+                                    <button type="button" class="btn btn-primary btn-lg center-block" id="proceedDesign" onclick="hideProceed()">
+                                        Proceed to Design Stage
+                                    </button>
+                                </a>
+                            </div>
+                            <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="/javascripts/ace/ace.js" type="text/javascript" charset="utf-8"></script>
+            <script> var editor_previewMMOutput = ace.edit("editor_previewMMOutput"); editor_previewMMOutput.setTheme("ace/theme/crimson_editor");
+            editor_previewMMOutput.setOptions({
+                fontFamily: "monospace",
+                fontSize: "12pt"
+            });</script>
+
+        </div>
+
+        <!--PAGE CONTENT WRAP END: ALL PAGE CONTENT IS EMBEDDED ABOVE -->
+    </div>
+    <!-- END: PAGE WRAPER -->
+</div>
+<!-- *** END: THIS DIVISION WRAPS EVERYTHING *** -->
+
+<!-- *** START: DEPENDENCIES *** -->
+<!-- jQuery -->
+<script src="/javascripts/bower_components/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="/javascripts/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- Metis Menu Plugin JavaScript -->
+<script src="/javascripts/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+<!-- Morris Charts JavaScript -->
+<script src="/javascripts/bower_components/raphael/raphael-min.js"></script>
+<script src="/javascripts/bower_components/morrisjs/morris.min.js"></script>
+<!--<script src="/javascripts/js/morris-data.js"></script>-->
+<!-- Custom Theme JavaScript -->
+<script src="/javascripts/dist/js/sb-admin-2.js"></script>
+<!-- *** END: DEPENDENCIES *** -->
+
+
+<script type="text/javascript">
+    function hideProceed() {$("#proceedDesign").hide();}
+    //hideProceed();
+</script>
+
+
+</body>
+
+<!--<script type="text/javascript" src="../javascripts/initiate_lfr_start_editor.js"></script>-->
+<script src="../javascripts/uploads.js" type="application/javascript"></script>
+<script type="text/javascript" src="../javascripts/editor_support.js"></script>
+<!--<script> (document.getElementById('translate_btnn')).disabled = true; </script>-->
+
+<script src="/javascripts/jquery.terminal-0.10.12.min.js"></script>
+<script src="/javascripts/jquery.mousewheel.min.js"></script>
+<link href="/stylesheets/jquery.terminal-0.10.12.css" rel="stylesheet"/>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        SpecifyTerminal = $('#terminal_specify').terminal(function(command, term) {
+            if (command !== '') {
+                try {
+                    var result = window.eval(command);
+                    if (result !== undefined) {
+                        term.echo(new String(result));
+                    }
+                } catch(e) {
+                    term.error(new String(e));
+                }
+            } else {
+            }
+        }, {
+            greetings: 'Fluigi Translator',
+            name: 'terminal_specify',
+            height: 400,
+            prompt: 'μF> '
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    function template_UCF_UI()
+    {
+        $.get('../javascripts/ucf_template.hbs', function (data) {
+            var template = Handlebars.compile(data);
+            $.post('/api/getFile', {path: localStorage.UCF}, function (data) {
+                var myhtml = template(JSON.parse(data));
+                $("#ucf_maker").html(myhtml);
+            });
+        }, 'html');
+    }
+    $(document).ready(template_UCF_UI);
+    //template_UCF_UI();
+</script>
+
+<script type="text/javascript">
+
+    $.post('/api/Query_Workspace',{workspace_id: localStorage.workspace},function(workspace){
+        console.log(workspace);
+    });
+
+    $.get('../Templates/workspace_files.hbs', function (data)
+    {
+        var template = Handlebars.compile(data);
+        var myhtml = template(file_tree);
+        $("#file_tree").html(myhtml);
+    },'html');
+
+</script>
+
+<script>
+    var menu = new BootstrapMenu('#tabs_drpdwn', {
+        actions: [{
+            name: 'Rename LFR',
+            onClick: function()
+            {
+                // run when the action is clicked
+                $('#renameLFR').modal('show');
+            }
+        }, {
+            name: 'Rename UCF',
+            onClick: function() {
+                // run when the action is clicked
+                $('#renameUCF').modal('show');
+            }
+        }, {
+            name: 'Cancel',
+            onClick: function() {
+                // run when the action is clicked
+            }
+        }]
+    });
+</script>
+
+<div id='renameLFR' class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" onclick="renameFile()">Rename LFR</button>
+                </span>
+                <input id='fileNameInput_lfr' type="text" class="form-control" placeholder="">
+            </div>
+        </div>
+    </div>
+</div>
+<div id='renameUCF' class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="button" onclick="renameFile()">Rename UCF</button>
+                </span>
+                <input id='fileNameInput_ucf' type="text" class="form-control" placeholder="">
+            </div>
+        </div>
+    </div>
+</div>
+<div id='name_operator' class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+
+        <div class="modal-content">
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button" onclick="generateUCF_UI()">Create Operator</button>
+                </span>
+                <input id='operator_symbol_in' type="text" class="form-control" placeholder="Enter Operator Symbol">
+                <input id='operator_name_in' type="text" class="form-control" placeholder="Enter Operator Name">
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function renameFile(selected_file)
+    {
+        switch (selected_file)
+        {
+            case 'lfr':
+                break;
+            case 'ucf':
+                break;
+            case 'mint':
+                break;
+            case 'ini':
+                break
+        }
+    }
+
+</script>
+
+</html>
+
+<style type="text/css">
+
+    .top-buffer { margin-top:20px; }
+
+    .modal-header-success {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #5cb85c;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-warning {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #f0ad4e;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-danger {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #d9534f;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-info {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #5bc0de;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-primary {
+        color:#fff;
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #428bca;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+    .modal-header-custom-blue {
+        padding:9px 15px;
+        border-bottom:1px solid #eee;
+        background-color: #0480be;
+        -webkit-border-top-left-radius: 5px;
+        -webkit-border-top-right-radius: 5px;
+        -moz-border-radius-topleft: 5px;
+        -moz-border-radius-topright: 5px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+</style>

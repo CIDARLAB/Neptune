@@ -1,0 +1,11 @@
+
+module expression1(finput in1, in2, foutput out);
+
+    flow temp_out;
+
+    assign temp_out = in1 % 50.88;
+    assign temp_out = in2 % 100;
+
+    assign out = temp_out;
+
+endmodule
