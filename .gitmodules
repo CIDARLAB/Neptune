@@ -1,6 +1,4 @@
 [submodule "primitives-server"]
 	path = primitives-server
 	url = https://github.com/CIDARLAB/primitives-server
-[submodule "pyFluigi"]
-	path = pyFluigi
-	url = https://github.com/CIDARLAB/pyFluigi
+
