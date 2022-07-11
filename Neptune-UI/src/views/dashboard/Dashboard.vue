@@ -328,15 +328,18 @@
                         Create New File
                     </v-card-title>
                     <v-card-text>
-                      Please add a file extension name at the end of the filename: .lfr or .mint
-                    </v-card-text>
-                    <v-card-text>
                         <v-text-field
                             v-model="newfilename"
                             label="File Name"
                             :rules="rules"
                             hide-details="auto"
                             ></v-text-field>
+                        <v-select
+                          v-model="extname"
+                          :items="exts"
+                          label="Extension Name"
+                          :rules="rules"
+                        />
                     </v-card-text>
                     <v-card-actions>
                         <v-spacer></v-spacer>
@@ -382,13 +385,12 @@
     data: () => ({
       // set rules for the file extension
       rules: [
-        value => !!value || 'Required.',
-        value => (value && (value.includes("."))) || 'Add an extension name',
-        value => (value && (value.includes(".lfr") || value.includes(".mint"))) || 'Invalid extension name',
+        value => !!value || 'Required',
       ],
         newworkspacename: '',
         newworkspacedialog: false,
         newfilename: '',
+        extname: '',
         newfiledialog: false,
         selectedworkspace: {
             name: '',
@@ -411,6 +413,7 @@
             icon: 'mdi-close',
             },
         ],
+        exts: ['.mint', '.lfr']
     }),
     computed: {
       totalSales () {
@@ -529,22 +532,20 @@
                 withCredentials: true,
                 crossorigin: true,
                 headers: { 'Content-Type': 'application/json' },
-                file_name: this.newfilename,
-                ext: this.newfilename.match(/\.[0-9a-z]+$/i)[0],
+                file_name: this.newfilename + this.extname,
+                ext: this.extname.match(/\.[0-9a-z]+$/i)[0],
                 workspaceid: this.$store.getters.currentWorkspace
             }
             console.log(config)
-            if (config.ext === ".lfr" || config.ext === ".mint"){
-              axios.post('/api/v1/file', config)
-                  .then((response) => {
-                      console.log("Created new file", response)
-                      this.refreshworkspacedata()
-                  })
-                  .catch((errors) => {
-                      console.log("Could not create file:", errors)
-                  })
-              this.newfiledialog = false
-            }
+            axios.post('/api/v1/file', config)
+                .then((response) => {
+                    console.log("Created new file", response)
+                    this.refreshworkspacedata()
+                })
+                .catch((errors) => {
+                    console.log("Could not create file:", errors)
+                })
+            this.newfiledialog = false
         },
         complete (index) {
             this.list[index] = !this.list[index]
