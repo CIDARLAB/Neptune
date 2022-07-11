@@ -47,26 +47,21 @@ ENV   PYTHONFAULTHANDLER=1 \
   PYTHONHASHSEED=random \
   PIP_NO_CACHE_DIR=off \
   PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
-  POETRY_VERSION=1.0.0
+  PIP_DEFAULT_TIMEOUT=100
 
 RUN apt-get update
 RUN apt install -y curl
 RUN apt-get install -y build-essential
 RUN apt-get -y install software-properties-common
 
-RUN apt-get install -y python3-pip  git make build-essential python-dev libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libffi-dev
+RUN apt-get install -y python3-pip  git make build-essential \
+python-dev libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
+libsqlite3-dev curl libffi-dev graphviz libgraphviz-dev \
+libcairo2-dev pkg-config python3-dev
 
 # Installing Nodejs
 RUN curl -sL --location https://deb.nodesource.com/setup_15.x | bash -
 RUN apt-get -y install nodejs
-
-#Remove this later on
-RUN apt-get -y install redis-server
-
-
-#installing Java
-RUN apt-get install -y openjdk-8-jre-headless
 
 # Pyenv for our baseline python environment for poetry later on.
 RUN git clone git://github.com/yyuu/pyenv.git .pyenv
@@ -80,52 +75,11 @@ RUN pyenv install 3.8.0
 RUN pyenv global 3.8.0
 
 RUN pip install --upgrade pip
-RUN pip install setuptools
-
-RUN apt-get install -y graphviz libgraphviz-dev
-
-# RUN pip install --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/" pygraphviz
-
-RUN pip install pygraphviz
-
-
-# Install our python dependency manager
-RUN pip install "poetry==$POETRY_VERSION"
+RUN pip install setuptools pygraphviz
 
 WORKDIR /pybin
 
-# TODO - Modify this to just pull the packages from pypi
-ADD ./pyparchmint ./pyparchmint
-
-WORKDIR /pybin/pyparchmint
-
-RUN poetry config virtualenvs.create false && poetry update && poetry install
-
-WORKDIR /pybin
-
-# TODO - Modify this to just pull the packages from pypi
-ADD ./pymint ./pymint
-
-WORKDIR /pybin/pymint
-
-RUN poetry config virtualenvs.create false && poetry update && poetry install
-
-WORKDIR /pybin
-
-# TODO - Modify this to just pull the packages from pypi
-ADD ./pyLFR ./pyLFR
-
-
-WORKDIR /pybin/pyLFR
-
-RUN poetry config virtualenvs.create false && poetry update && poetry install --no-interaction --no-ansi
-ENV PYTHONPATH=${PYTHONPATH}:${PWD} 
-
-RUN pip install .
-
-RUN lfr-compile --help
-
-RUN apt install -y libcairo2-dev pkg-config python3-dev
+RUN apt install -y 
 
 WORKDIR /pybin
 
@@ -137,15 +91,10 @@ WORKDIR /pybin/pyfluigi
 RUN chmod +x ./bin/place_and_route
 
 RUN pwd
-RUN poetry config virtualenvs.create false && poetry update && poetry install --no-interaction --no-ansi
 ENV PYTHONPATH=${PYTHONPATH}:${PWD} 
-
 RUN pip install .
 
 RUN fluigi --help
-
-
-#RUN pip install lfr --install-option="--include-path=/usr/include/graphviz" --install-option="--library-path=/usr/lib/graphviz/"
 
 WORKDIR /var/www/fluigicad.org/
 
@@ -162,12 +111,6 @@ RUN chown -R $USER:$GROUP ./jobs/
 #Copy Neptune-UI
 # COPY --from=vue-build-stage /app/dist ./dist/
 ADD ./Neptune-UI/dist/ ./dist/
-
-RUN apt-get clean
-
-# #Copy pyLFR
-# COPY --from=lfr-build-stage /pyLFR/dist/cmdline ./jobs/pyLFR/
-
 
 ADD start.sh .
 

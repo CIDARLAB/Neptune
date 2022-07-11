@@ -19,7 +19,8 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      software-properties-common python3-pip make build-essential \
      python-dev libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
      libsqlite3-dev curl libffi-dev redis-server openjdk-8-jre-headless \
-     graphviz libgraphviz-dev libcairo2-dev pkg-config python3-dev python3.8-venv
+     graphviz libgraphviz-dev libcairo2-dev pkg-config python3-dev python3.8-venv \
+     python3-setuptools
 
 
 RUN pip install "poetry==$POETRY_VERSION"

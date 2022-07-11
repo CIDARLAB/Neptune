@@ -4,3 +4,9 @@
 [submodule "Fluigi-Cloud"]
 	path = Fluigi-Cloud
 	url = https://github.com/CIDARLAB/Fluigi-Cloud.git
+[submodule "primitives-server"]
+	path = primitives-server
+	url = https://github.com/CIDARLAB/primitives-server
+[submodule "pyFluigi"]
+	path = pyFluigi
+	url = https://github.com/CIDARLAB/pyFluigi
