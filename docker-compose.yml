@@ -35,7 +35,7 @@ services:
         context: .
         dockerfile: ./job-runner/Dockerfile
       container_name: demo_worker
-      command: celery --app=simple worker --loglevel=info --logfile=logs/celery.log
+      command: celery --app=simple worker --loglevel=info
       volumes:
         - .:/usr/src
       environment:
