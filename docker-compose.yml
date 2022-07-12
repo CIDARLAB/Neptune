@@ -48,7 +48,7 @@ services:
 
     primitives-server:
       build:
-        context: ./primitives-server
+        context: ./primitives-server-ts
         dockerfile: ./Dockerfile
       restart: unless-stopped
       ports:
