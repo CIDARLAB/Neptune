@@ -1,0 +1,30 @@
+version: "3"
+services:
+    broker:
+        image: redis:latest
+        container_name: realtime-comm-server
+        ports:
+          - "6378:6379"
+
+    backend_database:
+      image: mongo:latest
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: root
+        MONGO_INITDB_ROOT_PASSWORD: rootpassword
+      ports:
+        - 27017:27017
+      volumes:
+        - mongodb_data_container:/data/db
+
+    # worker:
+    #     build: .
+    #     container_name: demo_worker
+    #     command: celery --app=tasks.celery_app worker --loglevel=info --logfile=logs/celery.log
+    #     volumes:
+    #       - .:/usr/src
+    #     environment:
+    #       - CELERY_BROKER_URL=redis://broker:6379/0
+    #       - CELERY_RESULT_BACKEND=db+postgresql://dbc:dbc@backend:5432/celery
+    #     depends_on:
+    #       - broker
+    #       - backend_database
