@@ -46,6 +46,13 @@ services:
         - backend_database
         - s3local
 
+    primitives-server:
+      build:
+        context: ./primitives-server
+        dockerfile: ./Dockerfile
+      restart: unless-stopped
+      ports:
+        - "5555:5555"
 
 volumes:
   mongodb_data_container:
