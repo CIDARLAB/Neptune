@@ -11,11 +11,6 @@ redis = "^4.3.4"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
-black = "^22.6.0"
-mypy = "^0.961"
-Sphinx = "^5.0.2"
-pylint = "^2.14.4"
-isort = "^5.10.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
