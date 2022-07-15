@@ -4,3 +4,6 @@
 [submodule "primitives-server-ts"]
 	path = primitives-server-ts
 	url = https://github.com/CIDARLAB/primitives-server-ts.git
+[submodule "primitives-server"]
+	path = primitives-server
+	url = https://github.com/cidarlab/3duf.git
