@@ -1,6 +1,21 @@
 version: "3"
 services:
     
+    neptune:
+      build: 
+        context: .
+      ports:
+        - 8080:8080
+        - 3000:3000
+      links:
+        - "backend_database"
+      depends_on:
+        - "s3local"
+        - "broker"
+        - "primitives-server"
+        - "worker"
+        - "backend_database"
+
     s3local:
       image: minio/minio
       ports:
@@ -23,6 +38,7 @@ services:
     backend_database:
       image: mongo:latest
       environment:
+        AUTH: "yes"
         MONGO_INITDB_ROOT_USERNAME: root
         MONGO_INITDB_ROOT_PASSWORD: rootpassword
       ports:
@@ -53,7 +69,6 @@ services:
       restart: unless-stopped
       ports:
         - "6060:5555"
-      command: npm run start
 
 volumes:
   mongodb_data_container:
