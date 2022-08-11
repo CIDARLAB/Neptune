@@ -52,7 +52,7 @@ services:
         dockerfile: ./primitives-server.Dockerfile
       restart: unless-stopped
       ports:
-        - "6060:5555"
+        - 6060:6060
       command: npm run start
 
 volumes:
