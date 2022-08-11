@@ -7,7 +7,7 @@ services:
         - "9000:9000"
         - "9001:9001"
       volumes:
-        - mino_data:/data/s3
+        - minio_data_container:/data/s3
       environment:
         - MINIO_ACCESS_KEY=minio
         - MINIO_SECRET_KEY=minio123
@@ -19,31 +19,36 @@ services:
       container_name: realtime-comm-server
       ports:
         - "6379:6379"
+      restart: unless-stopped
 
-    backend_database:
+    backend-database:
       image: mongo:latest
       environment:
-        MONGO_INITDB_ROOT_USERNAME: root
-        MONGO_INITDB_ROOT_PASSWORD: rootpassword
+        MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
       ports:
         - 27017:27017
       volumes:
         - mongodb_data_container:/data/db
+      restart: unless-stopped
 
     worker:
       build: 
         context: .
         dockerfile: ./job-runner/Dockerfile
       container_name: demo_worker
-      command: celery --app=simple worker --loglevel=info
+      command: python test.py #celery --app=simple worker --loglevel=info
       volumes:
         - .:/usr/src
       environment:
-        - CELERY_BROKER_URL=redis://broker:6379
+        MONGO_INITDB_NAME: ${MONGO_INITDB_NAME}
+        MONGO_HOST: ${MONGO_HOST}
+        MONGO_PORT: ${MONGO_PORT}
+        CELERY_BROKER_URL: ${CELERY_BROKER_URL}
         # - CELERY_RESULT_BACKEND=db+postgresql://dbc:dbc@backend:5432/celery
       depends_on:
         - broker
-        - backend_database
+        - backend-database
         - s3local
 
     primitives-server:
@@ -57,4 +62,4 @@ services:
 
 volumes:
   mongodb_data_container:
-  mino_data:
+  minio_data_container:
