@@ -24,3 +24,10 @@ TBA Rest of the guide...
 ### Contact
 
 Reach out to [@rkrishnasanka](https://github.com/rkrishnasanka) for more details.
+
+
+### Running individual services
+
+```bash
+docker run -i containername:dev --env-file=myenvfile
+```

@@ -9,8 +9,8 @@ services:
       volumes:
         - minio_data_container:/data/s3
       environment:
-        - MINIO_ACCESS_KEY=minio
-        - MINIO_SECRET_KEY=minio123
+        MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
+        MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
       command: server /data/s3 --console-address ":9001"
       restart: unless-stopped
 
@@ -45,11 +45,16 @@ services:
         MONGO_HOST: ${MONGO_HOST}
         MONGO_PORT: ${MONGO_PORT}
         CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+        AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+        AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL}
         # - CELERY_RESULT_BACKEND=db+postgresql://dbc:dbc@backend:5432/celery
       depends_on:
         - broker
         - backend-database
         - s3local
+      restart: unless-stopped
 
     primitives-server:
       build:
