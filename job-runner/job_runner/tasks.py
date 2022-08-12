@@ -1,6 +1,7 @@
 # import os
 from pathlib import Path
 import subprocess
+from typing import List
 from job_runner.filesystem import upload_file_using_client
 
 from job_runner.server import celery_app
@@ -19,7 +20,7 @@ def add(x, y):
     return x + y
 
 @celery_app.task(name="execute_task")
-def test_execute(job_id:str):
+def test_execute(job_id:str) -> List[str]:
     print("Executing task")
     
     # Create a new directory for the job and download all the input files to the directory
@@ -46,8 +47,11 @@ def test_execute(job_id:str):
     # TODO: Upload the output files from the job directory to the s3 bucket
     
     # Loop through all the files in the output directory and upload them to the s3 bucket
+    s3_object_names: List[str] = []
     for file in output_path.glob("*"):
-        upload_file_using_client(file.absolute())
+        s3_object_name = upload_file_using_client(file.absolute())
+        
+        s3_object_names.append(s3_object_name)
     
     # Delete the job directory and all its contents
     shutil.rmtree(str(path.absolute()))
@@ -55,5 +59,5 @@ def test_execute(job_id:str):
     # Send the final Signal to the monitor that the job is complete
     io.Emit('EOP', "This is finished !")
     
-    return "Executed task"    
+    return s3_object_names
     

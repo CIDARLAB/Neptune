@@ -1,3 +1,4 @@
+from typing import List
 import uuid
 import boto3
 from pprint import pprint
@@ -10,7 +11,7 @@ S3_CLIENT = boto3.client(
         endpoint_url=AWS_ENDPOINT_URL
     )
 
-def upload_file_using_client(file_location: Path):
+def upload_file_using_client(file_location: Path) -> str:
     """
     Uploads file to S3 bucket using S3 client object
     :return: None
@@ -22,4 +23,6 @@ def upload_file_using_client(file_location: Path):
     S3_CLIENT.upload_file(file_path, bucket_name, s3_object_name)
     
     print(f"Uploaded {file_path} to {bucket_name}/{file_name}")
+    
+    return s3_object_name
     
