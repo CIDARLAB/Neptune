@@ -9,6 +9,7 @@ from job_runner.setting import CELERY_BROKER_URL, CELERY_BACKEND_URL, MONGO_HOST
 print("Connecting to MongoDB")
 print("MongoDB_USER:", MONGODB_USER)
 print("MongoDB_PASSWORD:", MONGODB_PASSWORD)
+print("MongoDB_PORT:", MONGO_PORT)
 connection = mongoengine.connect(
     db=MONGODB_JOBS_DB,
     username=MONGODB_USER,

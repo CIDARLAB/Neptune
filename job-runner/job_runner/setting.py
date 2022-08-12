@@ -6,7 +6,7 @@ MONGODB_PASSWORD = os.getenv('MONGO_INITDB_ROOT_PASSWORD')
 MONGODB_JOBS_DB = os.getenv('MONGO_INITDB_NAME')
 MONGO_HOST = os.getenv('MONGO_HOST')
 try:
-    mongo_port = os.getenv('MONGO_PORT')
+    mongo_port = int(os.getenv('MONGO_PORT'))
 except:
     mongo_port = 27017
 MONGO_PORT = mongo_port
