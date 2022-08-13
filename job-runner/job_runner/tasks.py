@@ -9,6 +9,8 @@ import time
 from socket_io_emitter import Emitter
 import shutil
 
+from .setting import SOCKETIO_REDIS_HOST, SOCKETIO_REDIS_PORT
+
 
 @celery_app.task(name="add_task")
 def add(x, y):
@@ -30,7 +32,7 @@ def test_execute(job_id:str) -> List[str]:
     output_path.mkdir(parents=True, exist_ok=True)
     
     # Start a subprocess to execute the test.sh script and pipe the output to a variable.
-    io = Emitter({'host': 'localhost', 'port': 6379})
+    io = Emitter({'host': SOCKETIO_REDIS_HOST, 'port': SOCKETIO_REDIS_PORT})
     with subprocess.Popen(
         ["/bin/bash", "test.sh", str(output_path.absolute())], 
         # bufsize=1, 

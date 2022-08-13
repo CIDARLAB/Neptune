@@ -10,6 +10,8 @@ print("Connecting to MongoDB")
 print("MongoDB_USER:", MONGODB_USER)
 print("MongoDB_PASSWORD:", MONGODB_PASSWORD)
 print("MongoDB_PORT:", MONGO_PORT)
+print("MongoDB_HOST:", MONGO_HOST)
+print("MongoDB_JOBS_DB:", MONGODB_JOBS_DB)
 connection = mongoengine.connect(
     db=MONGODB_JOBS_DB,
     username=MONGODB_USER,
@@ -18,8 +20,8 @@ connection = mongoengine.connect(
     port=MONGO_PORT
 )
 
-print("Databases")
-print(connection.list_database_names())
+# print("Databases")
+# print(connection.list_database_names())
 
 print("Connecting to Celery")
 celery_app = Celery(

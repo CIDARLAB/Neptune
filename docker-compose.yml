@@ -13,6 +13,8 @@ services:
         MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
       command: server /data/s3 --console-address ":9001"
       restart: unless-stopped
+      networks:
+        - main_network
 
     broker:
       image: redis:latest
@@ -20,6 +22,8 @@ services:
       ports:
         - "6379:6379"
       restart: unless-stopped
+      networks:
+        - main_network
 
     backend-database:
       image: mongo:latest
@@ -31,30 +35,38 @@ services:
       volumes:
         - mongodb_data_container:/data/db
       restart: unless-stopped
+      networks:
+        - main_network
 
     worker:
       build: 
         context: .
         dockerfile: ./job-runner/Dockerfile
-      container_name: demo_worker
-      command: python test.py #celery --app=simple worker --loglevel=info
+      container_name: async-worker
+      command: python /runner/job_runner/server.py #celery --app=simple worker --loglevel=info
       volumes:
         - .:/usr/src
       environment:
         MONGO_INITDB_NAME: ${MONGO_INITDB_NAME}
         MONGO_HOST: ${MONGO_HOST}
         MONGO_PORT: ${MONGO_PORT}
+        MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
         CELERY_BROKER_URL: ${CELERY_BROKER_URL}
         AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
         AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
         AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
         AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL}
+        SOCKETIO_REDIS_HOST: ${SOCKETIO_REDIS_HOST}
+        SOCKETIO_REDIS_PORT: ${SOCKETIO_REDIS_PORT}
         # - CELERY_RESULT_BACKEND=db+postgresql://dbc:dbc@backend:5432/celery
       depends_on:
         - broker
         - backend-database
         - s3local
       restart: unless-stopped
+      networks:
+        - main_network
 
     primitives-server:
       build:
@@ -64,7 +76,13 @@ services:
       ports:
         - 6060:6060
       command: npm run start
-
+      networks:
+        - main_network
+      
 volumes:
   mongodb_data_container:
   minio_data_container:
+
+networks:
+  main_network:
+    driver: bridge
