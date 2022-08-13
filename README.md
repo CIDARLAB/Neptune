@@ -31,3 +31,7 @@ Reach out to [@rkrishnasanka](https://github.com/rkrishnasanka) for more details
 ```bash
 docker run -i containername:dev --env-file=myenvfile
 ```
+
+```bash
+docker exec -ti <container name> /bin/bash
+```

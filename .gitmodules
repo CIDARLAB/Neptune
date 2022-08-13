@@ -1,6 +1,0 @@
-[submodule "pyfluigi"]
-	path = pyfluigi
-	url = https://github.com/CIDARLAB/pyFluigi.git
-[submodule "primitives-server"]
-	path = primitives-server
-	url = https://github.com/cidarlab/3duf.git

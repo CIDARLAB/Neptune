@@ -86,7 +86,7 @@ def execute(
         s3_object_names[file.name]=s3_object_name
     
     # Delete the job directory and all its contents
-    shutil.rmtree(str(path.absolute()))
+    # shutil.rmtree(str(path.absolute()))
     
     # Send the final Signal to the monitor that the job is complete
     io.Emit('EOP', "This is finished !")
