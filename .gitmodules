@@ -1,0 +1,8 @@
+[submodule "primitives-server"]
+	path = primitives-server
+	url = https://github.com/cidarlab/3duf
+	branch = primitives-server
+[submodule "pyfluigi"]
+	path = pyfluigi
+	url = https://github.com/cidarlab/pyfluigi
+	branch = master
