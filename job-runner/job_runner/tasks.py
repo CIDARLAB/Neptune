@@ -41,6 +41,10 @@ def execute(
         Dict[str, str]: Dictionary with the output file names and their corresponding s3 object names
     """
     print("Executing task")
+    print(f"job_id: {job_id}")
+    print(f"command: {command}")
+    print(f"input_file_s3_objects: {input_file_s3_objects}")
+    print(f"config_file_s3_object: {config_file_s3_object}")
     
     # Create a new directory for the job and download all the input files to the directory
     path = Path(f"./jobs-tmp/{job_id}")
@@ -53,13 +57,14 @@ def execute(
         download_file_using_client(s3_object_name, local_file_name, path)
         
     # Download the config file to the directory
-    if config_file_s3_object is not None:
+    if config_file_s3_object is not None and len(config_file_s3_object) == 2:
         download_file_using_client(config_file_s3_object[0], config_file_s3_object[1], path)
     
     # Start a subprocess to execute the test.sh script and pipe the output to a variable.
     io = Emitter({'host': SOCKETIO_REDIS_HOST, 'port': SOCKETIO_REDIS_PORT})
     with subprocess.Popen(
-        ["/bin/bash", "test.sh", str(output_path.absolute())], 
+        command,
+        # ["/bin/bash", "test.sh", str(output_path.absolute())], 
         # bufsize=1, 
         stdout=subprocess.PIPE, 
         stderr=subprocess.PIPE
@@ -73,7 +78,7 @@ def execute(
                 stderr_line = process.stderr.readline().decode("utf-8")
             stdout_data = stdout_line + stderr_line
             logfile.write(stdout_data)
-            io.Emit('stdout', stdout_data)
+            io.To(job_id).Emit('stdout', stdout_data)
     
     logfile.close()
     
@@ -86,7 +91,7 @@ def execute(
         s3_object_names[file.name]=s3_object_name
     
     # Delete the job directory and all its contents
-    # shutil.rmtree(str(path.absolute()))
+    shutil.rmtree(str(path.absolute()))
     
     # Send the final Signal to the monitor that the job is complete
     io.Emit('EOP', "This is finished !")
