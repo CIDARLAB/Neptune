@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "primitives-server"
+		},
+		{
+			"path": "job-runner"
+		},
+		{
+			"path": "pyfluigi"
+		}
+	],
+	"settings": {}
+}
