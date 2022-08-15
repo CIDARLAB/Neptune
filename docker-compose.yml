@@ -1,6 +1,21 @@
 version: "3"
 services:
     
+    neptune:
+      build: 
+        context: .
+      ports:
+        - 8080:8080
+        - 3000:3000
+      links:
+        - "backend_database"
+      depends_on:
+        - "s3local"
+        - "broker"
+        - "primitives-server"
+        - "worker"
+        - "backend_database"
+
     s3local:
       image: minio/minio
       ports:
