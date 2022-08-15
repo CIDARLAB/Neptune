@@ -64,7 +64,7 @@ RUN curl -sL --location https://deb.nodesource.com/setup_15.x | bash -
 RUN apt-get -y install nodejs
 
 # Pyenv for our baseline python environment for poetry later on.
-RUN git clone git://github.com/yyuu/pyenv.git .pyenv
+RUN git clone https://github.com/yyuu/pyenv.git .pyenv
 RUN git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 
 ENV HOME  /
@@ -117,8 +117,3 @@ ADD start.sh .
 EXPOSE 3000
 EXPOSE 8080
 CMD ["sh", "start.sh"]
-
-
-
-
-
