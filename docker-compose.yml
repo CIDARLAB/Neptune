@@ -64,6 +64,7 @@ services:
         - broker
         - backend-database
         - s3local
+        - primitives-server
       restart: unless-stopped
       networks:
         - main_network

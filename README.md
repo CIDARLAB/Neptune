@@ -35,3 +35,14 @@ docker run -i containername:dev --env-file=myenvfile
 ```bash
 docker exec -ti <container name> /bin/bash
 ```
+
+#### Running Pritives-Server Service
+
+Typically when one needs to convert MINT files to JSON, one needs to run the Pritives-Server service to pull component parameters from the 3DuF Implementation
+
+```bash
+docker-compose up primitives-server
+```
+
+This server can then be accessed at `http://localhost:6060`
+
