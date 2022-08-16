@@ -4,17 +4,30 @@ services:
     neptune:
       build: 
         context: .
+        dockerfile: Dockerfile
       ports:
         - 8080:8080
         - 3000:3000
-      links:
-        - "backend_database"
       depends_on:
         - "s3local"
         - "broker"
-        - "primitives-server"
         - "worker"
-        - "backend_database"
+        - "backend-database"
+      environment:
+        MONGO_HOST: ${MONGO_HOST}
+        MONGO_PORT: ${MONGO_PORT}
+        MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+        MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+        NEPTUNE_MONGODB_DBNAME: ${NEPTUNE_MONGODB_DBNAME}
+        NEPTUNE_SESSIONSECRET: ${NEPTUNE_SESSIONSECRET}
+        SOCKETIO_REDIS_HOST: ${SOCKETIO_REDIS_HOST}
+        SOCKETIO_REDIS_PORT: ${SOCKETIO_REDIS_PORT}
+        AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+        AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+        AWS_S3_BUCKET_NAME: ${AWS_S3_BUCKET_NAME}
+        AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL}
+      networks:
+        - "main_network"
 
     s3local:
       image: minio/minio

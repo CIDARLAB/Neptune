@@ -9,8 +9,8 @@ var remove = require("rimraf");
 var Job = require("../models/job");
 
 var io_emitter = require("socket.io-emitter")({
-    host: process.env["NEPTUNE_REDIS_HOST"],
-    port: process.env["NEPTUNE_REDIS_PORT"],
+    host: process.env["SOCKETIO_REDIS_HOST"],
+    port: process.env["SOCKETIO_REDIS_PORT"],
 });
 
 const getAllFiles = function (dirPath, arrayOfFiles) {

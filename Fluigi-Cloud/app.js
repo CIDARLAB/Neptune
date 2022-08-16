@@ -51,9 +51,20 @@ app.use(function onError(err, req, res, next) {
 
 global.Neptune_ROOT_DIR = __dirname;
 
-var configDB = process.env["NEPTUNE_MONGOURL"];
+//mongodb://root:rootpassword@backend_database:27017
+
+var mongoDBUserName = process.env.MONGO_INITDB_ROOT_USERNAME;
+var mongoDBPassword = process.env.MONGO_INITDB_ROOT_PASSWORD;
+var mongoDBHost = process.env.MONGO_HOST;
+var mongoDBPort = process.env.MONGO_PORT;
+var neptuneMongoDBName = process.env.NEPTUNE_MONGODB_DBNAME;
+
+var configDB = `mongodb://${mongoDBUserName}:${mongoDBPassword}@${mongoDBHost}:${mongoDBPort}`;
+
+console.log("Connecting to MongoDB: " + configDB);
 mongoose
     .connect(configDB, {
+        dbName: neptuneMongoDBName,
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useFindAndModify: false,
@@ -320,12 +331,15 @@ app.listen(8080, function () {
 });
 
 /**************** SOCKETIO-REDIS ****************/
+
+console.log("Starting socket.io");
+console.log("Redis host: " + process.env["SOCKETIO_REDIS_HOST"]);
 var io = require("socket.io")(3000);
 var redis = require("socket.io-redis");
 io.adapter(
     redis({
-        host: process.env["NEPTUNE_REDIS_HOST"],
-        port: process.env["NEPTUNE_REDIS_PORT"],
+        host: process.env["SOCKETIO_REDIS_HOST"],
+        port: process.env["SOCKETIO_REDIS_PORT"],
     })
 );
 
@@ -352,10 +366,10 @@ io.sockets.on("connection", function (socket) {
 /**************** CHECKS IF S3 BUCKET EXISTS ***********/
 
 AWS.config.update({
-    accessKeyId: process.env["NEPTUNE_AWSID"],
-    secretAccessKey: process.env["NEPTUNE_AWSKEY"],
+    accessKeyId: process.env["AWS_ACCESS_KEY_ID"],
+    secretAccessKey: process.env["AWS_SECRET_ACCESS_KEY"],
 });
-var Target_BUCKET_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+var Target_BUCKET_ID = process.env["AWS_S3_BUCKET_NAME"];
 
 var s3 = new AWS.S3();
 s3.headBucket({ Bucket: Target_BUCKET_ID })
