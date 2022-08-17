@@ -12,12 +12,15 @@ const Job = require("../models/job");
 const User = require("../models/user");
 
 AWS.config.update({
-    accessKeyId: process.env["NEPTUNE_AWSID"],
-    secretAccessKey: process.env["NEPTUNE_AWSKEY"],
+    accessKeyId: process.env["AWS_ACCESS_KEY_ID"],
+    secretAccessKey: process.env["AWS_SECRET_ACCESS_KEY"],
+    endpoint: process.env["AWS_ENDPOINT_URL"],
 });
-const Target_BUCKET_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+const TARGET_BUCKET_ID = process.env["AWS_S3_BUCKET_NAME"];
 
 const s3 = new AWS.S3();
+
+exports.s3Instance = s3;
 
 /*
  Amazon Web Services Management Exports
@@ -26,7 +29,7 @@ exports.Create_Bucket_Object = function (file, text) {
     var Target_Object_KEY = file._id.toString();
     var Target_Object_BODY = text;
     var Parameters = {
-        Bucket: Target_BUCKET_ID,
+        Bucket: TARGET_BUCKET_ID,
         Key: Target_Object_KEY,
         Body: Target_Object_BODY,
         ACL: "public-read",
@@ -41,7 +44,7 @@ exports.Create_Bucket_Object = function (file, text) {
     });
 };
 exports.Read_Bucket_Object = function (req, res) {
-    var Target_Bucket_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+    var Target_Bucket_ID = process.env["AWS_S3_BUCKET_NAME"];
     var Target_Object_KEY = req.body.Target_Object_KEY;
     var Parameters = {
         Bucket: Target_Bucket_ID,
@@ -80,7 +83,7 @@ exports.Read_Bucket_Object = function (req, res) {
     // res.send(download);
 };
 exports.Update_Bucket_Object = function (req, res) {
-    var Target_Bucket_ID = process.env["NEPTUNE_S3_BUCKET_ID"]; //req.body.Target_Bucket_ID;
+    var Target_Bucket_ID = process.env["AWS_S3_BUCKET_NAME"]; //req.body.Target_Bucket_ID;
     var Target_Object_KEY = req.body.Target_Object_KEY;
     var Target_Object_STREAM = req.body.Target_Object_STREAM;
 
@@ -120,7 +123,7 @@ exports.Delete_Bucket_Object = function (req, res) {
 };
 
 exports.preCompileFileTransfer = function (req, res) {
-    var Target_Bucket_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+    var Target_Bucket_ID = process.env["AWS_S3_BUCKET_NAME"];
 
     var transferType = req.body.transferType;
     switch (transferType) {
@@ -196,7 +199,7 @@ exports.preCompileFileTransfer = function (req, res) {
 };
 
 exports.preMMFileTransfer = async function (req, res, next) {
-    var Target_Bucket_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+    var Target_Bucket_ID = process.env["AWS_S3_BUCKET_NAME"];
 
     var lfrpath = req.body.sourcefileid;
     var configpath = req.body.configfileid;
@@ -293,7 +296,7 @@ exports.preMMFileTransfer = async function (req, res, next) {
     });
 };
 exports.preFluigiFileTransfer = async function (req, res, next) {
-    var Target_Bucket_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+    var Target_Bucket_ID = process.env["AWS_S3_BUCKET_NAME"];
 
     var mintpath = req.body.sourcefileid;
     var inipath = req.body.configfileid;
@@ -393,7 +396,7 @@ exports.preFluigiFileTransfer = async function (req, res, next) {
 };
 
 exports.getS3Text = function (req, res) {
-    var Target_BUCKET_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+    var Target_BUCKET_ID = process.env["AWS_S3_BUCKET_NAME"];
     var Target_Object_KEY = req.query.id;
     var Parameters = {
         Bucket: Target_BUCKET_ID,

@@ -10,19 +10,14 @@ var mkdirp = require("mkdirp");
 var jsonfile = require("jsonfile");
 var mongoose = require("mongoose");
 var fs = require("fs");
-var AWS = require("aws-sdk");
-
+var AWS_S3 = require("./AWS_S3");
 var User = require("../models/user");
 var Workspace = require("../models/workspace");
 var File = require("../models/file");
 var Job = require("../models/job");
 
-AWS.config.update({
-    accessKeyId: process.env["NEPTUNE_AWSID"],
-    secretAccessKey: process.env["NEPTUNE_AWSKEY"],
-});
 
-var s3 = new AWS.S3();
+var s3 = AWS_S3.s3Instance;
 
 exports.Create_User = async function (req, res) {
     var User = require("../models/user");
@@ -551,7 +546,7 @@ exports.updateFile = function (req, res) {
             res.sendStatus(500);
             throw err;
         }
-        var Target_Bucket_ID = process.env["NEPTUNE_S3_BUCKET_ID"];
+        var Target_Bucket_ID = process.env["AWS_S3_BUCKET_NAME"];
         var Target_Object_KEY = data._id.toString();
         var Target_Object_STREAM = req.body.text;
 

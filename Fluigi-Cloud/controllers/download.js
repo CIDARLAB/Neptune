@@ -6,7 +6,6 @@ var mkdirp = require('mkdirp');
 var jsonfile = require('jsonfile');
 var mongoose = require('mongoose');
 var fs = require('fs');
-var AWS = require('aws-sdk');
 var remove = require('rimraf');
 var User = require('../models/user');
 var Workspace = require('../models/workspace');
@@ -14,17 +13,14 @@ var File = require('../models/file');
 var Job = require('../models/job');
 var zip = require('express-zip');
 
-AWS.config.update({
-    accessKeyId: process.env['NEPTUNE_AWSID'],
-    secretAccessKey: process.env['NEPTUNE_AWSKEY']
-});
+var AWS_S3 = require('./AWS_S3');
 
-var s3 = new AWS.S3();
+var s3 = AWS_S3.s3Instance;
 
 exports.downloadFile = function(req, res) {
 
     var Target_Object_KEY = req.query.id.toString();
-    var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+    var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
     var fileName = req.query.name.toString();
 
     var Parameters = {
@@ -61,7 +57,7 @@ exports.downloadFile = function(req, res) {
 // Deprecated Notes and functions
 // ---------------------------------------
 // body = function getS3Text(key) {
-//     var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+//     var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
 //     var Target_Object_KEY = key;
 //     var Parameters = {
 //         Bucket: Target_BUCKET_ID,

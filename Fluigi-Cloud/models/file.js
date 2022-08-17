@@ -1,16 +1,10 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var AWS = require('aws-sdk');
 var AWS_S3 = require('../controllers/AWS_S3');
 var fs = require('fs');
 var path = require('path');
 
-AWS.config.update({
-    accessKeyId: process.env['NEPTUNE_AWSID'],
-    secretAccessKey: process.env['NEPTUNE_AWSKEY']
-});
-var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
-var s3 = new AWS.S3({ signatureVersion: 'v4' });
+var s3 = AWS_S3.s3Instance;
 
 var fileSchema = new Schema({
     name: String,
@@ -31,7 +25,7 @@ fileSchema.methods.createAndUploadDefaultS3File = function createS3File_and_link
         fs.readFile(path.join(global.Neptune_ROOT_DIR, 'content', 'sample.lfr'), function (err, data) {
             if (err) console.log(err);
             text = data;
-            var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+            var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
             var Target_Object_KEY = me._id.toString();
             var Target_Object_BODY = text;
 
@@ -53,7 +47,7 @@ fileSchema.methods.createAndUploadDefaultS3File = function createS3File_and_link
         fs.readFile(path.join(global.Neptune_ROOT_DIR, 'content', 'ucf.json'), function (err, data) {
             if (err) console.log(err);
             text = data;
-            var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+            var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
             var Target_Object_KEY = me._id.toString();
             var Target_Object_BODY = text;
 
@@ -75,7 +69,7 @@ fileSchema.methods.createAndUploadDefaultS3File = function createS3File_and_link
         fs.readFile(path.join(global.Neptune_ROOT_DIR, 'content', 'sample.uf'), function (err, data) {
             if (err) console.log(err);
             text = data;
-            var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+            var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
             var Target_Object_KEY = me._id.toString();
             var Target_Object_BODY = text;
 
@@ -97,7 +91,7 @@ fileSchema.methods.createAndUploadDefaultS3File = function createS3File_and_link
         fs.readFile(path.join(global.Neptune_ROOT_DIR, 'content', 'config.ini'), function (err, data) {
             if (err) console.log(err);
             text = data;
-            var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+            var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
             var Target_Object_KEY = me._id.toString();
             var Target_Object_BODY = text;
 
@@ -118,7 +112,7 @@ fileSchema.methods.createAndUploadDefaultS3File = function createS3File_and_link
     } else {
 
         text = '// Created By:__________ \n// Created On: ' + timeStamp;
-        var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+        var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
         var Target_Object_KEY = me._id.toString();
         var Target_Object_BODY = text;
 
@@ -145,7 +139,7 @@ fileSchema.methods.createAndUploadEmptyS3File = function createS3File_and_linkTo
     var timeStamp = dateFormat(now, "dddd, mmmm dS, yyyy, h:MM:ss TT");
     var text = '// Created By:__________ \n// Created On: ' + timeStamp;
 
-    var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+    var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
     var Target_Object_KEY = this._id.toString();
     var Target_Object_BODY = text;
     console.log("Bucket key:" + Target_BUCKET_ID);
@@ -169,7 +163,7 @@ fileSchema.methods.createAndUploadEmptyS3File = function createS3File_and_linkTo
 
 fileSchema.methods.createAndUploadS3File = async function createAndUploadS3File(text) {
 
-    var Target_BUCKET_ID = process.env['NEPTUNE_S3_BUCKET_ID'];
+    var Target_BUCKET_ID = process.env['AWS_S3_BUCKET_NAME'];
     var Target_Object_KEY = this._id.toString();
 
     //TODO:This is a shitty fix incase there is no text present, this should be more elegant
