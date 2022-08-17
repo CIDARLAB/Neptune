@@ -15,6 +15,7 @@ Flask-RESTful = "^0.3.9"
 Flask-Bcrypt = "^1.0.1"
 Flask-JWT-Extended = "^4.4.4"
 flask-mongoengine = "^1.0.0"
+celery = "^5.2.7"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"
