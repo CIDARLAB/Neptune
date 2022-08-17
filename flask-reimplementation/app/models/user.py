@@ -8,5 +8,5 @@ class User(Document):
     password = StringField(required=True)
     created_at = DateTimeField(default=datetime.utcnow)
     updated_at = DateTimeField(default=datetime.utcnow)
-    workspaces = ListField(ReferenceField(Workspace))
-    jobs = ListField(ReferenceField(Job))
+    workspaces = ListField(ReferenceField(Workspace), default=[])
+    jobs = ListField(ReferenceField(Job), default=[])
