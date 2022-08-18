@@ -16,14 +16,17 @@ class AuthenticationController:
             return {'error': 'Invalid credentials'}, 401
         
         expires = datetime.timedelta(days=7)
-        access_token = create_access_token(identity=str(user.user_id), expires_delta=expires)
+        access_token = create_access_token(identity=str(user.id), expires_delta=expires)
         
-        return {'token': access_token, 'user_id': user.user_id}, 200
+        return {'token': access_token}, 200
     
     def update_password(request_body):
         
         # Update the password of a user
+        old_password = request_body['old_password']
         user = User.objects.get(email=request_body['email'])
+        if not user.check_password(old_password):
+            return {'error': 'Invalid credentials'}, 401
         user.password = request_body['password']
         return {'message': 'Password updated successfully'}, 201
     

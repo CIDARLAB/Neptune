@@ -13,8 +13,8 @@ class User(Document):
     jobs = ListField(ReferenceField(Job), default=[])
     
     
-    def hash_password(self):
+    def hash_password(self) -> None:
         self.password = generate_password_hash(self.password).decode('utf8')
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
+    def check_password(self, test_password) -> bool:
+        return check_password_hash(self.password, test_password)

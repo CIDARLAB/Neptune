@@ -11,6 +11,7 @@ from app.parameters import (
     MONGODB_USER,
     MONGODB_PASSWORD
 )
+from app.resources.login import Login
 from app.resources.signup import Signup
 
 
@@ -30,7 +31,7 @@ api_blueprint = Blueprint('api', __name__)
 api = Api(api_blueprint)
 # Adding the resources
 api.add_resource(Signup,'/api/v2/register')
-
+api.add_resource(Login,'/api/v2/login')
 
 path =   os.path.abspath("./static/")
 print(path)

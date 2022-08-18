@@ -14,12 +14,18 @@ class Signup(Resource):
         if not password:
             return {"msg": "Missing password parameter"}, 400
 
-        user = User.objects.get(email=email)
+        # TODO- Find a more elegant way to do this
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            user = None
+
         if user:
             return {"msg": "User already exists"}, 400
 
-        new_user = User(username=email, password=password)
+        new_user = User(email=email, password=password)
+        new_user.hash_password()
         new_user.save()
         
-        return {"msg": "User created successfully", "user_id": new_user.user_id}, 200
+        return {"msg": "User created successfully", "user_id": str(new_user.id)}, 200
     
