@@ -7,16 +7,34 @@ import mongoengine
 from app.parameters import (
     MONGO_HOST,
     MONGO_PORT,
-    MONGO_NEPTUNE_DB,
+    NEPTUNE_MONGODB_DBNAME,
     MONGODB_USER,
     MONGODB_PASSWORD
 )
+from app.resources.file import FileAPI
+from app.resources.login import Login
+from app.resources.signup import Signup
+from app.resources.workspace import WorkspaceAPI
+from app.resources.user import UserAPI
 
 # Setting up the basic blueprint
 api_blueprint = Blueprint('api', __name__)
 api = Api(api_blueprint)
+
 # Adding the resources
-# TODO - do the thing
+api.add_resource(Signup,'/api/v2/register')
+api.add_resource(Login,'/api/v2/login')
+api.add_resource(FileAPI.Base, '/api/v2/file')
+api.add_resource(FileAPI.Copy, '/api/v2/file/copy')
+api.add_resource(FileAPI.FileSystem, '/api/v2/file/fs')
+api.add_resource(UserAPI, '/api/v2/user')
+api.add_resource(WorkspaceAPI.Base, '/api/v2/workspace')
+api.add_resource(WorkspaceAPI.Zip, '/api/v2/workspace/zipfs')
+api.add_resource(JobAPI.Base, '/api/v2/job')
+api.add_resource(JobAPI.Zip, '/api/v2/job/zipfs')
+api.add_resource(CompileAPI.LFR, '/api/v2/compile/lfr')
+api.add_resource(CompileAPI.MINT, '/api/v2/compile/mint')
+
 
 
 path =   os.path.abspath("./static/")
@@ -47,7 +65,7 @@ def index():
 def connect_to_mongodb():
     print("Connecting to MongoDB")
     mongoengine.connect(
-        db=MONGO_NEPTUNE_DB,
+        db=NEPTUNE_MONGODB_DBNAME,
         host=MONGO_HOST,
         port=MONGO_PORT,
         username=MONGODB_USER,
