@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "pyfluigi"
+		},
+		{
+			"path": "flask-reimplementation"
 		}
 	],
 	"settings": {}
