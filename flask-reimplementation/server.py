@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask, jsonify
+from flask import Blueprint, Flask, jsonify, send_from_directory
 from flask_restful import Api
 import os
 from flask_bcrypt import Bcrypt
@@ -51,10 +51,15 @@ jwt = JWTManager(flask_app)
 
 # Importing the resources
 
+@flask_app.route('/')
+def index():
+    return send_from_directory(path, 'index.html')
+
 # Serve the static files
 @flask_app.route('/<path:path>')
 def static_dir(path):
-    return flask_app.send_static_file(path)
+    print("Serving static file", path)
+    return send_from_directory("static", path)
 
 
 @flask_app.route('/echo/<input_string>')
