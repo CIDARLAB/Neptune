@@ -16,6 +16,7 @@ from app.resources.login import Login
 from app.resources.signup import Signup
 from app.resources.workspace import WorkspaceAPI
 from app.resources.user import UserAPI
+from app.resources.job import JobAPI
 
 # Setting up the basic blueprint
 api_blueprint = Blueprint('api', __name__)
