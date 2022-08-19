@@ -3,6 +3,7 @@ from flask_restful import Api
 import os
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 import mongoengine
 from app.parameters import (
     MONGO_HOST,
@@ -17,6 +18,7 @@ from app.resources.signup import Signup
 from app.resources.workspace import WorkspaceAPI
 from app.resources.user import UserAPI
 from app.resources.job import JobAPI
+from app.resources.compile import CompileAPI
 
 # Setting up the basic blueprint
 api_blueprint = Blueprint('api', __name__)
@@ -28,14 +30,13 @@ api.add_resource(Login,'/api/v2/login')
 api.add_resource(FileAPI.Base, '/api/v2/file')
 api.add_resource(FileAPI.Copy, '/api/v2/file/copy')
 api.add_resource(FileAPI.FileSystem, '/api/v2/file/fs')
-api.add_resource(UserAPI, '/api/v2/user')
 api.add_resource(WorkspaceAPI.Base, '/api/v2/workspace')
 api.add_resource(WorkspaceAPI.Zip, '/api/v2/workspace/zipfs')
 api.add_resource(JobAPI.Base, '/api/v2/job')
 api.add_resource(JobAPI.Zip, '/api/v2/job/zipfs')
 api.add_resource(CompileAPI.LFR, '/api/v2/compile/lfr')
 api.add_resource(CompileAPI.MINT, '/api/v2/compile/mint')
-
+api.add_resource(UserAPI, '/api/v2/user')
 
 
 path =   os.path.abspath("./static/")
@@ -74,19 +75,23 @@ def connect_to_mongodb():
     )
 
 def connect_to_redis():
-    print("Connecting to Redis")
+    # print("Connecting to Redis")
+    pass
     
 def connect_to_s3():
-    print("Connecting to S3")
+    # print("Connecting to S3")
+    pass
     
 def connect_to_celery():
-    print("Connecting to Celery")
+    # print("Connecting to Celery")
+    pass
     
 def setup_socketio(flask_app):
-    print("Setting up SocketIO")
+    # print("Setting up SocketIO")
+    pass
 
 if __name__ == "__main__":
-    connect_to_mongodb()
+    # connect_to_mongodb()
     connect_to_celery()
     connect_to_redis()
     setup_socketio(flask_app)

@@ -28,17 +28,22 @@ class FileAPI:
         
     class Copy(Resource):
         def post(self):
+            if request is None:
+                return {'error': 'Could not copy file, no input data recieved'}, 400
             file_id = request.get_json()['file_id']
             file = File.objects.get(id=file_id)
             new_file = file.copy()
             return {'message': 'File copied successfully', 'file_id': str(new_file.id)}, 200
         
-    class FileSystems(Resource):
+    class FileSystem(Resource):
         def get(self, file_id):
             file = File.objects.get(id=file_id)
             return file.get_file_systems(), 200
         
         def post(self):
+            if request is None:
+                return {'error': 'Could not create file system, no input data recieved'}, 400
+            
             file_id = request.get_json()['file_id']
             file_system_id = request.get_json()['file_system_id']
             file = File.objects.get(id=file_id)
