@@ -90,7 +90,7 @@ def setup_socketio(flask_app):
     print("Setting up SocketIO")
 
 if __name__ == "__main__":
-    connect_to_mongodb()
+    # connect_to_mongodb()
     connect_to_celery()
     connect_to_redis()
     setup_socketio(flask_app)

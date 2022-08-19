@@ -3,7 +3,7 @@ from flask_restful import Resource
 from flask import request
 
 class FileAPI:
-    class Base(Resource):
+    class FileBase(Resource):
         def get(self, file_id):
             file = File.objects.get(id=file_id)
             return file.to_json(), 200
@@ -26,7 +26,7 @@ class FileAPI:
             file.update(request.get_json())
             return {'message': 'File updated successfully'}, 200
         
-    class Copy(Resource):
+    class FileCopy(Resource):
         def post(self):
             if request is None:
                 return {'error': 'Could not copy file, no input data recieved'}, 400
@@ -35,7 +35,7 @@ class FileAPI:
             new_file = file.copy()
             return {'message': 'File copied successfully', 'file_id': str(new_file.id)}, 200
         
-    class FileSystem(Resource):
+    class FileFileSystem(Resource):
         def get(self, file_id):
             file = File.objects.get(id=file_id)
             return file.get_file_systems(), 200

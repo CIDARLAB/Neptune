@@ -1,4 +1,4 @@
-from flask import Blueprint, Flask
+from flask import Blueprint, Flask, jsonify, send_from_directory
 from flask_restful import Api
 import os
 from flask_bcrypt import Bcrypt
@@ -21,27 +21,28 @@ from app.resources.job import JobAPI
 from app.resources.compile import CompileAPI
 
 # Setting up the basic blueprint
-api_blueprint = Blueprint('api', __name__)
+api_blueprint = Blueprint('api', __name__, )
 api = Api(api_blueprint)
 
 # Adding the resources
 api.add_resource(Signup,'/api/v2/register')
 api.add_resource(Login,'/api/v2/login')
-api.add_resource(FileAPI.Base, '/api/v2/file')
-api.add_resource(FileAPI.Copy, '/api/v2/file/copy')
-api.add_resource(FileAPI.FileSystem, '/api/v2/file/fs')
-api.add_resource(WorkspaceAPI.Base, '/api/v2/workspace')
-api.add_resource(WorkspaceAPI.Zip, '/api/v2/workspace/zipfs')
-api.add_resource(JobAPI.Base, '/api/v2/job')
-api.add_resource(JobAPI.Zip, '/api/v2/job/zipfs')
+api.add_resource(FileAPI.FileBase, '/api/v2/file')
+api.add_resource(FileAPI.FileCopy, '/api/v2/file/copy')
+api.add_resource(FileAPI.FileFileSystem, '/api/v2/file/fs')
+api.add_resource(WorkspaceAPI.WorkspaceBase, '/api/v2/workspace')
+api.add_resource(WorkspaceAPI.WorkspaceZip, '/api/v2/workspace/zipfs')
+api.add_resource(JobAPI.JobBase, '/api/v2/job')
+api.add_resource(JobAPI.JobZip, '/api/v2/job/zipfs')
 api.add_resource(CompileAPI.LFR, '/api/v2/compile/lfr')
 api.add_resource(CompileAPI.MINT, '/api/v2/compile/mint')
-api.add_resource(UserAPI, '/api/v2/user')
+# api.add_resource(UserAPI, '/api/v2/user')
 
 
 path =   os.path.abspath("./static/")
 print(path)
-flask_app = Flask(__name__, static_folder=path)
+flask_app = Flask(__name__, static_url_path="/", static_folder=path)
+CORS(flask_app)
 
 # Registering the blueprint
 flask_app.register_blueprint(api_blueprint)
@@ -59,9 +60,26 @@ jwt = JWTManager(flask_app)
 # Importing the resources
 
 # Serve the static files
-@flask_app.route('/')
-def index():
-    return flask_app.send_static_file('index.html')
+# @flask_app.route('/')
+# def index():
+#     return flask_app.send_static_file('index.html')
+
+# # Serve the static files
+# @flask_app.route('/<path:path>')
+# def static_dir(path):
+#     print("Serving static file", path)
+#     return send_from_directory("static", path)
+
+# @flask_app.route('/echo/<input_string>')
+# def echo(input_string: str) -> str:
+#     '''
+#     Simple call and response API Function
+#     '''
+#     return jsonify(
+#         {
+#             "Input String": f'{input_string}'
+#         }
+#     )
 
 
 def connect_to_mongodb():

@@ -4,7 +4,7 @@ from flask_restful import Resource
 
 class WorkspaceAPI:
     
-    class Base(Resource):
+    class WorkspaceBase(Resource):
         def get(self, workspace_id):
             workspace = Workspace.objects.get(id=workspace_id)
             return workspace.to_json(), 200
@@ -27,7 +27,7 @@ class WorkspaceAPI:
             workspace.update(request.get_json())
             return {'message': 'Workspace updated successfully'}, 200
         
-    class Zip(Resource):
+    class WorkspaceZip(Resource):
         def get(self, workspace_id):
             workspace = Workspace.objects.get(id=workspace_id)
             return workspace.get_zip(), 200
