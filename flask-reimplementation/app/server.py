@@ -27,7 +27,7 @@ api = Api(api_blueprint)
 # Adding the resources
 api.add_resource(Signup,'/api/v2/register')
 api.add_resource(Login,'/api/v2/login')
-api.add_resource(FileAPI.FileBase, '/api/v2/file')
+api.add_resource(FileAPI.FileBase, '/api/v2/file/<string:file_id>')
 api.add_resource(FileAPI.FileCopy, '/api/v2/file/copy')
 api.add_resource(FileAPI.FileFileSystem, '/api/v2/file/fs')
 api.add_resource(WorkspaceAPI.WorkspaceBase, '/api/v2/workspace')
@@ -36,7 +36,7 @@ api.add_resource(JobAPI.JobBase, '/api/v2/job')
 api.add_resource(JobAPI.JobZip, '/api/v2/job/zipfs')
 api.add_resource(CompileAPI.LFR, '/api/v2/compile/lfr')
 api.add_resource(CompileAPI.MINT, '/api/v2/compile/mint')
-# api.add_resource(UserAPI, '/api/v2/user')
+api.add_resource(UserAPI, '/api/v2/user')
 
 
 path =   os.path.abspath("./static/")
@@ -56,30 +56,22 @@ flask_app.config['JWT_BLACKLIST_ENABLED'] = True
 jwt = JWTManager(flask_app)
 
 
-
-# Importing the resources
-
 # Serve the static files
-# @flask_app.route('/')
-# def index():
-#     return flask_app.send_static_file('index.html')
+@flask_app.route('/')
+def index():
+    return flask_app.send_static_file('index.html')
 
-# # Serve the static files
-# @flask_app.route('/<path:path>')
-# def static_dir(path):
-#     print("Serving static file", path)
-#     return send_from_directory("static", path)
 
-# @flask_app.route('/echo/<input_string>')
-# def echo(input_string: str) -> str:
-#     '''
-#     Simple call and response API Function
-#     '''
-#     return jsonify(
-#         {
-#             "Input String": f'{input_string}'
-#         }
-#     )
+@flask_app.route('/echo/<input_string>')
+def echo(input_string: str) -> str:
+    '''
+    Simple call and response API Function
+    '''
+    return jsonify(
+        {
+            "Input String": f'{input_string}'
+        }
+    )
 
 
 def connect_to_mongodb():
@@ -108,8 +100,12 @@ def setup_socketio(flask_app):
     # print("Setting up SocketIO")
     pass
 
+
+connect_to_mongodb()
+
+
 if __name__ == "__main__":
-    # connect_to_mongodb()
+    connect_to_mongodb()
     connect_to_celery()
     connect_to_redis()
     setup_socketio(flask_app)

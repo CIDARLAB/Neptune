@@ -4,10 +4,12 @@ import boto3
 from pprint import pprint
 from pathlib import Path
 
-from job_runner.setting import AWS_ENDPOINT_URL, AWS_S3_BUCKET_NAME
+from job_runner.setting import AWS_ACCESS_KEY_ID, AWS_ENDPOINT_URL, AWS_S3_BUCKET_NAME, AWS_SECRET_ACCESS_KEY
 
 S3_CLIENT = boto3.client(
         "s3",
+        aws_access_key_id=AWS_ACCESS_KEY_ID,
+        aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
         endpoint_url=AWS_ENDPOINT_URL
     )
 

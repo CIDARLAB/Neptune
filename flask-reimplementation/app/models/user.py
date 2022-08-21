@@ -18,3 +18,8 @@ class User(Document):
 
     def check_password(self, test_password) -> bool:
         return check_password_hash(self.password, test_password)
+
+
+    def save(self, *args, **kwargs):
+        self.modified_date = datetime.now()
+        return super(User, self).save(*args, **kwargs)

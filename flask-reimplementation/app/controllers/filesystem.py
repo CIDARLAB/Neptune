@@ -4,17 +4,21 @@ import uuid
 import boto3
 from pathlib import Path
 
-from app.parameters import AWS_ENDPOINT_URL, AWS_S3_BUCKET_NAME
+from app.parameters import AWS_ACCESS_KEY_ID, AWS_ENDPOINT_URL, AWS_S3_BUCKET_NAME, AWS_SECRET_ACCESS_KEY
 
 
 
 S3_CLIENT = boto3.client(
     "s3",
-    endpoint_url=AWS_ENDPOINT_URL
+    aws_access_key_id = AWS_ACCESS_KEY_ID,
+    aws_secret_access_key = AWS_SECRET_ACCESS_KEY,
+    endpoint_url=AWS_ENDPOINT_URL,
+    
 )
 class FileSystem:
     
-    def upload_file(self, file_location: Path) -> None:
+    @staticmethod
+    def upload_file(file_location: Path) -> str:
         """ Uploads file to S3 bucket using S3 client object
 
         Args:
@@ -26,10 +30,12 @@ class FileSystem:
         s3_object_name = f"{str(uuid.uuid4())}-{file_name}"
         S3_CLIENT.upload_file(file_path, bucket_name, s3_object_name)
         
-        print(f"Uploaded {file_path} to {bucket_name}/{file_name}")
+        print(f"Uploaded {file_path} to {bucket_name}/{s3_object_name}")
+        
+        return s3_object_name
     
-    
-    def download_file(self, s3_location:str, download_location: Path) -> None:
+    @staticmethod
+    def download_file(s3_location:str, download_location: Path) -> None:
         """Downloads the file from the S3 bucket to the file system
 
         Args:
@@ -43,8 +49,8 @@ class FileSystem:
         
         print(f"Downloaded {s3_location} from {AWS_S3_BUCKET_NAME} to {download_location.absolute()}")
         
-    
-    def delete_file(self, s3_location:str) -> None:
+    @staticmethod
+    def delete_file(s3_location:str) -> None:
         """Deletes the file from the s3 bucket
 
         Args:
@@ -54,8 +60,8 @@ class FileSystem:
         
         print(f"Deleted {s3_location} from {AWS_S3_BUCKET_NAME}")
 
-    
-    def copy_file(self, s3_location:str) -> str:
+    @staticmethod
+    def copy_file(s3_location:str) -> str:
         """ Makes a copy of the file in the s3 bucket
 
         It generates a new UUID and preserves the same name

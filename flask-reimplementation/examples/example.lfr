@@ -1,0 +1,8 @@
+module test(
+    finput f1,
+    foutput o1
+);
+
+    assign o1 = f1;
+
+endmodule
