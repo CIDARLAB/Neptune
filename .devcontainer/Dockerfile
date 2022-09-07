@@ -26,7 +26,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 RUN pip install "poetry==$POETRY_VERSION"
 
 # # Pyenv for our baseline python environment for poetry later on.
-RUN git clone git://github.com/yyuu/pyenv.git .pyenv
+RUN git clone https://github.com/yyuu/pyenv.git .pyenv
 RUN git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
 
 ENV PYENV_ROOT $HOME/.pyenv
