@@ -20,7 +20,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
      python-dev libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
      libsqlite3-dev curl libffi-dev redis-server openjdk-8-jre-headless \
      graphviz libgraphviz-dev libcairo2-dev pkg-config python3-dev python3.8-venv \
-     python3-setuptools
+     python3-setuptools liblzma-dev
 
 
 RUN pip install "poetry==$POETRY_VERSION"
@@ -32,10 +32,14 @@ RUN git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.pyenv/plugins/pyen
 ENV PYENV_ROOT $HOME/.pyenv
 ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
 
+ENV PATH /root/.pyenv/bin:$PATH
+RUN command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+RUN eval "$(pyenv init -)"
+
 RUN pyenv install 3.8.0
 RUN pyenv global 3.8.0
 
-RUN poetry config virtualenvs.create false
+# RUN poetry config virtualenvs.create false
 RUN pip install --upgrade pip
 RUN pip install setuptools pygraphviz
 
