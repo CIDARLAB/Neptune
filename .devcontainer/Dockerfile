@@ -48,7 +48,4 @@ RUN pip install setuptools pygraphviz
 RUN curl -sL --location https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get -y install nodejs
 
-#Remove this later on
-RUN apt-get -y install redis-server
-
 
