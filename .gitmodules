@@ -7,3 +7,4 @@
 	path = pyfluigi
 	url = https://github.com/cidarlab/pyfluigi
 	branch = master
+	update = merge
