@@ -28,17 +28,6 @@ git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gi
 [Submodule Recipe Reference](https://gist.github.com/slavafomin/08670ec0c0e75b500edbaa5d43a5c93c)
 
 
-### How to Build
-
-Since there are there many packages in the project, building this project is going to be a pain. Use the docker to complete builds, but please be aware that this can take a substantial amount of time to build.
-
-TBA Rest of the guide...
-
-### Contact
-
-Reach out to [@rkrishnasanka](https://github.com/rkrishnasanka) for more details.
-
-
 ### Running individual services
 
 ```bash
@@ -49,13 +38,27 @@ docker run -i containername:dev --env-file=myenvfile
 docker exec -ti <container name> /bin/bash
 ```
 
-#### Running Pritives-Server Service
+### How to Mini-Guides
 
-Typically when one needs to convert MINT files to JSON, one needs to run the Pritives-Server service to pull component parameters from the 3DuF Implementation
+#### Converting MINT Benchmaks to Parchmint 
+
+In order to convert the benchmarks to ParchMint, you need to be able to use `pyfluigi` and `primitives-server`. In order to spawn a new instance of the Pritives-Server service to pull component parameters from the latest tracked 3DuF Implementation, you need to run the following command:
 
 ```bash
 docker-compose up primitives-server
 ```
 
-This server can then be accessed at `http://localhost:6060`
+This server can now be accessed at `http://localhost:6060` (You can verify this on the browser).
 
+Now setup the required environment for `pyfluigi` to run (Dedicated Docker Dev Environment Coming Soon). This can be done by running the following command:
+
+```bash
+cd pyfluigi
+poetry install
+poetry shell
+fluigi convert-to-parchmint <mint-file> --assign-terminals --generate-graph-view --outpath <output-location>
+```
+
+### Contact
+
+Reach out to [@rkrishnasanka](https://github.com/rkrishnasanka) for more details.
