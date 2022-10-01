@@ -2,6 +2,7 @@
 	path = primitives-server
 	url = https://github.com/cidarlab/3duf
 	branch = primitives-server
+	update = merge
 [submodule "pyfluigi"]
 	path = pyfluigi
 	url = https://github.com/cidarlab/pyfluigi
