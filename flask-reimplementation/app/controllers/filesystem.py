@@ -2,6 +2,7 @@ import os
 import uuid
 import boto3
 from pathlib import Path
+from botocore.exceptions import ClientError
 
 from app.parameters import AWS_ACCESS_KEY_ID, AWS_ENDPOINT_URL, AWS_S3_BUCKET_NAME, AWS_SECRET_ACCESS_KEY
 
@@ -14,8 +15,32 @@ S3_CLIENT = boto3.client(
     endpoint_url=AWS_ENDPOINT_URL,
     
 )
+
 class FileSystem:
-    
+    """Class to handle the virtual file system enabled by S3
+
+    It has the methods for uploading, downloading, deleteing and copying files
+
+    """
+
+    @staticmethod
+    def test_connection() -> bool:
+        """Test the connection to the S3 bucket
+
+        Returns:
+            bool: True if the connection is successful, False otherwise
+        """
+        try:
+            S3_CLIENT.head_bucket(Bucket=AWS_S3_BUCKET_NAME)
+            return True
+        except ClientError as e:
+            error_code = int(e.response['Error']['Code'])
+            if error_code == 403:
+                print(f"Private Bucket {AWS_S3_BUCKET_NAME}. Forbidden Access! ")
+            elif error_code == 404:
+                print(f"Bucket {AWS_S3_BUCKET_NAME}. Does Not Exist!")            
+            return False
+
     @staticmethod
     def upload_file(file_location: Path) -> str:
         """ Uploads file to S3 bucket using S3 client object

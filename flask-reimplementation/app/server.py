@@ -5,6 +5,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 import mongoengine
+from app.controllers.filesystem import FileSystem
 from app.parameters import (
     MONGO_HOST,
     MONGO_PORT,
@@ -63,7 +64,7 @@ def index():
 
 
 @flask_app.route('/echo/<input_string>')
-def echo(input_string: str) -> str:
+def echo(input_string: str) :
     '''
     Simple call and response API Function
     '''
@@ -89,7 +90,10 @@ def connect_to_redis():
     pass
     
 def connect_to_s3():
-    # print("Connecting to S3")
+    # Check if s3 connection is working
+    is_connected = FileSystem.test_connection()
+    if not is_connected:
+        print("S3 Connection Failed")
     pass
     
 def connect_to_celery():
@@ -102,10 +106,11 @@ def setup_socketio(flask_app):
 
 
 connect_to_mongodb()
-
+connect_to_s3()
 
 if __name__ == "__main__":
     connect_to_mongodb()
+    connect_to_s3()
     connect_to_celery()
     connect_to_redis()
     setup_socketio(flask_app)

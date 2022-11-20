@@ -1,5 +1,6 @@
 from pathlib import Path
 from flask_restful import Resource
+from app.controllers.authentication import AuthenticationController
 from app.models.user import User
 from app.models.workspace import Workspace
 from app.models.file import File
@@ -8,7 +9,9 @@ from flask import request
 import os
 
 class Signup(Resource):
+
     def post(self):
+
         if not request.is_json:
             return {"msg": "Missing JSON in request"}, 400
 
@@ -28,8 +31,21 @@ class Signup(Resource):
         if user:
             return {"msg": "User already exists"}, 400
 
-        new_user = User(email=email, password=password)
-        new_user.hash_password()
+        request_body = request.get_json()
+        if request_body is None:
+            return {'error': 'Could not create user, no input data recieved'}, 400
+
+        email=request_body['email'],
+        password=request_body['password'],
+        first_name=request_body['first_name'] if 'first_name' in request_body else None,
+        last_name=request_body['last_name'] if 'last_name' in request_body else None,
+
+        new_user = AuthenticationController.create_new_user(
+            email=email[0], 
+            password=password[0], 
+            first_name=first_name[0] if first_name else None,
+            last_name=last_name[0] if last_name else None
+        )
         
         # Create a new workspace called "Microfluidics Examples"
         new_workspace = Workspace(name="Microfluidics Examples")
@@ -57,6 +73,11 @@ class Signup(Resource):
         
         # Save the user        
         new_user.save()
+
+        auth_message, return_code, access_token = AuthenticationController.get_token(email=email[0], password=password[0])
+
+        if access_token is None:
+            return {'message': auth_message}, return_code
         
-        return {"msg": "User created successfully", "user_id": str(new_user.id)}, 200
+        return {'message': f'Created a new user successfully! {auth_message}', 'access_token': access_token}, 200
     

@@ -7,6 +7,8 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 class User(Document):
     email = EmailField(required=True, unique=True)
     password = StringField(required=True)
+    first_name = StringField(max_length=128)
+    last_name = StringField(max_length=128)
     created_at = DateTimeField(default=datetime.utcnow)
     updated_at = DateTimeField(default=datetime.utcnow)
     workspaces = ListField(ReferenceField(Workspace), default=[])
@@ -21,5 +23,5 @@ class User(Document):
 
 
     def save(self, *args, **kwargs):
-        self.modified_date = datetime.now()
+        self.updated_at = datetime.utcnow()
         return super(User, self).save(*args, **kwargs)
