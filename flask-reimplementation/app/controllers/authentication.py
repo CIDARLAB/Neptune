@@ -75,4 +75,55 @@ class AuthenticationController:
         user.save()
         return 'Password updated successfully', 201
     
-        
+    
+    @staticmethod
+    def check_user_workspace_access(user_id: str, workspace_id: str) -> bool:
+        """Checks if the user has access to the workspace
+
+        Args:
+            user_id (str): the id of the user
+            workspace_id (str): the id of the workspace
+
+        Returns:
+            bool: True if the user has access to the workspace, False otherwise
+        """        
+        user = User.objects.get(id=user_id)
+        for workspace in user.workspaces:
+            if str(workspace.id) == workspace_id:
+                return True
+        return False
+
+    @staticmethod
+    def check_user_job_access(user_id: str, job_id: str) -> bool:
+        """Checks if the user has access to the job
+
+        Args:
+            user_id (str): the id of the user
+            job_id (str): the id of the job
+
+        Returns:
+            bool: True if the user has access to the job, False otherwise
+        """        
+        user = User.objects.get(id=user_id)
+        for job in user.jobs:
+            if str(job.id) == job_id:
+                return True
+        return False
+    
+    @staticmethod
+    def check_user_file_access(user_id: str, file_id: str) -> bool:
+        """Checks if the user has access to the file
+
+        Args:
+            user_id (str): the id of the user
+            file_id (str): the id of the file
+
+        Returns:
+            bool: True if the user has access to the file, False otherwise
+        """        
+        user = User.objects.get(id=user_id)
+        for workspace in user.workspaces:
+            for file in workspace.files:
+                if str(file.id) == file_id:
+                    return True
+        return False

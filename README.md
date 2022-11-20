@@ -36,8 +36,8 @@ The top-level development environment for the repo is for developing the cloud b
 On launching the development containaer one can start the development using the following commands:
 
 #### Steps
-1. Goto the flask application directory and run `poetry install` to install the dependencies.
-2. Open the `server.py` file and run the debugger on it.
+1. Goto the flask application directory and run `poetry lock --no-update` to install the dependencies.
+2. Open the `server.py` file and run the debugger on it (Use the saved vscode debugger profile `Python: Flask`).
 3. Goto the Neptune-UI directory and run `npm ci` to install the dependencies.
 4. Run `npm run dev` frontend development server.
 

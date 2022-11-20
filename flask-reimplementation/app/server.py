@@ -1,3 +1,4 @@
+import pathlib
 from flask import Blueprint, Flask, jsonify, send_from_directory
 from flask_restful import Api
 import os
@@ -7,11 +8,13 @@ from flask_cors import CORS
 import mongoengine
 from app.controllers.filesystem import FileSystem
 from app.parameters import (
+    FLASK_DOWNLOADS_DIRECTORY,
     MONGO_HOST,
     MONGO_PORT,
     NEPTUNE_MONGODB_DBNAME,
     MONGODB_USER,
-    MONGODB_PASSWORD
+    MONGODB_PASSWORD,
+    FLASK_UPLOADS_DIRECTORY
 )
 from app.resources.file import FileAPI
 from app.resources.login import Login
@@ -30,7 +33,7 @@ api.add_resource(Signup,'/api/v2/register')
 api.add_resource(Login,'/api/v2/login')
 api.add_resource(FileAPI.FileBase, '/api/v2/file/<string:file_id>')
 api.add_resource(FileAPI.FileCopy, '/api/v2/file/copy')
-api.add_resource(FileAPI.FileFileSystem, '/api/v2/file/fs')
+api.add_resource(FileAPI.FileSystem, '/api/v2/file/fs')
 api.add_resource(WorkspaceAPI.WorkspaceBase, '/api/v2/workspace')
 api.add_resource(WorkspaceAPI.WorkspaceZip, '/api/v2/workspace/zipfs')
 api.add_resource(JobAPI.JobBase, '/api/v2/job')
@@ -75,6 +78,22 @@ def echo(input_string: str) :
     )
 
 
+def setup_fileio_directories():
+    print("Setting up FileIO Directories")
+    try:
+        # Check if the uploads directory exists and create if they don't
+        pathlib.Path(FLASK_UPLOADS_DIRECTORY).mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        print(f"Error creating uploads directory: {e}")
+
+    try:
+        # Check if downloads directory exists and create if they don't
+        pathlib.Path(FLASK_DOWNLOADS_DIRECTORY).mkdir(parents=True, exist_ok=True)
+    except Exception as e:
+        print(f"Error creating downloads directory: {e}")
+    
+    print("FileIO Directories Setup Complete")
+
 def connect_to_mongodb():
     print("Connecting to MongoDB")
     mongoengine.connect(
@@ -104,11 +123,12 @@ def setup_socketio(flask_app):
     # print("Setting up SocketIO")
     pass
 
-
+setup_fileio_directories()
 connect_to_mongodb()
 connect_to_s3()
 
 if __name__ == "__main__":
+    setup_fileio_directories()
     connect_to_mongodb()
     connect_to_s3()
     connect_to_celery()

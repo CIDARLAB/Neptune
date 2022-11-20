@@ -11,8 +11,13 @@ CELERY_INSTANCE = Celery(
 def compile_lfr():
     job_id = uuid4()
     result = CELERY_INSTANCE.send_task("compile_lfr", (job_id,))
-    
+
+    # Create a new job object and insert into the mongodb database
+    pass    
 
 def compile_mint():
     job_id = uuid4()
     result = CELERY_INSTANCE.send_task("compile_mint", (job_id,))
+
+    # Create a new job object and insert into the mongodb database
+    pass    
