@@ -21,10 +21,15 @@ import "./plugins/vee-validate";
 import "./plugins/vue-world-map";
 import vuetify from "./plugins/vuetify";
 import i18n from "./i18n";
-import VueSocketIO from "vue-socket.io";
+
 
 import * as Sentry from "@sentry/vue";
 import { Integrations } from "@sentry/tracing";
+
+import VueSocketIOExt from 'vue-socket.io-extended';
+import { io } from 'socket.io-client';
+
+
 
 Sentry.init({
   Vue,
@@ -39,18 +44,23 @@ Sentry.init({
 
 Vue.config.productionTip = false;
 
-Vue.use(
-  new VueSocketIO({
-    debug: true,
-    connection: "http://" + window.location.hostname + ":3000"
-    // vuex: {
-    //     store,
-    //     actionPrefix: 'SOCKET_',
-    //     mutationPrefix: 'SOCKET_'
-    // },
-    // options: { path: "/my-app/" } //Optional options
-  })
-);
+const socket = io('http://localhost:8080');
+
+Vue.use(VueSocketIOExt, socket);
+
+
+// Vue.use(
+//   new VueSocketIO({
+//     debug: true,
+//     connection: "localhost:8080" //"http://" + window.location.hostname
+//     // vuex: {
+//     //     store,
+//     //     actionPrefix: 'SOCKET_',
+//     //     mutationPrefix: 'SOCKET_'
+//     // },
+//     // options: { path: "/my-app/" } //Optional options
+//   })
+// );
 
 router.beforeEach((to, from, next) => {
   const authRequired = to.matched.some(route => route.meta.requiresAuth);

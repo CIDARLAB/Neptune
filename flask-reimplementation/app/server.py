@@ -63,7 +63,7 @@ jwt = JWTManager(flask_app)
 
 
 # Setup the Socketio bits now
-socketio = SocketIO(flask_app)
+socketio = SocketIO(flask_app, cors_allowed_origins="*")
 
 
 # Test Event to ensure things are working correctly
