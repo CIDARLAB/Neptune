@@ -47,6 +47,7 @@ path =   os.path.abspath("./static/")
 print(path)
 flask_app = Flask(__name__, static_url_path="/", static_folder=path)
 CORS(flask_app)
+flask_app.config['UPLOAD_FOLDER'] = FLASK_UPLOADS_DIRECTORY
 
 # Registering the blueprint
 flask_app.register_blueprint(api_blueprint)

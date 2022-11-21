@@ -1,7 +1,7 @@
 from flask import request
 from flask_restful import Resource
 
-from app.controllers.tasks import compile_lfr
+from app.controllers.tasks import compile_lfr, compile_mint
 
 class CompileAPI:
     

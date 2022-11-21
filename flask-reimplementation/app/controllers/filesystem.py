@@ -1,4 +1,5 @@
 import os
+from typing import Optional
 import uuid
 import boto3
 from pathlib import Path
@@ -42,14 +43,23 @@ class FileSystem:
             return False
 
     @staticmethod
-    def upload_file(file_location: Path) -> str:
+    def upload_file(file_location: Path, override_file_name: Optional[str] = None) -> str:
         """ Uploads file to S3 bucket using S3 client object
+
+        This fuction also provides the ability to have an overriden file name that needs to be passed in
+        the case of uploading uploaded files to the S3 bucket. This way we can ensure that the uploaded
+        files dont have a randomly generated name.
 
         Args:
             file_location (Path): Location of the file to upload
+            override_file_name (Optional[str], optional): Override the file name. Defaults to None.
         """
         bucket_name = AWS_S3_BUCKET_NAME
         file_name = file_location.name
+
+        # Use the over-ridden file name if provided
+        if override_file_name:
+            file_name = override_file_name
         file_path = str(file_location.absolute())
         s3_object_name = f"{str(uuid.uuid4())}-{file_name}"
         S3_CLIENT.upload_file(file_path, bucket_name, s3_object_name)
@@ -59,15 +69,20 @@ class FileSystem:
         return s3_object_name
     
     @staticmethod
-    def download_file(s3_location:str, download_location: Path) -> None:
+    def download_file(s3_location:str, download_location: Path, preserve_s3_name: bool= False) -> None:
         """Downloads the file from the S3 bucket to the file system
 
         Args:
             s3_location (str): The location of the file in the S3 bucket
             download_location (Path): The directory location to download the file
+            preserve_s3_name (bool, optional): If True, the file will be downloaded with the s3 random name. Defaults to False.
         """
         # Find cleaned name by removing uuid from s3_location
-        file_name = s3_location.split('-')[-1]
+        if preserve_s3_name:
+            file_name = s3_location
+        else:
+            file_name = s3_location.split("-")[-1]
+        
         full_file_path = download_location.joinpath(file_name)
         S3_CLIENT.download_file(AWS_S3_BUCKET_NAME, s3_location, str(full_file_path.absolute()))
         
