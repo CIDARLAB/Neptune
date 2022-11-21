@@ -23,6 +23,7 @@ from app.resources.workspace import WorkspaceAPI
 from app.resources.user import UserAPI
 from app.resources.job import JobAPI
 from app.resources.compile import CompileAPI
+from flask_socketio import SocketIO
 
 # Setting up the basic blueprint
 api_blueprint = Blueprint('api', __name__, )
@@ -61,12 +62,44 @@ flask_app.config['JWT_BLACKLIST_ENABLED'] = True
 jwt = JWTManager(flask_app)
 
 
+# Setup the Socketio bits now
+socketio = SocketIO(flask_app)
+
+
+# Test Event to ensure things are working correctly
+@socketio.on('echo')
+def handle_my_custom_event(json):
+    print('received json: ' + str(json))
+    socketio.emit('echo', json)
+
+
+@socketio.on('connection')
+def handle_connection():
+    print("A new SocketIO Connection Established")
+
+
+@socketio.on('monitor')
+def handle_monitor(job_id):
+    print(f"Received a monitor request for job: {job_id}")
+    #socketio.join('monitor', job_id)
+    # Check if the job exists and join the room using the job_id
+    pass
+
+
 # Serve the static files
 @flask_app.route('/')
 def index():
     return flask_app.send_static_file('index.html')
 
+# Serve the socketio test page
+@flask_app.route('/test/socketio')
+def test_socketio():
+    return flask_app.send_static_file('socket.html')
 
+
+
+
+# Flask Routes
 @flask_app.route('/echo/<input_string>')
 def echo(input_string: str) :
     '''
@@ -136,5 +169,6 @@ if __name__ == "__main__":
     connect_to_redis()
     setup_socketio(flask_app)
     # Run the app
-    flask_app.run(debug=True, host="0.0.0.0", port=8080)
+    # flask_app.run(debug=True, host="0.0.0.0", port=8080)
+    socketio.run(flask_app, debug=True, host="0.0.0.0", port=8080)
     
