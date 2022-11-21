@@ -26,16 +26,23 @@ class FileAPI:
             AuthenticationController.check_user_file_access(user_id, file_id)
             
             file = File.objects.get(id=file_id)
+            # Delete linked s3 object
+            s3path = file.s3path
+            FileSystem.delete_file(s3path)
             file.delete()
+            file.save()
             return {'message': 'File deleted successfully'}, 200
         
         def put(self, file_id):
             verify_jwt_in_request()
             user_id = get_jwt_identity()
             AuthenticationController.check_user_file_access(user_id, file_id)
-            
+            payload = request.get_json()['payload']
             file = File.objects.get(id=file_id)
-            file.update(request.get_json()['payload'])
+            s3path = file.s3path
+            FileSystem.update_file(s3path, payload)
+            file.update()
+            file.save()
             return {'message': 'File updated successfully'}, 200
         
     class FileCopy(Resource):

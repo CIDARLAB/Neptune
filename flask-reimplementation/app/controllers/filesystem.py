@@ -115,4 +115,18 @@ class FileSystem:
         print(f"Copied {s3_location} from {AWS_S3_BUCKET_NAME} to {new_s3_location}")
         
         return new_s3_location
+
+    @staticmethod 
+    def update_file(s3_location:str, payload: str) -> None:
+        """Updates the file in the s3 bucket
+
+        Args:
+            s3_location (str): The location of the file in the S3 bucket
+            file_location (Path): The location of the file in the file system
+        """
+        FileSystem.delete_file(s3_location)
+        FileSystem.upload_file(file_location, override_file_name=s3_location)
         
+        S3_CLIENT.put_object(Bucket=AWS_S3_BUCKET_NAME, Body=payload, Key=s3_location)
+
+        print(f"Updated {s3_location} from {AWS_S3_BUCKET_NAME} with payload")
