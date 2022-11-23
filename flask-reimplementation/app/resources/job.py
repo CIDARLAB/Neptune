@@ -1,6 +1,6 @@
 import uuid
 from app.controllers.authentication import AuthenticationController
-from app.controllers.filesystem import FileSystem
+from app.controllers.s3filesystem import S3FileSystem
 from app.models.job import Job
 from flask import request, send_file
 from flask_restful import Resource
@@ -87,7 +87,7 @@ class JobAPI:
 
             # Run through all the files in the job and download them using the FileSystem APU
             for file in job.files:
-                FileSystem.download_file(file.file_id, temp_folder)
+                S3FileSystem.download_file(file.file_id, temp_folder)
 
             # Zip the folder
             zip_file_name = Path(FLASK_DOWNLOADS_DIRECTORY).joinpath(zip_name).with_suffix('.zip')

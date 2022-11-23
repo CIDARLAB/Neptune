@@ -6,7 +6,7 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 import mongoengine
-from app.controllers.filesystem import FileSystem
+from app.controllers.s3filesystem import S3FileSystem
 from app.parameters import (
     FLASK_DOWNLOADS_DIRECTORY,
     MONGO_HOST,
@@ -24,6 +24,8 @@ from app.resources.user import UserAPI
 from app.resources.job import JobAPI
 from app.resources.compile import CompileAPI
 from flask_socketio import SocketIO
+from flask_apispec.extension import FlaskApiSpec
+from apispec import APISpec
 
 # Setting up the basic blueprint
 api_blueprint = Blueprint('api', __name__, )
@@ -60,6 +62,22 @@ flask_app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
 flask_app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
 flask_app.config['JWT_BLACKLIST_ENABLED'] = True
 jwt = JWTManager(flask_app)
+
+
+# Setup the swagger api links
+
+
+# flask_app.config.update(
+#     {
+#         'APISPEC_SPEC': APISpec(
+#             title='Neptune',
+#             version='v2',
+#             plugins=['apispec.ext.marshmallow'],
+#         ),
+#     })
+
+# docs = FlaskApiSpec(flask_app)
+# docs.register(api_blueprint, blueprint='api')
 
 
 # Setup the Socketio bits now
@@ -144,7 +162,7 @@ def connect_to_redis():
     
 def connect_to_s3():
     # Check if s3 connection is working
-    is_connected = FileSystem.test_connection()
+    is_connected = S3FileSystem.test_connection()
     if not is_connected:
         print("S3 Connection Failed")
     pass

@@ -4,7 +4,7 @@ from app.controllers.authentication import AuthenticationController
 from app.models.user import User
 from app.models.workspace import Workspace
 from app.models.file import File
-from app.controllers.filesystem import FileSystem
+from app.controllers.s3filesystem import S3FileSystem
 from flask import request
 import os
 
@@ -58,7 +58,7 @@ class Signup(Resource):
         examples_directory = Path("examples")
         for file_name in examples_directory.iterdir():
             # Upload the file to s3 and get the file_id
-            s3_object_id = FileSystem.upload_file(file_name)
+            s3_object_id = S3FileSystem.upload_file(file_name)
             
             # Create a new file object for the file_id and add it to the workspace
             new_file = File(file_name=str(file_name.name), s3_path=s3_object_id)

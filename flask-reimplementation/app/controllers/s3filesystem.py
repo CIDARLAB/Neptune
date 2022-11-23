@@ -17,7 +17,7 @@ S3_CLIENT = boto3.client(
     
 )
 
-class FileSystem:
+class S3FileSystem:
     """Class to handle the virtual file system enabled by S3
 
     It has the methods for uploading, downloading, deleteing and copying files
@@ -42,8 +42,79 @@ class FileSystem:
                 print(f"Bucket {AWS_S3_BUCKET_NAME}. Does Not Exist!")            
             return False
 
+
     @staticmethod
-    def upload_file(file_location: Path, override_file_name: Optional[str] = None) -> str:
+    def genenerate_s3_file_name(file_name: str) -> str:
+        """Generate a unique file key for the S3 bucket
+
+        Args:
+            file_name (str): The name of the file
+
+        Returns:
+            str: The unique file key
+        """
+        return f"{uuid.uuid4()}-{file_name}"
+
+
+    @staticmethod
+    def decode_s3_file_name(s3_file_key: str) -> str:
+        """Decode the file name from the S3 file key
+
+        Args:
+            s3_file_key (str): The S3 file key
+
+        Returns:
+            str: The file name
+        """
+        return s3_file_key.split("-")[-1]
+
+
+    @staticmethod
+    def create_new_file(file_name: str) -> str:
+        """Create a new file in the S3 bucket
+
+        Args:
+            file_name (str): The name of the file to create
+            file_content (str): The content of the file to create
+
+        Returns:
+            bool: True if the file was created successfully, False otherwise
+        """
+        s3_location = S3FileSystem.genenerate_s3_file_name(file_name)
+        try:
+            S3_CLIENT.put_object(
+                Bucket=AWS_S3_BUCKET_NAME,
+                Key=s3_location,
+            )
+            return s3_location
+        except ClientError as e:
+            print(f"Error creating file: {e}")
+            return ""
+    
+    @staticmethod
+    def update_file_content(s3_location: str, file_content: str = "") -> bool:
+        """Updates the file in the S3 bucket
+
+        Args:
+            file_name (str): The name of the file to create
+            file_content (str): The content of the file to create
+
+        Returns:
+            bool: True if the file was created successfully, False otherwise
+        """
+        try:
+            S3_CLIENT.put_object(
+                Bucket=AWS_S3_BUCKET_NAME,
+                Key=s3_location,
+                Body=file_content
+            )
+            return True
+        except ClientError as e:
+            print(f"Error creating file: {e}")
+            return False
+
+    @staticmethod
+    def upload_file(file_location: Path, override_file_name="") -> str:
         """ Uploads file to S3 bucket using S3 client object
 
         This fuction also provides the ability to have an overriden file name that needs to be passed in
@@ -52,19 +123,18 @@ class FileSystem:
 
         Args:
             file_location (Path): Location of the file to upload
-            override_file_name (Optional[str], optional): Override the file name. Defaults to None.
+            override_file_name (str): The name of the file to override the file name with
         """
-        bucket_name = AWS_S3_BUCKET_NAME
         file_name = file_location.name
-
-        # Use the over-ridden file name if provided
+        
         if override_file_name:
             file_name = override_file_name
+
         file_path = str(file_location.absolute())
-        s3_object_name = f"{str(uuid.uuid4())}-{file_name}"
-        S3_CLIENT.upload_file(file_path, bucket_name, s3_object_name)
+        s3_object_name = S3FileSystem.genenerate_s3_file_name(file_name)
+        S3_CLIENT.upload_file(file_path, AWS_S3_BUCKET_NAME, s3_object_name)
         
-        print(f"Uploaded {file_path} to {bucket_name}/{s3_object_name}")
+        print(f"Uploaded {file_path} to {AWS_S3_BUCKET_NAME}/{s3_object_name}")
         
         return s3_object_name
     
@@ -81,7 +151,7 @@ class FileSystem:
         if preserve_s3_name:
             file_name = s3_location
         else:
-            file_name = s3_location.split("-")[-1]
+            file_name = S3FileSystem.decode_s3_file_name(s3_location)
         
         full_file_path = download_location.joinpath(file_name)
         S3_CLIENT.download_file(AWS_S3_BUCKET_NAME, s3_location, str(full_file_path.absolute()))
@@ -109,7 +179,7 @@ class FileSystem:
             s3_location (str): The location of the file in the S3 bucket
         """
         file_name = s3_location.split('-')[-1]
-        new_s3_location = f"{str(uuid.uuid4())}-{file_name}"
+        new_s3_location = S3FileSystem.genenerate_s3_file_name(file_name)
         S3_CLIENT.copy_object(Bucket=AWS_S3_BUCKET_NAME, Key=new_s3_location, CopySource=f"{AWS_S3_BUCKET_NAME}/{s3_location}")
         
         print(f"Copied {s3_location} from {AWS_S3_BUCKET_NAME} to {new_s3_location}")
@@ -117,16 +187,14 @@ class FileSystem:
         return new_s3_location
 
     @staticmethod 
-    def update_file(s3_location:str, payload: str) -> None:
+    def overwrite_file(s3_location:str, file_location: Path) -> None:
         """Updates the file in the s3 bucket
 
         Args:
             s3_location (str): The location of the file in the S3 bucket
             file_location (Path): The location of the file in the file system
         """
-        FileSystem.delete_file(s3_location)
-        FileSystem.upload_file(file_location, override_file_name=s3_location)
+        S3FileSystem.delete_file(s3_location)
+        S3_CLIENT.upload_file(file_location, AWS_S3_BUCKET_NAME, s3_location)
         
-        S3_CLIENT.put_object(Bucket=AWS_S3_BUCKET_NAME, Body=payload, Key=s3_location)
-
         print(f"Updated {s3_location} from {AWS_S3_BUCKET_NAME} with payload")

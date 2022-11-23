@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List
 import uuid
 from zipfile import ZipFile
-from app.controllers.filesystem import S3_CLIENT
+from app.controllers.s3filesystem import S3_CLIENT
 
 from app.parameters import AWS_S3_BUCKET_NAME
 
