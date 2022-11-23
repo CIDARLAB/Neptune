@@ -5,7 +5,7 @@ from app.controllers.s3filesystem import S3FileSystem
 from app.controllers.workspace import add_new_file_to_workspace
 from app.models.file import File
 from flask_restful import Resource
-from flask import request, send_file
+from flask import request, send_file, after_this_request
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from app.controllers.authentication import AuthenticationController
 from werkzeug.utils import secure_filename
@@ -13,6 +13,7 @@ from pathlib import Path
 import uuid
 
 from app.models.workspace import Workspace
+from app.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 class FileAPI:
     class FileBase(Resource):
@@ -24,8 +25,7 @@ class FileAPI:
             file = File.objects.get(id=file_id)
             return file.to_json(), 200
         
-        @use_kwargs({'workspace_id': fields.Str()})
-        @use_kwargs({'file_name': fields.Str()})
+        @use_kwargs({'file_name': fields.Str(), 'workspace_id': fields.Str()})
         def post(self):
             verify_jwt_in_request()
             user_id = get_jwt_identity()
@@ -93,8 +93,10 @@ class FileAPI:
             return {'message': 'File copied successfully', 'file_id': str(new_file.id)}, 200
         
     class FileSystem(Resource):
-        def get(self, file_id):
-            
+
+        @use_kwargs({'file_id': fields.Str()})
+        def get(self):
+            file_id = request.get_json()['file_id']
             verify_jwt_in_request()
             user_id = get_jwt_identity()
             AuthenticationController.check_user_file_access(user_id, file_id)
@@ -102,10 +104,28 @@ class FileAPI:
             file = File.objects.get(id=file_id)
             file_name = file.file_name
             s3_path = file.s3_path
-            S3FileSystem.download_file(file_name, s3_path, preserve_s3_name=True)
 
-            return send_file(s3_path, as_attachment=True, download_name=file_name), 200
+            file_download_path = Path(FLASK_DOWNLOADS_DIRECTORY)
+
+            download_file_path = S3FileSystem.download_file(
+                s3_location=s3_path, 
+                download_location=file_download_path,
+                preserve_s3_name=True
+            )
+
+            file_handle = open(download_file_path, 'rb')
+            @after_this_request
+            def remove_file(response):
+                try:
+                    download_file_path.unlink()
+                    file_handle.close()
+                except Exception as error:
+                    print("Error removing or closing downloaded file handle", error)
+                return response
+            
+            return send_file(file_handle, as_attachment=True, download_name=file_name), 200
         
+        @use_kwargs({'workspace_id': fields.Str()})
         def post(self):
             
             verify_jwt_in_request()

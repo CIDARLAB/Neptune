@@ -126,7 +126,7 @@ class S3FileSystem:
             override_file_name (str): The name of the file to override the file name with
         """
         file_name = file_location.name
-        
+
         if override_file_name:
             file_name = override_file_name
 
@@ -139,7 +139,7 @@ class S3FileSystem:
         return s3_object_name
     
     @staticmethod
-    def download_file(s3_location:str, download_location: Path, preserve_s3_name: bool= False) -> None:
+    def download_file(s3_location:str, download_location: Path, preserve_s3_name: bool= False) -> Path:
         """Downloads the file from the S3 bucket to the file system
 
         Args:
@@ -157,6 +157,7 @@ class S3FileSystem:
         S3_CLIENT.download_file(AWS_S3_BUCKET_NAME, s3_location, str(full_file_path.absolute()))
         
         print(f"Downloaded {s3_location} from {AWS_S3_BUCKET_NAME} to {download_location.absolute()}")
+        return full_file_path
         
     @staticmethod
     def delete_file(s3_location:str) -> None:
