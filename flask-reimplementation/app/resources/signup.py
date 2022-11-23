@@ -6,10 +6,12 @@ from app.models.workspace import Workspace
 from app.models.file import File
 from app.controllers.s3filesystem import S3FileSystem
 from flask import request
-import os
+from marshmallow import fields
+from flask_apispec import use_kwargs
 
 class Signup(Resource):
 
+    @use_kwargs({'email': fields.Str(), 'password': fields.Str()})
     def post(self):
 
         if not request.is_json:

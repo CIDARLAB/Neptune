@@ -2,10 +2,12 @@ import uuid
 from app.controllers.authentication import AuthenticationController
 from app.controllers.s3filesystem import S3FileSystem
 from app.models.job import Job
-from flask import request, send_file
+from flask import request, send_file, after_this_request
 from flask_restful import Resource
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from pathlib import Path
+from marshmallow import fields
+from flask_apispec import use_kwargs
 
 from app.parameters import FLASK_DOWNLOADS_DIRECTORY
 from app.utils import zip_dir
@@ -68,7 +70,10 @@ class JobAPI:
         #     return {'message': 'Job updated successfully'}, 200        
         
     class JobZip(Resource):
-        def get(self, job_id):
+
+        @use_kwargs({'job_id': fields.Str()})
+        def get(self):
+            job_id = request.get_json()['job_id']
             # Verify Access
             verify_jwt_in_request()
             user_id = get_jwt_identity()
@@ -92,5 +97,15 @@ class JobAPI:
             # Zip the folder
             zip_file_name = Path(FLASK_DOWNLOADS_DIRECTORY).joinpath(zip_name).with_suffix('.zip')
             zip_dir(temp_folder, zip_file_name)
-                
+            
+            download_file_handle = open(zip_file_name, 'rb')
+            @after_this_request
+            def remove_file(response):
+                try:
+                    temp_folder.unlink()
+                    download_file_handle.close()
+                except Exception as error:
+                    print("Error removing or closing downloaded file handle", error)
+                return response
+
             return send_file(str(zip_file_name.absolute()), as_attachment=True)
