@@ -17,8 +17,13 @@ from app.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 class FileAPI:
     class FileBase(Resource):
-        def get(self, file_id):
+
+        @use_kwargs({
+            'file_id': fields.Str(required=True),
+        })
+        def get(self, **kwargs):
             verify_jwt_in_request()
+            file_id = kwargs.get('file_id')
             user_id = get_jwt_identity()
             AuthenticationController.check_user_file_access(user_id, file_id)
             
@@ -26,11 +31,11 @@ class FileAPI:
             return file.to_json(), 200
         
         @use_kwargs({'file_name': fields.Str(), 'workspace_id': fields.Str()})
-        def post(self):
+        def post(self, **kwargs):
             verify_jwt_in_request()
             user_id = get_jwt_identity()
-            workspace_id = request.get_json()['workspace_id']
-            file_name = request.get_json()['file_name']
+            workspace_id = kwargs.get('workspace_id')
+            file_name = kwargs.get('file_name')
             AuthenticationController.check_user_workspace_access(user_id, workspace_id=workspace_id)
             
             file = File(
@@ -41,10 +46,14 @@ class FileAPI:
             add_new_file_to_workspace(file, workspace_id)
 
             return file.to_json(), 200
-
-        def delete(self, file_id):
+        
+        @use_kwargs({
+            'file_id': fields.Str(required=True),
+        })
+        def delete(self, **kwargs):
             verify_jwt_in_request()
             user_id = get_jwt_identity()
+            file_id = kwargs.get('file_id')
             AuthenticationController.check_user_file_access(user_id, file_id)
             
             file = File.objects.get(id=file_id)
@@ -56,11 +65,11 @@ class FileAPI:
             return {'message': 'File deleted successfully'}, 200
         
         @use_kwargs({'payload': fields.Str()}) 
-        def put(self, file_id):
+        def put(self, **kwargs):
             verify_jwt_in_request()
             user_id = get_jwt_identity()
             AuthenticationController.check_user_file_access(user_id, file_id)
-            payload = request.get_json()['payload']
+            payload = kwargs.get('payload')
             file = File.objects.get(id=file_id)
             s3path = file.s3_path
             S3FileSystem.update_file_content(s3path, payload)
@@ -70,11 +79,11 @@ class FileAPI:
         
     class FileCopy(Resource):
         @use_kwargs({'file_id': fields.Str(), 'workspace_id': fields.Str()})
-        def post(self):
+        def post(self, **kwargs):
             if request is None:
                 return {'error': 'Could not copy file, no input data recieved'}, 400
-            file_id = request.get_json()['file_id']
-            workspace_id = request.get_json()['workspace_id']
+            file_id = kwargs.get('file_id')
+            workspace_id = kwargs.get('workspace_id')
 
             verify_jwt_in_request()
             user_id = get_jwt_identity()
@@ -95,8 +104,8 @@ class FileAPI:
     class FileSystem(Resource):
 
         @use_kwargs({'file_id': fields.Str()})
-        def get(self):
-            file_id = request.get_json()['file_id']
+        def get(self, **kwargs):
+            file_id = kwargs.get('file_id')
             verify_jwt_in_request()
             user_id = get_jwt_identity()
             AuthenticationController.check_user_file_access(user_id, file_id)
@@ -125,7 +134,6 @@ class FileAPI:
             
             return send_file(file_handle, as_attachment=True, download_name=file_name), 200
         
-        @use_kwargs({'workspace_id': fields.Str()})
         def post(self):
             
             verify_jwt_in_request()

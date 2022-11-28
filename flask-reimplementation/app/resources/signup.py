@@ -12,7 +12,7 @@ from flask_apispec import use_kwargs
 class Signup(Resource):
 
     @use_kwargs({'email': fields.Str(), 'password': fields.Str()})
-    def post(self):
+    def post(self, **kwargs):
 
         if not request.is_json:
             return {"msg": "Missing JSON in request"}, 400

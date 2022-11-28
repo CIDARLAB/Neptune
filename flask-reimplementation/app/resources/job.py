@@ -1,6 +1,7 @@
 import uuid
 from app.controllers.authentication import AuthenticationController
 from app.controllers.s3filesystem import S3FileSystem
+from app.controllers.ziphelper import download_s3files_and_zip
 from app.models.job import Job
 from flask import request, send_file, after_this_request
 from flask_restful import Resource
@@ -24,7 +25,7 @@ class JobAPI:
 
         """
 
-        def get(self, job_id):
+        def get(self, **kwargs):
             
             # Verify Access
             verify_jwt_in_request()
@@ -38,7 +39,7 @@ class JobAPI:
             return job.to_json(), 200
         
         # def delete(self):
-        #     job_id = request.get_json()['job_id']
+        #     job_id = kwargs.get('job_id')
 
         #     # Verify Access
         #     verify_jwt_in_request()
@@ -55,7 +56,7 @@ class JobAPI:
         #     return {'message': 'Job deleted successfully'}, 200
         
         # def put(self):
-        #     job_id= request.get_json()['job_id']
+        #     job_id= kwargs.get('job_id')
             
         #     # Verify Access
         #     verify_jwt_in_request()
@@ -72,8 +73,8 @@ class JobAPI:
     class JobZip(Resource):
 
         @use_kwargs({'job_id': fields.Str()})
-        def get(self):
-            job_id = request.get_json()['job_id']
+        def get(self, **kwargs):
+            job_id = kwargs.get('job_id')
             # Verify Access
             verify_jwt_in_request()
             user_id = get_jwt_identity()
@@ -83,29 +84,20 @@ class JobAPI:
                 return {'error': 'User does not have access to this job'}, 401
 
             job = Job.objects.get(job_id=job_id)
-            # Create a new temporary folder downloading the zip
-            zip_name = str(uuid.uuid4())
-            temp_folder = Path(FLASK_DOWNLOADS_DIRECTORY).joinpath(zip_name).mkdir(parents=True, exist_ok=True)
-            
-            if temp_folder is None:
-                return {'error': 'Could not create downloads folder'}, 500
 
             # Run through all the files in the job and download them using the FileSystem APU
-            for file in job.files:
-                S3FileSystem.download_file(file.file_id, temp_folder)
-
-            # Zip the folder
-            zip_file_name = Path(FLASK_DOWNLOADS_DIRECTORY).joinpath(zip_name).with_suffix('.zip')
-            zip_dir(temp_folder, zip_file_name)
+            files_list = [file for file in job.files]
+            
+            zip_file_name = download_s3files_and_zip(files_list)
             
             download_file_handle = open(zip_file_name, 'rb')
             @after_this_request
             def remove_file(response):
                 try:
-                    temp_folder.unlink()
+                    zip_file_name.unlink()
                     download_file_handle.close()
                 except Exception as error:
                     print("Error removing or closing downloaded file handle", error)
                 return response
 
-            return send_file(str(zip_file_name.absolute()), as_attachment=True)
+            return send_file(str(zip_file_name.absolute()), as_attachment=True, download_name=f'job-{job.job_id}.zip')

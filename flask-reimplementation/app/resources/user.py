@@ -5,7 +5,7 @@ from app.models.user import User
 
 class UserAPI(Resource):
     
-    def get(self):
+    def get(self, **kwargs):
         """Gets all the user object info (id, workspaces, job, etc.)
 
         Returns:

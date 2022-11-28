@@ -2,12 +2,12 @@ from pathlib import Path
 from typing import List
 import uuid
 from zipfile import ZipFile
-from app.controllers.s3filesystem import S3_CLIENT
+from app.controllers.s3filesystem import S3_CLIENT, S3FileSystem
 
-from app.parameters import AWS_S3_BUCKET_NAME
+from app.parameters import AWS_S3_BUCKET_NAME, FLASK_DOWNLOADS_DIRECTORY
 
 
-def download_files_and_zip(s3_objects_list: List[str], download_directory: Path) -> Path:
+def download_s3files_and_zip(s3_objects_list: List[str]) -> Path:
     """ Downloads files from S3 bucket and zips them
     Args:
         s3_objects_list (List[str]): List of S3 objects to download
@@ -16,13 +16,11 @@ def download_files_and_zip(s3_objects_list: List[str], download_directory: Path)
         Path: Path to the zip file
     """
     zip_file_name = f"{str(uuid.uuid4())}.zip"
-    zip_file_path = download_directory.joinpath(zip_file_name)
-    with ZipFile(zip_file_path, 'w') as zip_file:
+    zip_file_path = Path(FLASK_DOWNLOADS_DIRECTORY).joinpath(zip_file_name)
+    with ZipFile(str(zip_file_path), 'w') as zip_file:
         for s3_object in s3_objects_list:
-            file_name = s3_object.split('-')[-1]
-            local_file_path = download_directory.joinpath(file_name)
-            S3_CLIENT.download_file(AWS_S3_BUCKET_NAME, s3_object, str(local_file_path.absolute()))
-            zip_file.write(local_file_path, file_name)
-            local_file_path.unlink()
+            file_name = S3FileSystem.download_file(s3_object, zip_file_path)
+            zip_file.write(file_name)
+            file_name.unlink()
     
     return zip_file_path

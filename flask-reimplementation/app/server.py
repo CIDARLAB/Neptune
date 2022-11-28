@@ -71,6 +71,7 @@ jwt = JWTManager(flask_app)
 #     {
 #         'APISPEC_SPEC': APISpec(
 #             title='Neptune',
+#             openapi_version='2.0',
 #             version='v2',
 #             plugins=['apispec.ext.marshmallow'],
 #         ),
