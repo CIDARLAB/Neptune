@@ -1,8 +1,8 @@
 import os
 
 # File IO Directories
-FLASK_UPLOADS_DIRECTORY = os.path.abspath("/tmp/uploads/")
-FLASK_DOWNLOADS_DIRECTORY = os.path.abspath("/tmp/downloads/")
+FLASK_UPLOADS_DIRECTORY = os.path.abspath("/var/tmp/neptune/uploads/")
+FLASK_DOWNLOADS_DIRECTORY = os.path.abspath("/var/tmp/neptune/downloads/")
 
 # SOCKETIO REDIS CONFIGURATION
 SOCKETIO_REDIS_HOST = os.getenv('SOCKETIO_REDIS_HOST')
