@@ -18,7 +18,7 @@ def download_s3files_and_zip(s3_objects_list: List[str]) -> Path:
     """
     zip_folder_name = str(uuid.uuid4())
     download_directory = Path(FLASK_DOWNLOADS_DIRECTORY).joinpath(zip_folder_name)
-    zip_file_name = f"{str(uuid.uuid4())}.zip"
+    zip_file_name = f"{zip_folder_name}.zip"
     zip_file_path = Path(FLASK_DOWNLOADS_DIRECTORY).joinpath(zip_file_name)
     try:
         download_directory.mkdir(parents=True, exist_ok=True)

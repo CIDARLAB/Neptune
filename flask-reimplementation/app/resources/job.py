@@ -25,11 +25,14 @@ class JobAPI:
 
         """
 
+        @use_kwargs({'job_id': fields.Str()})
         def get(self, **kwargs):
             
             # Verify Access
             verify_jwt_in_request()
             user_id = get_jwt_identity()
+            job_id = kwargs.get('job_id')
+
             has_access = AuthenticationController.check_user_job_access(user_id, job_id)
 
             if has_access == False:
