@@ -31,11 +31,12 @@ git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gi
 
 ### Neptune Webapplication Development
 
-The top-level development environment for the repo is for developing the cloud based application. The development container reuses the docker-compose components from the repo, i.e. `mongodb`, `minio`, `job-runner` and `redis`. That means that you can only make edits to the neptune cloud application and **not the other components**. Its been intended to be done this way so that you utilize fluigi repo/3DuF repos for development for their corresponding components. This way you don't pollute the codebases and adhere the Pull Request discipline necessary for making changes to these code bases.
+The top-level development environment for the repo is for developing the cloud based application. The development container reuses the docker-compose components from the repo, i.e. `mongodb`, `minio` and `redis`. That means that you can only make edits to the neptune cloud application and **not the other components**. Its been intended to be done this way so that you utilize fluigi repo/3DuF repos for development for their corresponding components. This way you don't pollute the codebases and adhere the Pull Request discipline necessary for making changes to these code bases.
 
 On launching the development containaer one can start the development using the following commands:
 
 #### Steps
+1. Goto the job-runner directory and run `python job_runner/server.py` (TODO-Update with debugging config in the future).
 1. Goto the flask application directory and run `poetry lock --no-update` to install the dependencies.
 2. Open the `server.py` file and run the debugger on it (Use the saved vscode debugger profile `Python: Flask`).
 3. Goto the Neptune-UI directory and run `npm ci` to install the dependencies.

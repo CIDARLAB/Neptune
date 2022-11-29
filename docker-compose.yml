@@ -14,6 +14,8 @@ services:
         - "worker"
         - "backend-database"
       environment:
+        CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+        CELERY_TASK_META_COLLECTION_NAME: ${CELERY_TASK_META_COLLECTION_NAME}
         MONGO_HOST: ${MONGO_HOST}
         MONGO_PORT: ${MONGO_PORT}
         MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
@@ -52,6 +54,9 @@ services:
       restart: unless-stopped
       networks:
         - main_network
+      environment:
+        REDIS_REPLICATION_MODE: master
+      command : redis-server --replica-read-only no
 
     backend-database:
       image: mongo:latest

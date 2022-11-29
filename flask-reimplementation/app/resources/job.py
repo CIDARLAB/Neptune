@@ -39,39 +39,15 @@ class JobAPI:
                 return {'error': 'User does not have access to this job'}, 401
 
             job = Job.objects.get(job_id=job_id)
-            return job.to_json(), 200
+            return {
+                'job_id': str(job.id),
+                'created_at': job.created_at,
+                'updated_at': job.updated_at,
+                'files': [str(file.id) for file in job.files],
+                'status': job.status,
+
+            }, 200
         
-        # def delete(self):
-        #     job_id = kwargs.get('job_id')
-
-        #     # Verify Access
-        #     verify_jwt_in_request()
-        #     user_id = get_jwt_identity()
-        #     has_access = AuthenticationController.check_user_job_access(user_id, job_id)
-
-        #     if has_access == False:
-        #         return {'error': 'User does not have access to this job'}, 401
-            
-        #     # Delete a task
-
-        #     job = Job.objects.get(job_id=job_id)
-        #     job.delete()
-        #     return {'message': 'Job deleted successfully'}, 200
-        
-        # def put(self):
-        #     job_id= kwargs.get('job_id')
-            
-        #     # Verify Access
-        #     verify_jwt_in_request()
-        #     user_id = get_jwt_identity()
-        #     has_access = AuthenticationController.check_user_job_access(user_id, job_id)
-
-        #     if has_access == False:
-        #         return {'error': 'User does not have access to this job'}, 401
-            
-        #     job = Job.objects.get(job_id=job_id)
-        #     job.update(request.get_json())
-        #     return {'message': 'Job updated successfully'}, 200        
         
     class JobZip(Resource):
 

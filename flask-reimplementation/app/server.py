@@ -43,6 +43,7 @@ api.add_resource(JobAPI.JobBase, '/api/v2/job')
 api.add_resource(JobAPI.JobZip, '/api/v2/job/zipfs')
 api.add_resource(CompileAPI.LFR, '/api/v2/compile/lfr')
 api.add_resource(CompileAPI.MINT, '/api/v2/compile/mint')
+api.add_resource(CompileAPI.TestTask, '/api/v2/compile/test')
 api.add_resource(UserAPI, '/api/v2/user')
 
 
