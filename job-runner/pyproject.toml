@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "job-runner"
+name = "job_runner"
 version = "0.1.0"
 description = ""
 authors = ["Radhakrishna Sanka <rkrishnasanka@gmail.com>"]
