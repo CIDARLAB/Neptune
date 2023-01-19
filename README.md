@@ -24,7 +24,7 @@ First, run the following commands for recursively cloning all the required depen
 ```
 git clone --recurse-submodules -j8 https://github.com/cidarlab/Neptune
 cd Neptune
-git submodule update --init
+git submodule update --init --recursive
 git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)'
 ```
 [Submodule Recipe Reference](https://gist.github.com/slavafomin/08670ec0c0e75b500edbaa5d43a5c93c)
