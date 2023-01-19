@@ -10,6 +10,7 @@ class Job(Document):
     files = ListField(ReferenceField(File), default=[])
     status = StringField(default='pending')
     task_meta_refernce = StringField(default='')
+    name = StringField(default='Untitled Job')
 
     def save(self, *args, **kwargs):
         self.modified_date = datetime.now()

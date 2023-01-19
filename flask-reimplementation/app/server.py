@@ -1,3 +1,4 @@
+import asyncio
 import pathlib
 from flask import Blueprint, Flask, jsonify, send_from_directory
 from flask_restful import Api
@@ -26,6 +27,12 @@ from app.resources.compile import CompileAPI
 from flask_socketio import SocketIO
 from flask_apispec.extension import FlaskApiSpec
 from apispec import APISpec
+
+# Setting up callback event loop for async io
+# This will basically use the asyncio for compile 
+# job completion document updates
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(loop)
 
 # Setting up the basic blueprint
 api_blueprint = Blueprint('api', __name__, )

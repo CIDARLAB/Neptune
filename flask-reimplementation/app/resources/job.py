@@ -1,18 +1,12 @@
-import uuid
 from app.controllers.authentication import AuthenticationController
-from app.controllers.s3filesystem import S3FileSystem
 from app.controllers.ziphelper import download_s3files_and_zip
 from app.models.job import Job
-from flask import request, send_file, after_this_request
+from flask import send_file, after_this_request
 from flask_restful import Resource
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from pathlib import Path
 from marshmallow import fields
 from flask_apispec import use_kwargs
-
-from app.parameters import FLASK_DOWNLOADS_DIRECTORY
-from app.utils import zip_dir
-
 
 class JobAPI:
     
@@ -50,6 +44,7 @@ class JobAPI:
         
         
     class JobZip(Resource):
+        """API for downloading a zip of all the files in a job"""
 
         @use_kwargs({'job_id': fields.Str()})
         def get(self, **kwargs):
@@ -66,10 +61,16 @@ class JobAPI:
 
             # Run through all the files in the job and download them using the FileSystem APU
             files_list = [file for file in job.files]
-            
+            result_files = [file.s3_path for file in job.result_files]
+             
+
             zip_file_name = download_s3files_and_zip(files_list)
+
+            if zip_file_name == None:
+                return {'error': 'Could create zip file'}, 500
             
             download_file_handle = open(zip_file_name, 'rb')
+
             @after_this_request
             def remove_file(response):
                 try:

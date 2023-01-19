@@ -64,10 +64,11 @@ class FileAPI:
             file.save()
             return {'message': 'File deleted successfully'}, 200
         
-        @use_kwargs({'payload': fields.Str()}) 
+        @use_kwargs({'file_id': fields.Str(),'payload': fields.Str()}) 
         def put(self, **kwargs):
             verify_jwt_in_request()
             user_id = get_jwt_identity()
+            file_id = kwargs.get('file_id')
             AuthenticationController.check_user_file_access(user_id, file_id)
             payload = kwargs.get('payload')
             file = File.objects.get(id=file_id)

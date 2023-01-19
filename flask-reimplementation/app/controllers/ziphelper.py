@@ -1,14 +1,15 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 import uuid
+from app.models.file import File
 from zipfile import ZipFile
-from app.controllers.s3filesystem import S3_CLIENT, S3FileSystem
+from app.controllers.s3filesystem import S3FileSystem
 import shutil
 
-from app.parameters import AWS_S3_BUCKET_NAME, FLASK_DOWNLOADS_DIRECTORY
+from app.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 
-def download_s3files_and_zip(s3_objects_list: List[str]) -> Path:
+def download_s3files_and_zip(file_object_list: List[File]) -> Optional[Path]:
     """ Downloads files from S3 bucket and zips them
     Args:
         s3_objects_list (List[str]): List of S3 objects to download
@@ -26,10 +27,11 @@ def download_s3files_and_zip(s3_objects_list: List[str]) -> Path:
         print("Error creating directory:", e)
         return None
     with ZipFile(str(zip_file_path), 'w') as zip_file:
-        for s3_object in s3_objects_list:
-            file_name = S3FileSystem.download_file(s3_object, download_directory)
-            zip_file.write(file_name, arcname=file_name.name)
-            file_name.unlink()
+        for file_object in file_object_list:
+            s3_path = file_object.s3_path
+            download_file_path = S3FileSystem.download_file(s3_path, download_directory)
+            zip_file.write(download_file_path, arcname=download_file_path.name)
+            download_file_path.unlink()
     
     shutil.rmtree(download_directory)
     return zip_file_path
