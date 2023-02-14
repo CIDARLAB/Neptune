@@ -4,6 +4,10 @@ version = "0.1.0"
 description = ""
 authors = ["Radhakrishna Sanka <rkrishnasanka@gmail.com>"]
 license = "BSD-3-Clause"
+include = [
+    "swagger_server/**/*.py",
+    "app/**/*.py",
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"

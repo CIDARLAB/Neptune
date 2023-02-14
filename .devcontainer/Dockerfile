@@ -40,7 +40,7 @@ RUN eval "$(pyenv init -)"
 RUN pyenv install 3.8.0
 RUN pyenv global 3.8.0
 
-RUN poetry config virtualenvs.create false
+# RUN poetry config virtualenvs.create false
 RUN pip install --upgrade pip
 RUN pip install setuptools pygraphviz
 
