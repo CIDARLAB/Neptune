@@ -68,7 +68,7 @@ def dispatch_compile_lfr(
 
     return new_job  
 
-def compile_mint():
+def dispatch_compile_mint():
     job_id = uuid4()
     result = CELERY_INSTANCE.send_task("compile_mint", (job_id,))
 

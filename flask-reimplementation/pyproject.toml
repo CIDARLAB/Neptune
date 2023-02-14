@@ -19,6 +19,9 @@ Flask-Cors = "^3.0.10"
 flask_socketio = "^5.3.2"
 redis = "^4.3.4"
 flask-apispec = "^0.11.4"
+connexion = {extras = ["swagger-ui"], version = "^2.14.2"}
+python-dateutil = "^2.8.2"
+swagger-ui-bundle = "^0.0.9"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

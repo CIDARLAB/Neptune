@@ -1,5 +1,7 @@
 import connexion
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import six
+from app.models.user import User
 
 from swagger_server.models.user_info_input import UserInfoInput  # noqa: E501
 from swagger_server.models.user_response import UserResponse  # noqa: E501
@@ -14,7 +16,19 @@ def get_user():  # noqa: E501
 
     :rtype: UserResponse
     """
-    return 'do some magic!'
+    verify_jwt_in_request()
+    print("JWT Identity:", get_jwt_identity())
+    user_id = get_jwt_identity()
+    workspace_ids = [str(workspace.id) for workspace in User.objects.get(id=user_id).workspaces]
+    job_ids = [str(job.id) for job in User.objects.get(id=user_id).jobs]
+    return {
+        'user_id': user_id,
+        'first_name': User.objects.get(id=user_id).first_name,
+        'last_name': User.objects.get(id=user_id).last_name,
+        'email': User.objects.get(id=user_id).email,
+        'workspaces': workspace_ids,
+        'jobs': job_ids
+    }, 200
 
 
 def update_user(body):  # noqa: E501
