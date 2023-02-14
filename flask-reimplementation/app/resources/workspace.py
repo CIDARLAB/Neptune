@@ -3,7 +3,7 @@ import uuid
 from flask import request
 from app.controllers.authentication import AuthenticationController
 from app.controllers.ziphelper import download_s3files_and_zip
-from app.models.workspace import Workspace
+from fluigi_cloud.db.workspace import Workspace
 from flask_restful import Resource
 from marshmallow import fields
 from flask_apispec import use_kwargs

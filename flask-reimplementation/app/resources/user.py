@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask_jwt_extended import jwt_required, get_jwt_identity, verify_jwt_in_request
 
-from app.models.user import User
+from fluigi_cloud.db.user import User
 
 class UserAPI(Resource):
     

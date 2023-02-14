@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List, Optional
 import uuid
-from app.models.file import File
+from fluigi_cloud.db.file import File
 from zipfile import ZipFile
 from app.controllers.s3filesystem import S3FileSystem
 import shutil

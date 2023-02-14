@@ -1,7 +1,7 @@
 import connexion
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import six
-from app.models.user import User
+from fluigi_cloud.db.user import User
 
 from fluigi_cloud.models.user_info_input import UserInfoInput  # noqa: E501
 from fluigi_cloud.models.user_response import UserResponse  # noqa: E501

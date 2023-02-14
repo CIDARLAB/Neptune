@@ -2,7 +2,7 @@ from uuid import uuid4
 from mongoengine import Document, StringField, IntField, DateTimeField, ListField, ReferenceField
 
 from datetime import datetime
-from app.models.file import File
+from fluigi_cloud.db.file import File
 
 class Job(Document):
     created_at = DateTimeField(default=datetime.utcnow)

@@ -2,7 +2,7 @@ import connexion
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import six
 from app.controllers.tasks import dispatch_compile_lfr, dispatch_compile_mint, test_task
-from app.models.file import File
+from fluigi_cloud.db.file import File
 
 from fluigi_cloud.models.compiler_inputs import CompilerInputs  # noqa: E501
 from fluigi_cloud.models.job_response import JobResponse  # noqa: E501

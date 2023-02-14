@@ -3,9 +3,9 @@ import connexion
 import six
 from app.controllers.authentication import AuthenticationController
 from app.controllers.s3filesystem import S3FileSystem
-from app.models.file import File
-from app.models.user import User
-from app.models.workspace import Workspace
+from fluigi_cloud.db.file import File
+from fluigi_cloud.db.user import User
+from fluigi_cloud.db.workspace import Workspace
 
 from fluigi_cloud.models.login_input import LoginInput  # noqa: E501
 from fluigi_cloud.models.register_input import RegisterInput  # noqa: E501

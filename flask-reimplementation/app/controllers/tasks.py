@@ -2,9 +2,9 @@ import asyncio
 from typing import List
 from uuid import uuid4
 from celery import Celery
-from app.models.job import Job
-from app.models.file import File
-from app.models.user import User
+from fluigi_cloud.db.job import Job
+from fluigi_cloud.db.file import File
+from fluigi_cloud.db.user import User
 from app.parameters import CELERY_BROKER_URL, MONGO_HOST, MONGO_PORT, MONGODB_PASSWORD, MONGODB_USER, MONGODB_INITDB_NAME
 
 CELERY_INSTANCE = Celery(

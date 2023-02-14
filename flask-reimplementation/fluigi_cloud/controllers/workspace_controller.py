@@ -4,8 +4,8 @@ from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import six
 from app.controllers.authentication import AuthenticationController
 from app.controllers.ziphelper import download_s3files_and_zip
-from app.models.user import User
-from app.models.workspace import Workspace
+from fluigi_cloud.db.user import User
+from fluigi_cloud.db.workspace import Workspace
 
 from fluigi_cloud.models.workspace_info_input import WorkspaceInfoInput  # noqa: E501
 from fluigi_cloud.models.workspace_input import WorkspaceInput  # noqa: E501

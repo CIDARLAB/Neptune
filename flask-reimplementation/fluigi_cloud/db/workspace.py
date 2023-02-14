@@ -1,9 +1,9 @@
 from uuid import uuid4
 from mongoengine import Document, StringField, EmailField, DateTimeField, ListField, ReferenceField, IntField
 from datetime import datetime
-from app.models.file import File
+from fluigi_cloud.db.file import File
 
-from app.models.job import Job
+from fluigi_cloud.db.job import Job
 
 class Workspace(Document):
     name = StringField(required=True)

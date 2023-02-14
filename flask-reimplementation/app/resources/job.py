@@ -1,6 +1,6 @@
 from app.controllers.authentication import AuthenticationController
 from app.controllers.ziphelper import download_s3files_and_zip
-from app.models.job import Job
+from fluigi_cloud.db.job import Job
 from flask import send_file, after_this_request
 from flask_restful import Resource
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request

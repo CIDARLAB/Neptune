@@ -1,7 +1,7 @@
 from mongoengine import Document, StringField, EmailField, DateTimeField, ListField, ReferenceField
 from datetime import datetime
-from app.models.workspace import Workspace
-from app.models.job import Job
+from fluigi_cloud.db.workspace import Workspace
+from fluigi_cloud.db.job import Job
 from flask_bcrypt import generate_password_hash, check_password_hash
 
 class User(Document):
