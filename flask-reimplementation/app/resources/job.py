@@ -15,7 +15,6 @@ class JobAPI:
 
         GET - gets all the information for a job
         DELETE - deletes a job (Not implemented)
-        PUT - updates a job status (Not implemented)
 
         """
 

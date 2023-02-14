@@ -41,7 +41,7 @@ api = Api(api_blueprint)
 # Adding the resources
 api.add_resource(Signup,'/api/v2/register')
 api.add_resource(Login,'/api/v2/login')
-api.add_resource(FileAPI.FileBase, '/api/v2/file/<string:file_id>')
+api.add_resource(FileAPI.FileBase, '/api/v2/file/')
 api.add_resource(FileAPI.FileCopy, '/api/v2/file/copy')
 api.add_resource(FileAPI.FileSystem, '/api/v2/file/fs')
 api.add_resource(WorkspaceAPI.WorkspaceBase, '/api/v2/workspace')

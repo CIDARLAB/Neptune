@@ -49,12 +49,13 @@ class WorkspaceAPI:
             workspace.delete()
             return {'message': 'Workspace deleted successfully'}, 200
         
-        @use_kwargs({'workspace_id': fields.Str()})
+        @use_kwargs({'workspace_id': fields.Str(), 'workspace_name': fields.Str()})
         def put(self, **kwargs):
             verify_jwt_in_request()
             workspace_id = kwargs.get('workspace_id')
             workspace = Workspace.objects.get(id=workspace_id)
-            workspace.update(request.get_json())
+            workspace.name = kwargs.get('workspace_name')
+            workspace.save()
             return {'message': 'Workspace updated successfully'}, 200
                 
                 

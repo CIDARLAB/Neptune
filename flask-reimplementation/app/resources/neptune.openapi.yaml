@@ -1,0 +1,1428 @@
+openapi: 3.0.3
+info:
+  title: Neptune API
+  description: |-
+    This is the API for Neptune, a cloud-based platform for generating Microfluidic Devices.
+    [Website](https://neptune.fluigicad.org)
+    [Github](https://github.com/CIDARLAB/neptune)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: rkrishnasanka@gmail.com
+  license:
+    name: BSD-3-Clause
+    url: "https://github.com/CIDARLAB/neptune/LICENSE.md"
+  version: "2.0"
+externalDocs:
+  description: External Docs
+  url: http://tbawiki
+servers:
+  - url: "https://neptune.fluigicad.org/api/v2"
+tags:
+  - name: Compile
+    description: Operations about compilation operations
+    externalDocs:
+      description: Find out more
+      url: http://tba
+  - name: Authentication
+    description: Operations about authentication
+    externalDocs:
+      description: Find out more
+      url: http://tba
+  - name: User
+    description: User information stored on the server
+    externalDocs:
+      description: Find out more
+      url: http://tba
+  - name: Workspace
+    description: Workspace information stored on the server
+    externalDocs:
+      description: Find out more about our store
+      url: http://tba.io
+  - name: File
+    description: Operations about the files stored on the server
+    externalDocs:
+      description: Find out more about our store
+      url: http://tba.io
+  - name: Job
+    description: Operations about jobs created by users
+    externalDocs:
+      description: Find out more about our store
+      url: http://tba.io
+paths:
+  /user:
+    get:
+      summary: Get user information
+      description: Get user information
+      operationId: getUser
+      tags:
+        - User
+      security:
+        - bearerAuth: [read]
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '404':
+          description: User not found
+        '405':
+          description: Validation exception
+  /register:
+    post:
+      tags:
+      - Authentication
+      summary: Register a new user
+      description: Register a new user
+      operationId: registerUser
+      requestBody:
+        description: Register a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User not found
+        '405':
+          description: Validation exception
+  /login:
+    post:
+      tags:
+      - Authentication
+      summary: Login a user
+      description: Login a user
+      operationId: loginUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: User not found
+        '405':
+          description: Validation exception
+  /file:
+    description: Operations about file object properties
+    get:
+      tags:
+      - File
+      summary: Get file information
+      description: Get file information
+      operationId: getFile
+      security:
+        - bearerAuth: [read]
+      requestBody:
+        description: Get file information
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                file_id:
+                  type: string
+                  description: Unique file object id
+                  example: "unique_file_object_id"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '404':
+          description: File not found
+        '405':
+          description: Validation exception
+    post:
+      tags:
+      - File
+      summary: Create a new file
+      description: Create a new file
+      operationId: createFile
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Create a new file
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_name:
+                  type: string
+                  description: Name of the file
+                  example: "file_name"
+                workspace_id:
+                  type: string
+                  description: Unique workspace object id
+                  example: "unique_workspace_object_id"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: File not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+      - File
+      summary: Delete a file
+      description: Delete a file
+      operationId: deleteFile
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Delete a file
+        content:
+          application/json:
+            schema: 
+              type: object
+              properties:
+                file_id:
+                  type: string
+                  description: Unique file object id
+                  example: "unique_file_object_id"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: File not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+      - File
+      summary: Update a file's properties
+      description: Update a file
+      operationId: updateFile
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Update a file
+        content:
+          application/json:
+            schema:
+              oneOf:
+              - type: array
+              - items:
+                - $ref: '#/components/schemas/FilePropertiesUpdateInput'
+                - $ref: '#/components/schemas/FilePayloadUpdateInput'     
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: File not found
+        '405':
+          description: Validation exception
+  /file/copy:
+    post:
+      tags:
+      - File
+      description: Copy a file to a specified workspace
+      operationId: copyFile
+      security:
+          - bearerAuth: [write]
+      requestBody:
+        description: Copy a file to a specified workspace
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_id:
+                  type: string
+                  description: Unique file object id
+                  example: "unique_file_object_id"
+                workspace_id:
+                  type: string
+                  description: Unique workspace object id
+                  example: "unique_workspace_object_id"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid File ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+  /file/fs:
+    get:
+      tags:
+      - File
+      description: Starts downloading the specified file
+      operationId: getFileFs
+      security:
+        - bearerAuth: [read]
+      requestBody:
+        description: Starts downloading the specified file
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                file_id:
+                  type: string
+                  description: Unique file object id
+                  example: "unique_file_object_id"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid File ID supplied
+        '404':
+          description: File not found
+        '405':
+          description: Validation exception
+    post:
+      tags:
+      - File
+      description: Uploads a file to the specified workspace
+      operationId: postFileFs
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Uploads a file to the specified workspace
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File to upload
+                workspace_id:
+                  type: string
+                  description: Unique workspace object id
+                  example: "unique_workspace_object_id"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid File ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+      - File
+      description: Uploads a file to the specified workspace replacing the existing file
+      operationId: putFileFs
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Uploads a file to the specified workspace replacing the existing file
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: File to upload
+                workspace_id:
+                  type: string
+                  description: Unique workspace object id
+                  example: "unique_workspace_object_id"
+                file_id:
+                  type: string
+                  description: Unique file object id
+                  example: "unique_file_object_id"
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        '400':
+          description: Invalid File ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+  /workspace:
+    summary: All the workspace property based operations
+    get:
+      tags:
+      - Workspace
+      description: Get all workspaces
+      operationId: getWorkspaces
+      security:
+        - bearerAuth: [read]
+      requestBody:
+        description: Get all workspaces
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/WorkspaceInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+      - Workspace
+      description: Delete the workspace
+      operationId: deleteWorkspace
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Delete a workspace
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/WorkspaceInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+    put:
+      tags:
+      - Workspace
+      description: Update the workspace
+      operationId: updateWorkspace
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Update a workspace
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/WorkspaceInfoInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+    post:
+      tags:
+      - Workspace
+      description: Create a workspace
+      operationId: createWorkspace
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Create a workspace
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/WorkspaceInfoInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+  /workspace/zipfs:
+    get:
+      tags:
+      - Workspace
+      description: Starts downloading the specified workspace as a zip file
+      operationId: getWorkspaceZipFs
+      security:
+        - bearerAuth: [read]
+      requestBody:
+        description: Starts downloading the specified workspace
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid Workspace ID supplied
+        '404':
+          description: Workspace not found
+        '405':
+          description: Validation exception
+  /job:
+    summary: All the job property based operations
+    get:
+      tags:
+      - Job
+      description: Get all jobs
+      operationId: getJobs
+      security:
+        - bearerAuth: [read]
+      requestBody:
+        description: Get all jobs
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/JobInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Job not found
+        '405':
+          description: Validation exception
+    delete:
+      tags:
+      - Job
+      description: Delete the job
+      operationId: deleteJob
+      security:
+        - bearerAuth: [write]
+      requestBody:
+        description: Delete a job
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/JobInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Job not found
+        '405':
+          description: Validation exception
+  /job/zipfs:
+    get:
+      tags:
+      - Job
+      description: Starts downloading the specified job as a zip file
+      operationId: getJobZipFs
+      security:
+        - bearerAuth: [read]
+      requestBody:
+        description: Starts downloading the specified job
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobInput'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Invalid Job ID supplied
+        '404':
+          description: Job not found
+        '405':
+          description: Validation exception
+  /compile/lfr:
+    post:
+      tags:
+      - Compile
+      description: Compile the LFR File
+      operationId: compileLFR
+      security:
+        - bearerAuth : [write]
+      requestBody:
+        description: Compile the LFR File
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompilerInputs'
+        required: true      
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Job not found
+        '405':
+          description: Validation exception
+  /compile/mint:
+    post:
+      tags:
+      - Compile
+      description: Compile the MINT File
+      operationId: compileMINT
+      security:
+        - bearerAuth : [write]
+      requestBody:
+        description: Compile the MINT File
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompilerInputs'
+        required: true      
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Job not found
+        '405':
+          description: Validation exception
+  /compile/test:
+    post:
+      tags:
+      - Compile
+      description: Run The Test Job
+      operationId: runTestJob
+      security:
+        - bearerAuth : [write]
+      requestBody:
+        description: Compile the MINT File
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompilerInputs'
+        required: true      
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        '400':
+          description: Invalid ID supplied
+        '404':
+          description: Job not found
+        '405':
+          description: Validation exception
+  # /user:
+  #   put:
+  #     tags:
+  #       - user
+  #     summary: Update an existing pet
+  #     description: Update an existing pet by Id
+  #     operationId: updatePet
+  #     requestBody:
+  #       description: Update an existent pet in the store
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Pet'
+  #         application/xml:
+  #           schema:
+  #             $ref: '#/components/schemas/Pet'
+  #         application/x-www-form-urlencoded:
+  #           schema:
+  #             $ref: '#/components/schemas/Pet'
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Pet'          
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/Pet'
+  #       '400':
+  #         description: Invalid ID supplied
+  #       '404':
+  #         description: Pet not found
+  #       '405':
+  #         description: Validation exception
+  #     security:
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  #   post:
+  #     tags:
+  #       - pet
+  #     summary: Add a new pet to the store
+  #     description: Add a new pet to the store
+  #     operationId: addPet
+  #     requestBody:
+  #       description: Create a new pet in the store
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Pet'
+  #         application/xml:
+  #           schema:
+  #             $ref: '#/components/schemas/Pet'
+  #         application/x-www-form-urlencoded:
+  #           schema:
+  #             $ref: '#/components/schemas/Pet'
+  #       required: true
+  #     responses:
+  #       '200':
+  #         description: Successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Pet'          
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/Pet'
+  #       '405':
+  #         description: Invalid input
+  #     security:
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  # /pet/findByStatus:
+  #   get:
+  #     tags:
+  #       - pet
+  #     summary: Finds Pets by status
+  #     description: Multiple status values can be provided with comma separated strings
+  #     operationId: findPetsByStatus
+  #     parameters:
+  #       - name: status
+  #         in: query
+  #         description: Status values that need to be considered for filter
+  #         required: false
+  #         explode: true
+  #         schema:
+  #           type: string
+  #           default: available
+  #           enum:
+  #             - available
+  #             - pending
+  #             - sold
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Pet'          
+  #           application/xml:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Pet'
+  #       '400':
+  #         description: Invalid status value
+  #     security:
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  # /pet/findByTags:
+  #   get:
+  #     tags:
+  #       - pet
+  #     summary: Finds Pets by tags
+  #     description: Multiple tags can be provided with comma separated strings. Use tag1, tag2, tag3 for testing.
+  #     operationId: findPetsByTags
+  #     parameters:
+  #       - name: tags
+  #         in: query
+  #         description: Tags to filter by
+  #         required: false
+  #         explode: true
+  #         schema:
+  #           type: array
+  #           items:
+  #             type: string
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Pet'          
+  #           application/xml:
+  #             schema:
+  #               type: array
+  #               items:
+  #                 $ref: '#/components/schemas/Pet'
+  #       '400':
+  #         description: Invalid tag value
+  #     security:
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  # /pet/{petId}:
+  #   get:
+  #     tags:
+  #       - pet
+  #     summary: Find pet by ID
+  #     description: Returns a single pet
+  #     operationId: getPetById
+  #     parameters:
+  #       - name: petId
+  #         in: path
+  #         description: ID of pet to return
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Pet'          
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/Pet'
+  #       '400':
+  #         description: Invalid ID supplied
+  #       '404':
+  #         description: Pet not found
+  #     security:
+  #       - api_key: []
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  #   post:
+  #     tags:
+  #       - pet
+  #     summary: Updates a pet in the store with form data
+  #     description: ''
+  #     operationId: updatePetWithForm
+  #     parameters:
+  #       - name: petId
+  #         in: path
+  #         description: ID of pet that needs to be updated
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #       - name: name
+  #         in: query
+  #         description: Name of pet that needs to be updated
+  #         schema:
+  #           type: string
+  #       - name: status
+  #         in: query
+  #         description: Status of pet that needs to be updated
+  #         schema:
+  #           type: string
+  #     responses:
+  #       '405':
+  #         description: Invalid input
+  #     security:
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  #   delete:
+  #     tags:
+  #       - pet
+  #     summary: Deletes a pet
+  #     description: delete a pet
+  #     operationId: deletePet
+  #     parameters:
+  #       - name: api_key
+  #         in: header
+  #         description: ''
+  #         required: false
+  #         schema:
+  #           type: string
+  #       - name: petId
+  #         in: path
+  #         description: Pet id to delete
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #     responses:
+  #       '400':
+  #         description: Invalid pet value
+  #     security:
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  # /pet/{petId}/uploadImage:
+  #   post:
+  #     tags:
+  #       - pet
+  #     summary: uploads an image
+  #     description: ''
+  #     operationId: uploadFile
+  #     parameters:
+  #       - name: petId
+  #         in: path
+  #         description: ID of pet to update
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #       - name: additionalMetadata
+  #         in: query
+  #         description: Additional Metadata
+  #         required: false
+  #         schema:
+  #           type: string
+  #     requestBody:
+  #       content:
+  #         application/octet-stream:
+  #           schema:
+  #             type: string
+  #             format: binary
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/ApiResponse'
+  #     security:
+  #       - petstore_auth:
+  #           - write:pets
+  #           - read:pets
+  # /store/inventory:
+  #   get:
+  #     tags:
+  #       - store
+  #     summary: Returns pet inventories by status
+  #     description: Returns a map of status codes to quantities
+  #     operationId: getInventory
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               additionalProperties:
+  #                 type: integer
+  #                 format: int32
+  #     security:
+  #       - api_key: []
+  # /store/order:
+  #   post:
+  #     tags:
+  #       - store
+  #     summary: Place an order for a pet
+  #     description: Place a new order in the store
+  #     operationId: placeOrder
+  #     requestBody:
+  #       content:
+  #         application/json:
+  #           schema:
+  #             $ref: '#/components/schemas/Order'
+  #         application/xml:
+  #           schema:
+  #             $ref: '#/components/schemas/Order'
+  #         application/x-www-form-urlencoded:
+  #           schema:
+  #             $ref: '#/components/schemas/Order'
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Order'
+  #       '405':
+  #         description: Invalid input
+  # /store/order/{orderId}:
+  #   get:
+  #     tags:
+  #       - store
+  #     summary: Find purchase order by ID
+  #     description: For valid response try integer IDs with value <= 5 or > 10. Other values will generate exceptions.
+  #     operationId: getOrderById
+  #     parameters:
+  #       - name: orderId
+  #         in: path
+  #         description: ID of order that needs to be fetched
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #     responses:
+  #       '200':
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Order'          
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/Order'
+  #       '400':
+  #         description: Invalid ID supplied
+  #       '404':
+  #         description: Order not found
+  #   delete:
+  #     tags:
+  #       - store
+  #     summary: Delete purchase order by ID
+  #     description: For valid response try integer IDs with value < 1000. Anything above 1000 or nonintegers will generate API errors
+  #     operationId: deleteOrder
+  #     parameters:
+  #       - name: orderId
+  #         in: path
+  #         description: ID of the order that needs to be deleted
+  #         required: true
+  #         schema:
+  #           type: integer
+  #           format: int64
+  #     responses:
+  #       '400':
+  #         description: Invalid ID supplied
+  #       '404':
+  #         description: Order not found
+  # # /user:
+  # #   post:
+  # #     tags:
+  # #       - user
+  # #     summary: Create user
+  # #     description: This can only be done by the logged in user.
+  # #     operationId: createUser
+  # #     requestBody:
+  # #       description: Created user object
+  # #       content:
+  # #         application/json:
+  # #           schema:
+  # #             $ref: '#/components/schemas/User'
+  # #         application/xml:
+  # #           schema:
+  # #             $ref: '#/components/schemas/User'
+  # #         application/x-www-form-urlencoded:
+  # #           schema:
+  # #             $ref: '#/components/schemas/User'
+  # #     responses:
+  # #       default:
+  # #         description: successful operation
+  # #         content:
+  # #           application/json:
+  # #             schema:
+  # #               $ref: '#/components/schemas/User'
+  # #           application/xml:
+  # #             schema:
+  # #               $ref: '#/components/schemas/User'
+  # # /user/createWithList:
+  # #   post:
+  # #     tags:
+  # #       - user
+  # #     summary: Creates list of users with given input array
+  # #     description: Creates list of users with given input array
+  # #     operationId: createUsersWithListInput
+  # #     requestBody:
+  # #       content:
+  # #         application/json:
+  # #           schema:
+  # #             type: array
+  # #             items:
+  # #               $ref: '#/components/schemas/User'
+  # #     responses:
+  # #       '200':
+  # #         description: Successful operation
+  # #         content:
+  # #           application/json:
+  # #             schema:
+  # #               $ref: '#/components/schemas/User'          
+  # #           application/xml:
+  # #             schema:
+  # #               $ref: '#/components/schemas/User'
+  # #       default:
+  # #         description: successful operation
+  # # /user/login:
+  # #   get:
+  # #     tags:
+  # #       - user
+  # #     summary: Logs user into the system
+  # #     description: ''
+  # #     operationId: loginUser
+  # #     parameters:
+  # #       - name: username
+  # #         in: query
+  # #         description: The user name for login
+  # #         required: false
+  # #         schema:
+  # #           type: string
+  # #       - name: password
+  # #         in: query
+  # #         description: The password for login in clear text
+  # #         required: false
+  # #         schema:
+  # #           type: string
+  # #     responses:
+  # #       '200':
+  # #         description: successful operation
+  # #         headers:
+  # #           X-Rate-Limit:
+  # #             description: calls per hour allowed by the user
+  # #             schema:
+  # #               type: integer
+  # #               format: int32
+  # #           X-Expires-After:
+  # #             description: date in UTC when token expires
+  # #             schema:
+  # #               type: string
+  # #               format: date-time
+  # #         content:
+  # #           application/xml:
+  # #             schema:
+  # #               type: string
+  # #           application/json:
+  # #             schema:
+  # #               type: string
+  # #       '400':
+  # #         description: Invalid username/password supplied
+  # # /user/logout:
+  # #   get:
+  # #     tags:
+  # #       - user
+  # #     summary: Logs out current logged in user session
+  # #     description: ''
+  # #     operationId: logoutUser
+  # #     parameters: []
+  # #     responses:
+  # #       default:
+  # #         description: successful operation
+  # # /user/{username}:
+  # #   get:
+  # #     tags:
+  # #       - user
+  # #     summary: Get user by user name
+  # #     description: ''
+  # #     operationId: getUserByName
+  # #     parameters:
+  # #       - name: username
+  # #         in: path
+  # #         description: 'The name that needs to be fetched. Use user1 for testing. '
+  # #         required: true
+  # #         schema:
+  # #           type: string
+  # #     responses:
+  # #       '200':
+  # #         description: successful operation
+  # #         content:
+  # #           application/json:
+  # #             schema:
+  # #               $ref: '#/components/schemas/User'          
+  # #           application/xml:
+  # #             schema:
+  # #               $ref: '#/components/schemas/User'
+  # #       '400':
+  # #         description: Invalid username supplied
+  # #       '404':
+  # #         description: User not found
+  # #   put:
+  # #     tags:
+  # #       - user
+  # #     summary: Update user
+  # #     description: This can only be done by the logged in user.
+  # #     operationId: updateUser
+  # #     parameters:
+  # #       - name: username
+  # #         in: path
+  # #         description: name that need to be deleted
+  # #         required: true
+  # #         schema:
+  # #           type: string
+  # #     requestBody:
+  # #       description: Update an existent user in the store
+  # #       content:
+  # #         application/json:
+  # #           schema:
+  # #             $ref: '#/components/schemas/User'
+  # #         application/xml:
+  # #           schema:
+  # #             $ref: '#/components/schemas/User'
+  # #         application/x-www-form-urlencoded:
+  # #           schema:
+  # #             $ref: '#/components/schemas/User'
+  # #     responses:
+  # #       default:
+  # #         description: successful operation
+  # #   delete:
+  # #     tags:
+  # #       - user
+  # #     summary: Delete user
+  # #     description: This can only be done by the logged in user.
+  # #     operationId: deleteUser
+  # #     parameters:
+  # #       - name: username
+  # #         in: path
+  # #         description: The name that needs to be deleted
+  # #         required: true
+  # #         schema:
+  # #           type: string
+  # #     responses:
+  # #       '400':
+  # #         description: Invalid username supplied
+  # #       '404':
+  # #         description: User not found
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        workspaces:
+          type: array
+          items:
+            type: string
+        jobs:
+          type: array
+          items:
+            type: string
+    FileResponse:
+      type: object
+      properties: 
+        file_id:
+          type: string
+        file_name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        s3_path:
+          type: string
+        file_extension:
+          type: string
+    WorkspaceResponse:
+      type: object
+      properties:
+        workspace_id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        design_files:
+          type: array
+          items:
+            type: string
+    JobResponse:
+      type: object
+      properties:
+        job_id:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        status:
+          type: string
+        files:
+          type: array
+          items:
+            type: string
+      required: [job_id, created_at, updated_at, status, files]
+    RegisterInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required: [email, password]
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required: [email, password]
+    FilePropertiesUpdateInput:
+      type: object
+      properties:
+        file_id:
+          type: string
+        file_name:
+          type: string
+      required: [file_id, file_name]
+    WorkspaceInput:
+      type: object
+      properties:
+        workspace_id:
+          type: string
+      required: [workspace_id]
+    WorkspaceInfoInput:
+      type: object
+      properties:
+        workspace_id:
+          type: string
+          description: Unique workspace object id
+          example: "unique_workspace_object_id"
+        workspace_name:
+          type: string
+          description: Workspace name
+          example: "workspace_name"
+      required: [workspace_id, workspace_name]
+    FilePayloadUpdateInput:
+      type: object
+      properties:
+        file_id:
+          type: string
+        file_payload:
+          type: string
+      required: [file_id, file_payload]
+    JobInput:
+      type: object
+      properties:
+        job_id:
+          type: string
+      required: [job_id]
+    CompilerInputs:
+      type: object
+      properties:
+        source_files:
+          type: array
+          items:
+            type: string
+        config_file:
+          type: string
+        args:
+          type: array
+          items:
+            type: string
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+  requestBodies:
+    
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT  
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
