@@ -1,0 +1,1078 @@
+openapi: 3.0.3
+info:
+  title: Neptune API
+  description: |-
+    This is the API for Neptune, a cloud-based platform for generating Microfluidic Devices.
+    [Website](https://neptune.fluigicad.org)
+    [Github](https://github.com/CIDARLAB/neptune)
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: rkrishnasanka@gmail.com
+  license:
+    name: BSD-3-Clause
+    url: https://github.com/CIDARLAB/neptune/LICENSE.md
+  version: "2.0"
+externalDocs:
+  description: External Docs
+  url: http://tbawiki
+servers:
+- url: https://neptune.fluigicad.org/api/v2
+tags:
+- name: Compile
+  description: Operations about compilation operations
+  externalDocs:
+    description: Find out more
+    url: http://tba
+- name: Authentication
+  description: Operations about authentication
+  externalDocs:
+    description: Find out more
+    url: http://tba
+- name: User
+  description: User information stored on the server
+  externalDocs:
+    description: Find out more
+    url: http://tba
+- name: Workspace
+  description: Workspace information stored on the server
+  externalDocs:
+    description: Find out more about our store
+    url: http://tba.io
+- name: File
+  description: Operations about the files stored on the server
+  externalDocs:
+    description: Find out more about our store
+    url: http://tba.io
+- name: Job
+  description: Operations about jobs created by users
+  externalDocs:
+    description: Find out more about our store
+    url: http://tba.io
+paths:
+  /user:
+    get:
+      tags:
+      - User
+      summary: Get user information
+      description: Get user information
+      operationId: get_user
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - read
+      x-openapi-router-controller: fluigi_cloud.controllers.user_controller
+    put:
+      tags:
+      - User
+      summary: Update user information
+      description: Update user information
+      operationId: update_user
+      requestBody:
+        description: Update user information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfoInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.user_controller
+  /register:
+    post:
+      tags:
+      - Authentication
+      summary: Register a new user
+      description: Register a new user
+      operationId: register_user
+      requestBody:
+        description: Register a new user
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      x-openapi-router-controller: fluigi_cloud.controllers.authentication_controller
+  /login:
+    post:
+      tags:
+      - Authentication
+      summary: Login a user
+      description: Login a user
+      operationId: login_user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      x-openapi-router-controller: fluigi_cloud.controllers.authentication_controller
+  /changepassword:
+    post:
+      tags:
+      - Authentication
+      summary: Change password
+      description: Change password
+      operationId: change_password
+      requestBody:
+        description: Change password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePasswordInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.authentication_controller
+  /file:
+    description: Operations about file object properties
+    get:
+      tags:
+      - File
+      summary: Get file information
+      description: Get file information
+      operationId: get_file
+      requestBody:
+        description: Get file information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file_body'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        "404":
+          description: File not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - read
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+    put:
+      tags:
+      - File
+      summary: Update a file's properties
+      description: Update a file
+      operationId: update_file
+      requestBody:
+        description: Update a file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file_body_1'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: File not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+    post:
+      tags:
+      - File
+      summary: Create a new file
+      description: Create a new file
+      operationId: create_file
+      requestBody:
+        description: Create a new file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file_body_2'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: File not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+    delete:
+      tags:
+      - File
+      summary: Delete a file
+      description: Delete a file
+      operationId: delete_file
+      requestBody:
+        description: Delete a file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file_body_3'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: File not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+  /file/copy:
+    post:
+      tags:
+      - File
+      description: Copy a file to a specified workspace
+      operationId: copy_file
+      requestBody:
+        description: Copy a file to a specified workspace
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file_copy_body'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        "400":
+          description: Invalid File ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+  /file/fs:
+    get:
+      tags:
+      - File
+      description: Starts downloading the specified file
+      operationId: get_file_fs
+      requestBody:
+        description: Starts downloading the specified file
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/file_fs_body'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                x-content-type: application/octet-stream
+        "400":
+          description: Invalid File ID supplied
+        "404":
+          description: File not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - read
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+    put:
+      tags:
+      - File
+      description: Uploads a file to the specified workspace replacing the existing
+        file
+      operationId: put_file_fs
+      requestBody:
+        description: Uploads a file to the specified workspace replacing the existing
+          file
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/file_fs_body_1'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        "400":
+          description: Invalid File ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+    post:
+      tags:
+      - File
+      description: Uploads a file to the specified workspace
+      operationId: post_file_fs
+      requestBody:
+        description: Uploads a file to the specified workspace
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/file_fs_body_2'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FileResponse'
+        "400":
+          description: Invalid File ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+  /workspace:
+    summary: All the workspace property based operations
+    get:
+      tags:
+      - Workspace
+      description: Get all workspaces
+      operationId: get_workspaces
+      requestBody:
+        description: Get all workspaces
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - read
+      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+    put:
+      tags:
+      - Workspace
+      description: Update the workspace
+      operationId: update_workspace
+      requestBody:
+        description: Update a workspace
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInfoInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+    post:
+      tags:
+      - Workspace
+      description: Create a workspace
+      operationId: create_workspace
+      requestBody:
+        description: Create a workspace
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInfoInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+    delete:
+      tags:
+      - Workspace
+      description: Delete the workspace
+      operationId: delete_workspace
+      requestBody:
+        description: Delete a workspace
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkspaceResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+  /workspace/zipfs:
+    get:
+      tags:
+      - Workspace
+      description: Starts downloading the specified workspace as a zip file
+      operationId: get_workspace_zip_fs
+      requestBody:
+        description: Starts downloading the specified workspace
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkspaceInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                x-content-type: application/octet-stream
+        "400":
+          description: Invalid Workspace ID supplied
+        "404":
+          description: Workspace not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - read
+      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+  /job:
+    summary: All the job property based operations
+    get:
+      tags:
+      - Job
+      description: Get all jobs
+      operationId: get_jobs
+      requestBody:
+        description: Get all jobs
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Job not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - read
+      x-openapi-router-controller: fluigi_cloud.controllers.job_controller
+    delete:
+      tags:
+      - Job
+      description: Delete the job
+      operationId: delete_job
+      requestBody:
+        description: Delete a job
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Job not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.job_controller
+  /job/zipfs:
+    get:
+      tags:
+      - Job
+      description: Starts downloading the specified job as a zip file
+      operationId: get_job_zip_fs
+      requestBody:
+        description: Starts downloading the specified job
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/JobInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                x-content-type: application/octet-stream
+        "400":
+          description: Invalid Job ID supplied
+        "404":
+          description: Job not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - read
+      x-openapi-router-controller: fluigi_cloud.controllers.job_controller
+  /compile/lfr:
+    post:
+      tags:
+      - Compile
+      description: Compile the LFR File
+      operationId: compile_lfr
+      requestBody:
+        description: Compile the LFR File
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompilerInputs'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Job not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.compile_controller
+  /compile/mint:
+    post:
+      tags:
+      - Compile
+      description: Compile the MINT File
+      operationId: compile_mint
+      requestBody:
+        description: Compile the MINT File
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompilerInputs'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Job not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.compile_controller
+  /compile/test:
+    post:
+      tags:
+      - Compile
+      description: Run The Test Job
+      operationId: run_test_job
+      requestBody:
+        description: Compile the MINT File
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompilerInputs'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: Job not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: fluigi_cloud.controllers.compile_controller
+components:
+  schemas:
+    UserResponse:
+      type: object
+      properties:
+        user_id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        workspaces:
+          type: array
+          items:
+            type: string
+        jobs:
+          type: array
+          items:
+            type: string
+      example:
+        user_id: user_id
+        jobs:
+        - jobs
+        - jobs
+        last_name: last_name
+        workspaces:
+        - workspaces
+        - workspaces
+        first_name: first_name
+        email: email
+    FileResponse:
+      type: object
+      properties:
+        file_id:
+          type: string
+        file_name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        s3_path:
+          type: string
+        file_extension:
+          type: string
+      example:
+        updated_at: updated_at
+        file_name: file_name
+        s3_path: s3_path
+        file_id: file_id
+        created_at: created_at
+        file_extension: file_extension
+    WorkspaceResponse:
+      type: object
+      properties:
+        workspace_id:
+          type: string
+        name:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        design_files:
+          type: array
+          items:
+            type: string
+      example:
+        workspace_id: workspace_id
+        updated_at: updated_at
+        design_files:
+        - design_files
+        - design_files
+        name: name
+        created_at: created_at
+    JobResponse:
+      required:
+      - created_at
+      - files
+      - job_id
+      - status
+      - updated_at
+      type: object
+      properties:
+        job_id:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        status:
+          type: string
+        files:
+          type: array
+          items:
+            type: string
+      example:
+        updated_at: updated_at
+        job_id: job_id
+        created_at: created_at
+        files:
+        - files
+        - files
+        status: status
+    RegisterInput:
+      required:
+      - email
+      - first_name
+      - last_name
+      - password
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+    LoginInput:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+    UserInfoInput:
+      required:
+      - email
+      - first_name
+      - last_name
+      - user_id
+      type: object
+      properties:
+        user_id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+    UpdatePasswordInput:
+      required:
+      - new_password
+      - old_password
+      - user_id
+      type: object
+      properties:
+        user_id:
+          type: string
+        old_password:
+          type: string
+        new_password:
+          type: string
+    FilePropertiesUpdateInput:
+      required:
+      - file_id
+      - file_name
+      type: object
+      properties:
+        file_id:
+          type: string
+        file_name:
+          type: string
+    WorkspaceInput:
+      required:
+      - workspace_id
+      type: object
+      properties:
+        workspace_id:
+          type: string
+    WorkspaceInfoInput:
+      required:
+      - workspace_id
+      - workspace_name
+      type: object
+      properties:
+        workspace_id:
+          type: string
+          description: Unique workspace object id
+          example: unique_workspace_object_id
+        workspace_name:
+          type: string
+          description: Workspace name
+          example: workspace_name
+    FilePayloadUpdateInput:
+      required:
+      - file_id
+      - file_payload
+      type: object
+      properties:
+        file_id:
+          type: string
+        file_payload:
+          type: string
+    JobInput:
+      required:
+      - job_id
+      type: object
+      properties:
+        job_id:
+          type: string
+    CompilerInputs:
+      type: object
+      properties:
+        source_files:
+          type: array
+          items:
+            type: string
+        config_file:
+          type: string
+        args:
+          type: array
+          items:
+            type: string
+    ApiResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        type:
+          type: string
+        message:
+          type: string
+      xml:
+        name: '##default'
+    file_body:
+      type: object
+      properties:
+        file_id:
+          type: string
+          description: Unique file object id
+          example: unique_file_object_id
+    file_body_1:
+      oneOf:
+      - type: array
+      - {}
+    file_body_2:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: Name of the file
+          example: file_name
+        workspace_id:
+          type: string
+          description: Unique workspace object id
+          example: unique_workspace_object_id
+    file_body_3:
+      type: object
+      properties:
+        file_id:
+          type: string
+          description: Unique file object id
+          example: unique_file_object_id
+    file_copy_body:
+      type: object
+      properties:
+        file_id:
+          type: string
+          description: Unique file object id
+          example: unique_file_object_id
+        workspace_id:
+          type: string
+          description: Unique workspace object id
+          example: unique_workspace_object_id
+    file_fs_body:
+      type: object
+      properties:
+        file_id:
+          type: string
+          description: Unique file object id
+          example: unique_file_object_id
+    file_fs_body_1:
+      type: object
+      properties:
+        file:
+          type: string
+          description: File to upload
+          format: binary
+        workspace_id:
+          type: string
+          description: Unique workspace object id
+          example: unique_workspace_object_id
+        file_id:
+          type: string
+          description: Unique file object id
+          example: unique_file_object_id
+    file_fs_body_2:
+      type: object
+      properties:
+        file:
+          type: string
+          description: File to upload
+          format: binary
+        workspace_id:
+          type: string
+          description: Unique workspace object id
+          example: unique_workspace_object_id
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      x-bearerInfoFunc: fluigi_cloud.controllers.authorization_controller.check_bearerAuth
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
+      x-apikeyInfoFunc: fluigi_cloud.controllers.authorization_controller.check_api_key
+

@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "Fluigi-Cloud"
+name = "fluigi_cloud"
 version = "0.1.0"
 description = ""
 authors = ["Radhakrishna Sanka <rkrishnasanka@gmail.com>"]
 license = "BSD-3-Clause"
 include = [
-    "swagger_server/**/*.py",
+    "fluigi_cloud/**/*.py",
     "app/**/*.py",
 ]
 
