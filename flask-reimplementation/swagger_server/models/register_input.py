@@ -14,23 +14,33 @@ class RegisterInput(Model):
 
     Do not edit the class manually.
     """
-    def __init__(self, email: str=None, password: str=None):  # noqa: E501
+    def __init__(self, first_name: str=None, last_name: str=None, email: str=None, password: str=None):  # noqa: E501
         """RegisterInput - a model defined in Swagger
 
+        :param first_name: The first_name of this RegisterInput.  # noqa: E501
+        :type first_name: str
+        :param last_name: The last_name of this RegisterInput.  # noqa: E501
+        :type last_name: str
         :param email: The email of this RegisterInput.  # noqa: E501
         :type email: str
         :param password: The password of this RegisterInput.  # noqa: E501
         :type password: str
         """
         self.swagger_types = {
+            'first_name': str,
+            'last_name': str,
             'email': str,
             'password': str
         }
 
         self.attribute_map = {
+            'first_name': 'first_name',
+            'last_name': 'last_name',
             'email': 'email',
             'password': 'password'
         }
+        self._first_name = first_name
+        self._last_name = last_name
         self._email = email
         self._password = password
 
@@ -44,6 +54,52 @@ class RegisterInput(Model):
         :rtype: RegisterInput
         """
         return util.deserialize_model(dikt, cls)
+
+    @property
+    def first_name(self) -> str:
+        """Gets the first_name of this RegisterInput.
+
+
+        :return: The first_name of this RegisterInput.
+        :rtype: str
+        """
+        return self._first_name
+
+    @first_name.setter
+    def first_name(self, first_name: str):
+        """Sets the first_name of this RegisterInput.
+
+
+        :param first_name: The first_name of this RegisterInput.
+        :type first_name: str
+        """
+        if first_name is None:
+            raise ValueError("Invalid value for `first_name`, must not be `None`")  # noqa: E501
+
+        self._first_name = first_name
+
+    @property
+    def last_name(self) -> str:
+        """Gets the last_name of this RegisterInput.
+
+
+        :return: The last_name of this RegisterInput.
+        :rtype: str
+        """
+        return self._last_name
+
+    @last_name.setter
+    def last_name(self, last_name: str):
+        """Sets the last_name of this RegisterInput.
+
+
+        :param last_name: The last_name of this RegisterInput.
+        :type last_name: str
+        """
+        if last_name is None:
+            raise ValueError("Invalid value for `last_name`, must not be `None`")  # noqa: E501
+
+        self._last_name = last_name
 
     @property
     def email(self) -> str:

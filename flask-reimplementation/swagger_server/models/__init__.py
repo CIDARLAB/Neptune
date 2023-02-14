@@ -20,6 +20,8 @@ from swagger_server.models.job_input import JobInput
 from swagger_server.models.job_response import JobResponse
 from swagger_server.models.login_input import LoginInput
 from swagger_server.models.register_input import RegisterInput
+from swagger_server.models.update_password_input import UpdatePasswordInput
+from swagger_server.models.user_info_input import UserInfoInput
 from swagger_server.models.user_response import UserResponse
 from swagger_server.models.workspace_info_input import WorkspaceInfoInput
 from swagger_server.models.workspace_input import WorkspaceInput

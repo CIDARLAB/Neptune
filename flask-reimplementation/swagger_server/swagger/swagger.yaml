@@ -71,6 +71,36 @@ paths:
       - bearerAuth:
         - read
       x-openapi-router-controller: swagger_server.controllers.user_controller
+    put:
+      tags:
+      - User
+      summary: Update user information
+      description: Update user information
+      operationId: update_user
+      requestBody:
+        description: Update user information
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInfoInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
+      x-openapi-router-controller: swagger_server.controllers.user_controller
   /register:
     post:
       tags:
@@ -125,6 +155,37 @@ paths:
           description: User not found
         "405":
           description: Validation exception
+      x-openapi-router-controller: swagger_server.controllers.authentication_controller
+  /changepassword:
+    post:
+      tags:
+      - Authentication
+      summary: Change password
+      description: Change password
+      operationId: change_password
+      requestBody:
+        description: Change password
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePasswordInput'
+        required: true
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponse'
+        "400":
+          description: Invalid ID supplied
+        "404":
+          description: User not found
+        "405":
+          description: Validation exception
+      security:
+      - bearerAuth:
+        - write
       x-openapi-router-controller: swagger_server.controllers.authentication_controller
   /file:
     description: Operations about file object properties
@@ -805,9 +866,15 @@ components:
     RegisterInput:
       required:
       - email
+      - first_name
+      - last_name
       - password
       type: object
       properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
         email:
           type: string
         password:
@@ -821,6 +888,35 @@ components:
         email:
           type: string
         password:
+          type: string
+    UserInfoInput:
+      required:
+      - email
+      - first_name
+      - last_name
+      - user_id
+      type: object
+      properties:
+        user_id:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        email:
+          type: string
+    UpdatePasswordInput:
+      required:
+      - new_password
+      - old_password
+      - user_id
+      type: object
+      properties:
+        user_id:
+          type: string
+        old_password:
+          type: string
+        new_password:
           type: string
     FilePropertiesUpdateInput:
       required:

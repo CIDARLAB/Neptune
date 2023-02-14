@@ -7,12 +7,27 @@ from six import BytesIO
 
 from swagger_server.models.login_input import LoginInput  # noqa: E501
 from swagger_server.models.register_input import RegisterInput  # noqa: E501
+from swagger_server.models.update_password_input import UpdatePasswordInput  # noqa: E501
 from swagger_server.models.user_response import UserResponse  # noqa: E501
 from swagger_server.test import BaseTestCase
 
 
 class TestAuthenticationController(BaseTestCase):
     """AuthenticationController integration test stubs"""
+
+    def test_change_password(self):
+        """Test case for change_password
+
+        Change password
+        """
+        body = UpdatePasswordInput()
+        response = self.client.open(
+            '/api/v2/changepassword',
+            method='POST',
+            data=json.dumps(body),
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
 
     def test_login_user(self):
         """Test case for login_user
