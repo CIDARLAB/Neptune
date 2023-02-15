@@ -5,7 +5,7 @@ from celery import Celery
 from fluigi_cloud.db.job import Job
 from fluigi_cloud.db.file import File
 from fluigi_cloud.db.user import User
-from app.parameters import CELERY_BROKER_URL, MONGO_HOST, MONGO_PORT, MONGODB_PASSWORD, MONGODB_USER, MONGODB_INITDB_NAME
+from fluigi_cloud.parameters import CELERY_BROKER_URL, MONGO_HOST, MONGO_PORT, MONGODB_PASSWORD, MONGODB_USER, MONGODB_INITDB_NAME
 
 CELERY_INSTANCE = Celery(
     broker=CELERY_BROKER_URL, 

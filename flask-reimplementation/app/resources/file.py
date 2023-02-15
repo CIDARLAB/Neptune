@@ -13,7 +13,7 @@ from pathlib import Path
 import uuid
 
 from fluigi_cloud.db.workspace import Workspace
-from app.parameters import FLASK_DOWNLOADS_DIRECTORY
+from fluigi_cloud.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 class FileAPI:
     class FileBase(Resource):

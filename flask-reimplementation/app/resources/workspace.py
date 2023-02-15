@@ -10,7 +10,7 @@ from flask_apispec import use_kwargs
 from flask_jwt_extended import jwt_required, get_jwt_identity, verify_jwt_in_request
 from flask import request, send_file, after_this_request
 
-from app.parameters import FLASK_DOWNLOADS_DIRECTORY
+from fluigi_cloud.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 class WorkspaceAPI:
     

@@ -6,7 +6,7 @@ from zipfile import ZipFile
 from app.controllers.s3filesystem import S3FileSystem
 import shutil
 
-from app.parameters import FLASK_DOWNLOADS_DIRECTORY
+from fluigi_cloud.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 
 def download_s3files_and_zip(file_object_list: List[File]) -> Optional[Path]:
