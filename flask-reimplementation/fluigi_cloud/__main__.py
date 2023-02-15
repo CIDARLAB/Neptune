@@ -79,22 +79,14 @@ def connect_to_celery():
 def setup_socketio(flask_app):
     # print("Setting up SocketIO")
     pass
-
-# setup_fileio_directories()
-# connect_to_mongodb()
-# connect_to_s3()
-    
     
 
-
-
-# def main():
 setup_fileio_directories()
 connect_to_mongodb()
 connect_to_s3()
 connect_to_celery()
 connect_to_redis()
-path = os.path.abspath("./static/")
+path = os.path.abspath("../static/")
 
 # This is the openapi spec driven server
 flask_app = connexion.FlaskApp(__name__, specification_dir='./swagger/', server_args={'static_url_path':"/", 'static_folder':path})  #static_url_path="/", static_folder=path
@@ -119,10 +111,6 @@ asyncio.set_event_loop(loop)
 # Setup the Socketio bits now
 socketio = SocketIO(flask_app.app, cors_allowed_origins="*")
 setup_socketio(flask_app.app)
-# Run the app
-# flask_app.run(debug=True, host="0.0.0.0", port=8080)
-socketio.run(flask_app.app, debug=True, host="0.0.0.0", port=8080)
-
 
 # Test Event to ensure things are working correctly
 @socketio.on('echo')
@@ -167,7 +155,7 @@ def echo(input_string: str) :
         }
     )
 
+if __name__ == '__main__':
+    # Run the app
+    socketio.run(flask_app.app, debug=True, host="0.0.0.0", port=8080)
 
-
-# if __name__ == '__main__':
-#     main()
