@@ -18,8 +18,7 @@
       "request": "launch",
       "module": "connexion",
       "env": {
-        "FLASK_APP": "fluigi_cloud/__main__.py",
-        "FLASK_ENV": "development",
+        "FLASK_APP": "./fluigi_cloud/__main__.py",
         "FLASK_DEBUG": "1"
       },
       "args": [

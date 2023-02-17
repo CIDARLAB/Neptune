@@ -70,7 +70,9 @@ def register_user(body):  # noqa: E501
         
         email = body.email
         password = body.password
-
+        first_name=body.first_name
+        last_name=body.last_name
+        
         # TODO- Find a more elegant way to do this
         try:
             user = User.objects.get(email=email)
@@ -80,20 +82,11 @@ def register_user(body):  # noqa: E501
         if user:
             return {"msg": "User already exists"}, 400
 
-        request_body = request.get_json()
-        if request_body is None:
-            return {'error': 'Could not create user, no input data recieved'}, 400
-
-        email=request_body['email'],
-        password=request_body['password'],
-        first_name=request_body['first_name'] if 'first_name' in request_body else None,
-        last_name=request_body['last_name'] if 'last_name' in request_body else None,
-
         new_user = AuthenticationController.create_new_user(
-            email=email[0], 
-            password=password[0], 
-            first_name=first_name[0] if first_name else None,
-            last_name=last_name[0] if last_name else None
+            email=email, 
+            password=password, 
+            first_name=first_name if first_name else None,
+            last_name=last_name if last_name else None
         )
         
         # Create a new workspace called "Microfluidics Examples"
@@ -123,7 +116,7 @@ def register_user(body):  # noqa: E501
         # Save the user        
         new_user.save()
 
-        auth_message, return_code, access_token = AuthenticationController.get_token(email=email[0], password=password[0])
+        auth_message, return_code, access_token = AuthenticationController.get_token(email=email, password=password)
 
         if access_token is None:
             return {'message': auth_message}, return_code

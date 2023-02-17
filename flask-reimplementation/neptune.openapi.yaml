@@ -152,7 +152,8 @@ paths:
           description: Validation exception
   /changepassword:
     post:
-      tags: Authentication
+      tags: 
+      - Authentication
       summary: Change password
       description: Change password
       operationId: changePassword
