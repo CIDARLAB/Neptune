@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "fluigi_cloud"
+name = "api"
 version = "0.1.0"
 description = ""
 authors = ["Radhakrishna Sanka <rkrishnasanka@gmail.com>"]
