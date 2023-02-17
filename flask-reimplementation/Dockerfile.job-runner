@@ -31,7 +31,7 @@ WORKDIR /main/pyfluigi
 RUN poetry install --no-dev --no-interaction --no-ansi 
 
 WORKDIR /runner/
-COPY ./job-runner .
+COPY ./flask-reimplementation .
 RUN pip install .
 
 RUN fluigi --help
