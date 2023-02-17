@@ -5,8 +5,8 @@ from datetime import date, datetime  # noqa: F401
 
 from typing import List, Dict  # noqa: F401
 
-from fluigi_cloud.models.base_model_ import Model
-from fluigi_cloud import util
+from api.models.base_model_ import Model
+from api import util
 
 
 class WorkspaceResponse(Model):

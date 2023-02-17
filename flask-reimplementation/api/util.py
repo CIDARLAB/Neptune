@@ -2,7 +2,7 @@ import datetime
 
 import six
 import typing
-from fluigi_cloud import type_util
+from api import type_util
 
 
 def _deserialize(data, klass):

@@ -5,7 +5,7 @@ import boto3
 from pathlib import Path
 from botocore.exceptions import ClientError
 
-from fluigi_cloud.parameters import AWS_ACCESS_KEY_ID, AWS_ENDPOINT_URL, AWS_S3_BUCKET_NAME, AWS_SECRET_ACCESS_KEY
+from core.parameters import AWS_ACCESS_KEY_ID, AWS_ENDPOINT_URL, AWS_S3_BUCKET_NAME, AWS_SECRET_ACCESS_KEY
 
 
 

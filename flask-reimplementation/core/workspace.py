@@ -1,5 +1,5 @@
-from fluigi_cloud.db.file import File
-from fluigi_cloud.db.workspace import Workspace
+from core.db.file import File
+from core.db.workspace import Workspace
 
 
 @staticmethod

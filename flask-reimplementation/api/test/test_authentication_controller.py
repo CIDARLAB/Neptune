@@ -5,11 +5,11 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from fluigi_cloud.models.login_input import LoginInput  # noqa: E501
-from fluigi_cloud.models.register_input import RegisterInput  # noqa: E501
-from fluigi_cloud.models.update_password_input import UpdatePasswordInput  # noqa: E501
-from fluigi_cloud.models.user_response import UserResponse  # noqa: E501
-from fluigi_cloud.test import BaseTestCase
+from api.models.login_input import LoginInput  # noqa: E501
+from api.models.register_input import RegisterInput  # noqa: E501
+from api.models.update_password_input import UpdatePasswordInput  # noqa: E501
+from api.models.user_response import UserResponse  # noqa: E501
+from api.test import BaseTestCase
 
 
 class TestAuthenticationController(BaseTestCase):

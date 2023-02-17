@@ -5,9 +5,9 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from fluigi_cloud.models.job_input import JobInput  # noqa: E501
-from fluigi_cloud.models.job_response import JobResponse  # noqa: E501
-from fluigi_cloud.test import BaseTestCase
+from api.models.job_input import JobInput  # noqa: E501
+from api.models.job_response import JobResponse  # noqa: E501
+from api.test import BaseTestCase
 
 
 class TestJobController(BaseTestCase):

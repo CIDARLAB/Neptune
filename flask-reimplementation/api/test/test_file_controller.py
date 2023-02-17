@@ -5,14 +5,14 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from fluigi_cloud.models.file_body import FileBody  # noqa: E501
-from fluigi_cloud.models.file_body1 import FileBody1  # noqa: E501
-from fluigi_cloud.models.file_body2 import FileBody2  # noqa: E501
-from fluigi_cloud.models.file_body3 import FileBody3  # noqa: E501
-from fluigi_cloud.models.file_copy_body import FileCopyBody  # noqa: E501
-from fluigi_cloud.models.file_fs_body import FileFsBody  # noqa: E501
-from fluigi_cloud.models.file_response import FileResponse  # noqa: E501
-from fluigi_cloud.test import BaseTestCase
+from api.models.file_body import FileBody  # noqa: E501
+from api.models.file_body1 import FileBody1  # noqa: E501
+from api.models.file_body2 import FileBody2  # noqa: E501
+from api.models.file_body3 import FileBody3  # noqa: E501
+from api.models.file_copy_body import FileCopyBody  # noqa: E501
+from api.models.file_fs_body import FileFsBody  # noqa: E501
+from api.models.file_response import FileResponse  # noqa: E501
+from api.test import BaseTestCase
 
 
 class TestFileController(BaseTestCase):

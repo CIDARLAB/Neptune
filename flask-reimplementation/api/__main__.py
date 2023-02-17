@@ -14,8 +14,8 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_cors import CORS
 import mongoengine
-from app.controllers.s3filesystem import S3FileSystem
-from fluigi_cloud.parameters import (
+from core.s3filesystem import S3FileSystem
+from core.parameters import (
     FLASK_DOWNLOADS_DIRECTORY,
     MONGO_HOST,
     MONGO_PORT,

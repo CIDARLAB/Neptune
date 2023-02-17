@@ -5,9 +5,9 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from fluigi_cloud.models.user_info_input import UserInfoInput  # noqa: E501
-from fluigi_cloud.models.user_response import UserResponse  # noqa: E501
-from fluigi_cloud.test import BaseTestCase
+from api.models.user_info_input import UserInfoInput  # noqa: E501
+from api.models.user_response import UserResponse  # noqa: E501
+from api.test import BaseTestCase
 
 
 class TestUserController(BaseTestCase):

@@ -5,10 +5,10 @@ from __future__ import absolute_import
 from flask import json
 from six import BytesIO
 
-from fluigi_cloud.models.workspace_info_input import WorkspaceInfoInput  # noqa: E501
-from fluigi_cloud.models.workspace_input import WorkspaceInput  # noqa: E501
-from fluigi_cloud.models.workspace_response import WorkspaceResponse  # noqa: E501
-from fluigi_cloud.test import BaseTestCase
+from api.models.workspace_info_input import WorkspaceInfoInput  # noqa: E501
+from api.models.workspace_input import WorkspaceInput  # noqa: E501
+from api.models.workspace_response import WorkspaceResponse  # noqa: E501
+from api.test import BaseTestCase
 
 
 class TestWorkspaceController(BaseTestCase):

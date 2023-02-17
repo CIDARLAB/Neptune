@@ -3,7 +3,7 @@ from marshmallow import fields
 from flask_apispec import use_kwargs
 from app.controllers.s3filesystem import S3FileSystem
 from app.controllers.workspace import add_new_file_to_workspace
-from fluigi_cloud.db.file import File
+from core.db.file import File
 from flask_restful import Resource
 from flask import request, send_file, after_this_request
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
@@ -12,8 +12,8 @@ from werkzeug.utils import secure_filename
 from pathlib import Path
 import uuid
 
-from fluigi_cloud.db.workspace import Workspace
-from fluigi_cloud.parameters import FLASK_DOWNLOADS_DIRECTORY
+from core.db.workspace import Workspace
+from core.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 class FileAPI:
     class FileBase(Resource):

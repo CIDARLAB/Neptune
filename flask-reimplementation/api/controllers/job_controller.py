@@ -1,12 +1,12 @@
 import connexion
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import six
-from app.controllers.authentication import AuthenticationController
-from fluigi_cloud.db.job import Job
+from core.authentication import AuthenticationController
+from core.db.job import Job
 
-from fluigi_cloud.models.job_input import JobInput  # noqa: E501
-from fluigi_cloud.models.job_response import JobResponse  # noqa: E501
-from fluigi_cloud import util
+from api.models.job_input import JobInput  # noqa: E501
+from api.models.job_response import JobResponse  # noqa: E501
+from api import util
 
 
 def delete_job(body):  # noqa: E501

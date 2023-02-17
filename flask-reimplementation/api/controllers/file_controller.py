@@ -4,18 +4,18 @@ import connexion
 from flask import send_file
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 import six
-from app.controllers.authentication import AuthenticationController
-from app.controllers.s3filesystem import S3FileSystem
-from app.controllers.workspace import add_new_file_to_workspace
+from core.authentication import AuthenticationController
+from core.s3filesystem import S3FileSystem
+from core.workspace import add_new_file_to_workspace
 
-from fluigi_cloud.models.file_body import FileBody  # noqa: E501
-from fluigi_cloud.models.file_body1 import FileBody1  # noqa: E501
-from fluigi_cloud.models.file_body2 import FileBody2  # noqa: E501
-from fluigi_cloud.models.file_body3 import FileBody3  # noqa: E501
-from fluigi_cloud.models.file_copy_body import FileCopyBody  # noqa: E501
-from fluigi_cloud.models.file_fs_body import FileFsBody  # noqa: E501
-from fluigi_cloud.models.file_response import FileResponse  # noqa: E501
-from fluigi_cloud import util
+from api.models.file_body import FileBody  # noqa: E501
+from api.models.file_body1 import FileBody1  # noqa: E501
+from api.models.file_body2 import FileBody2  # noqa: E501
+from api.models.file_body3 import FileBody3  # noqa: E501
+from api.models.file_copy_body import FileCopyBody  # noqa: E501
+from api.models.file_fs_body import FileFsBody  # noqa: E501
+from api.models.file_response import FileResponse  # noqa: E501
+from api import util
 from werkzeug.utils import secure_filename
 
 

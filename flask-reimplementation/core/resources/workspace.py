@@ -3,14 +3,14 @@ import uuid
 from flask import request
 from app.controllers.authentication import AuthenticationController
 from app.controllers.ziphelper import download_s3files_and_zip
-from fluigi_cloud.db.workspace import Workspace
+from core.db.workspace import Workspace
 from flask_restful import Resource
 from marshmallow import fields
 from flask_apispec import use_kwargs
 from flask_jwt_extended import jwt_required, get_jwt_identity, verify_jwt_in_request
 from flask import request, send_file, after_this_request
 
-from fluigi_cloud.parameters import FLASK_DOWNLOADS_DIRECTORY
+from core.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 class WorkspaceAPI:
     

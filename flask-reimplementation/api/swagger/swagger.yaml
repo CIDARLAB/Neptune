@@ -70,7 +70,7 @@ paths:
       security:
       - bearerAuth:
         - read
-      x-openapi-router-controller: fluigi_cloud.controllers.user_controller
+      x-openapi-router-controller: api.controllers.user_controller
     put:
       tags:
       - User
@@ -100,7 +100,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.user_controller
+      x-openapi-router-controller: api.controllers.user_controller
   /register:
     post:
       tags:
@@ -128,7 +128,7 @@ paths:
           description: User not found
         "405":
           description: Validation exception
-      x-openapi-router-controller: fluigi_cloud.controllers.authentication_controller
+      x-openapi-router-controller: api.controllers.authentication_controller
   /login:
     post:
       tags:
@@ -155,7 +155,7 @@ paths:
           description: User not found
         "405":
           description: Validation exception
-      x-openapi-router-controller: fluigi_cloud.controllers.authentication_controller
+      x-openapi-router-controller: api.controllers.authentication_controller
   /changepassword:
     post:
       tags:
@@ -186,7 +186,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.authentication_controller
+      x-openapi-router-controller: api.controllers.authentication_controller
   /file:
     description: Operations about file object properties
     get:
@@ -216,7 +216,7 @@ paths:
       security:
       - bearerAuth:
         - read
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
     put:
       tags:
       - File
@@ -246,7 +246,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
     post:
       tags:
       - File
@@ -276,7 +276,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
     delete:
       tags:
       - File
@@ -306,7 +306,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
   /file/copy:
     post:
       tags:
@@ -336,7 +336,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
   /file/fs:
     get:
       tags:
@@ -368,7 +368,7 @@ paths:
       security:
       - bearerAuth:
         - read
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
     put:
       tags:
       - File
@@ -399,7 +399,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
     post:
       tags:
       - File
@@ -428,7 +428,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.file_controller
+      x-openapi-router-controller: api.controllers.file_controller
   /workspace:
     summary: All the workspace property based operations
     get:
@@ -459,7 +459,7 @@ paths:
       security:
       - bearerAuth:
         - read
-      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+      x-openapi-router-controller: api.controllers.workspace_controller
     put:
       tags:
       - Workspace
@@ -488,7 +488,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+      x-openapi-router-controller: api.controllers.workspace_controller
     post:
       tags:
       - Workspace
@@ -517,7 +517,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+      x-openapi-router-controller: api.controllers.workspace_controller
     delete:
       tags:
       - Workspace
@@ -546,7 +546,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+      x-openapi-router-controller: api.controllers.workspace_controller
   /workspace/zipfs:
     get:
       tags:
@@ -578,7 +578,7 @@ paths:
       security:
       - bearerAuth:
         - read
-      x-openapi-router-controller: fluigi_cloud.controllers.workspace_controller
+      x-openapi-router-controller: api.controllers.workspace_controller
   /job:
     summary: All the job property based operations
     get:
@@ -609,7 +609,7 @@ paths:
       security:
       - bearerAuth:
         - read
-      x-openapi-router-controller: fluigi_cloud.controllers.job_controller
+      x-openapi-router-controller: api.controllers.job_controller
     delete:
       tags:
       - Job
@@ -634,7 +634,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.job_controller
+      x-openapi-router-controller: api.controllers.job_controller
   /job/zipfs:
     get:
       tags:
@@ -666,7 +666,7 @@ paths:
       security:
       - bearerAuth:
         - read
-      x-openapi-router-controller: fluigi_cloud.controllers.job_controller
+      x-openapi-router-controller: api.controllers.job_controller
   /compile/lfr:
     post:
       tags:
@@ -696,7 +696,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.compile_controller
+      x-openapi-router-controller: api.controllers.compile_controller
   /compile/mint:
     post:
       tags:
@@ -726,7 +726,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.compile_controller
+      x-openapi-router-controller: api.controllers.compile_controller
   /compile/test:
     post:
       tags:
@@ -756,7 +756,7 @@ paths:
       security:
       - bearerAuth:
         - write
-      x-openapi-router-controller: fluigi_cloud.controllers.compile_controller
+      x-openapi-router-controller: api.controllers.compile_controller
 components:
   schemas:
     UserResponse:
@@ -1069,10 +1069,10 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      x-bearerInfoFunc: fluigi_cloud.controllers.authorization_controller.check_bearerAuth
+      x-bearerInfoFunc: api.controllers.authorization_controller.check_bearerAuth
     api_key:
       type: apiKey
       name: api_key
       in: header
-      x-apikeyInfoFunc: fluigi_cloud.controllers.authorization_controller.check_api_key
+      x-apikeyInfoFunc: api.controllers.authorization_controller.check_api_key
 

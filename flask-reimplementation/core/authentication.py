@@ -1,5 +1,5 @@
 from typing import Optional, Tuple, Dict
-from fluigi_cloud.db.user import User
+from core.db.user import User
 import datetime
 from flask_jwt_extended import create_access_token
 

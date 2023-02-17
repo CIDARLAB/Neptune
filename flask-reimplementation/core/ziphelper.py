@@ -1,12 +1,13 @@
 from pathlib import Path
 from typing import List, Optional
 import uuid
-from fluigi_cloud.db.file import File
+import zipfile
+from core.db.file import File
 from zipfile import ZipFile
-from app.controllers.s3filesystem import S3FileSystem
+from core.s3filesystem import S3FileSystem
 import shutil
 
-from fluigi_cloud.parameters import FLASK_DOWNLOADS_DIRECTORY
+from core.parameters import FLASK_DOWNLOADS_DIRECTORY
 
 
 def download_s3files_and_zip(file_object_list: List[File]) -> Optional[Path]:
@@ -35,3 +36,18 @@ def download_s3files_and_zip(file_object_list: List[File]) -> Optional[Path]:
     
     shutil.rmtree(download_directory)
     return zip_file_path
+
+
+def zip_dir(dir: Path, filename: Path) -> None:
+    """Zip the provided directory without navigating to that directory using `pathlib` module
+
+    Args:
+        dir (Path): The directory to zip
+        filename (Path): The filename to save the zip file as
+    """
+    # Convert to Path object
+    dir = Path(dir)
+
+    with zipfile.ZipFile(filename, "w", zipfile.ZIP_DEFLATED) as zip_file:
+        for entry in dir.rglob("*"):
+            zip_file.write(entry, entry.relative_to(dir))
