@@ -24,28 +24,8 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
       python3-pygraphviz apt-utils
 
 
-RUN pip install "poetry==$POETRY_VERSION"
-
-# # Pyenv for our baseline python environment for poetry later on.
-RUN git clone https://github.com/yyuu/pyenv.git .pyenv
-RUN git clone https://github.com/yyuu/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
-
-ENV PYENV_ROOT $HOME/.pyenv
-ENV PATH $PYENV_ROOT/shims:$PYENV_ROOT/bin:$PATH
-
-ENV PATH /root/.pyenv/bin:$PATH
-RUN command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-RUN eval "$(pyenv init -)"
-
-RUN pyenv install 3.8.0
-RUN pyenv global 3.8.0
-
-# RUN poetry config virtualenvs.create false
 RUN pip install --upgrade pip
 RUN pip install setuptools pygraphviz
 
-# Installing Nodejs
-RUN curl -sL --location https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get -y install nodejs
 
 

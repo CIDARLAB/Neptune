@@ -46,5 +46,13 @@
 				"VisualStudioExptTeam.vscodeintellicode",
 				"GitHub.vscode-pull-request-github"
 			]
-		}}
+		}
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/git-lfs:1": {},
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+	}
 }
