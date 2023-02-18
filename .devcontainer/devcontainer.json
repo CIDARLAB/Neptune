@@ -35,7 +35,6 @@
 	// "remoteUser": "vscode"
 	"customizations":{"vscode": {
 			"extensions": [
-				"GitHub.copilot-labs",
 				"GitHub.copilot",
 				"LeoJhonSong.python-extension-pack",
 				"littlefoxteam.vscode-python-test-adapter",
@@ -44,7 +43,11 @@
 				"streetsidesoftware.code-spell-checker",
 				"yzhang.markdown-all-in-one",
 				"VisualStudioExptTeam.vscodeintellicode",
-				"GitHub.vscode-pull-request-github"
+				"GitHub.vscode-pull-request-github",
+				"bungcip.better-toml",
+				"njpwerner.autodocstring",
+				"ms-python.python",
+				"VisualStudioExptTeam.vscodeintellicode"
 			]
 		}
 	},
