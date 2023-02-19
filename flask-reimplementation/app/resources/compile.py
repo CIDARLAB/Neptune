@@ -3,6 +3,9 @@ from flask_restful import Resource
 from marshmallow import fields
 from flask_apispec import use_kwargs
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
+from marshmallow import fields
+from flask_apispec import use_kwargs
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 from app.controllers.tasks import dispatch_compile_lfr, compile_mint, test_task
 
