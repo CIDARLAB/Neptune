@@ -2,10 +2,7 @@
 
 import connexion
 
-import encoder
-
-
-
+from api.encoder import JSONEncoder
 import asyncio
 import pathlib
 from flask import jsonify
@@ -27,11 +24,6 @@ from core.parameters import (
 from flask_socketio import SocketIO
 
 
-
-
-
-
-
 def setup_fileio_directories():
     print("Setting up FileIO Directories")
     try:
@@ -48,6 +40,7 @@ def setup_fileio_directories():
     
     print("FileIO Directories Setup Complete")
 
+
 def connect_to_mongodb():
     print("Connecting to MongoDB")
     mongoengine.connect(
@@ -57,6 +50,11 @@ def connect_to_mongodb():
         username=MONGODB_USER,
         password=MONGODB_PASSWORD
     )
+    # Check if the connection is working
+    try:
+        mongoengine.connection.get_db()
+    except Exception as e:
+        print(f"Error connecting to MongoDB: {e}")
 
 def connect_to_redis():
     # print("Connecting to Redis")
@@ -83,21 +81,22 @@ connect_to_mongodb()
 connect_to_s3()
 connect_to_celery()
 connect_to_redis()
-path = os.path.abspath("../static/")
+STATIC_DIR = os.path.abspath(os.path.join(__file__, "../../static")) # TODO - Figure out a more elegant way to do this
 
 # This is the openapi spec driven server
-flask_app = connexion.FlaskApp(__name__, specification_dir='./swagger/', server_args={'static_url_path':"/", 'static_folder':path})  #static_url_path="/", static_folder=path
-flask_app.app.json_provider_class = encoder.JSONEncoder
-flask_app.add_api('swagger.yaml', arguments={'title': 'Neptune API'}, pythonic_params=True)
-CORS(flask_app.app)
-flask_app.app.config['UPLOAD_FOLDER'] = FLASK_UPLOADS_DIRECTORY
+connexion_app = connexion.App(__name__, specification_dir='../api/swagger/',server_args={'static_url_path':"/", 'static_folder':STATIC_DIR})
+flask_app = connexion_app.app
+flask_app.json_provider_class = JSONEncoder
+connexion_app.add_api('swagger.yaml', arguments={'title': 'Neptune API'}, pythonic_params=True)
+CORS(flask_app)
+flask_app.config['UPLOAD_FOLDER'] = FLASK_UPLOADS_DIRECTORY
 # Do the bcrypt thing
-bcrypt = Bcrypt(flask_app.app)
-flask_app.app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
-flask_app.app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
-flask_app.app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
-flask_app.app.config['JWT_BLACKLIST_ENABLED'] = True
-jwt = JWTManager(flask_app.app)
+bcrypt = Bcrypt(flask_app)
+flask_app.config['JWT_TOKEN_LOCATION'] = ['headers', 'query_string']
+flask_app.config['JWT_SECRET_KEY'] = 'super-secret'  # Change this!
+flask_app.config['JWT_ACCESS_TOKEN_EXPIRES'] = False
+flask_app.config['JWT_BLACKLIST_ENABLED'] = True
+jwt = JWTManager(flask_app)
 
 # Setting up callback event loop for async io
 # This will basically use the asyncio for compile 
@@ -106,8 +105,7 @@ loop = asyncio.new_event_loop()
 asyncio.set_event_loop(loop)
 
 # Setup the Socketio bits now
-socketio = SocketIO(flask_app.app, cors_allowed_origins="*")
-setup_socketio(flask_app.app)
+socketio = SocketIO(flask_app, cors_allowed_origins="*")
 
 # Test Event to ensure things are working correctly
 @socketio.on('echo')
@@ -130,18 +128,18 @@ def handle_monitor(job_id):
 
 
 # Serve the static files
-@flask_app.app.route('/')
+@flask_app.route('/')
 def index():
-    return flask_app.app.send_static_file('index.html')
+    return flask_app.send_static_file('index.html')
 
 # Serve the socketio test page
-@flask_app.app.route('/test/socketio')
+@flask_app.route('/test/socketio')
 def test_socketio():
     return flask_app.send_static_file('socket.html')
 
 
 # Flask Routes
-@flask_app.app.route('/echo/<input_string>')
+@flask_app.route('/echo/<input_string>')
 def echo(input_string: str) :
     '''
     Simple call and response API Function
@@ -152,7 +150,8 @@ def echo(input_string: str) :
         }
     )
 
-# if __name__ == '__main__':
+
+if __name__ == '__main__':
     # Run the app
-socketio.run(flask_app.app, debug=True, host="0.0.0.0", port=8080)
+    socketio.run(flask_app, debug=True, host="0.0.0.0", port=8080)
 
