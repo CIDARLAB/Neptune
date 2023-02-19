@@ -14,6 +14,17 @@ from socket_io_emitter import Emitter
 import shutil
 
 from job_runner.setting import SOCKETIO_REDIS_HOST, SOCKETIO_REDIS_PORT
+from pathlib import Path
+import subprocess
+from sys import stdout
+from typing import Dict, List, Optional, Tuple
+from job_runner.filesystem import download_file_using_client, upload_file_using_client
+
+import time
+from socket_io_emitter import Emitter
+import shutil
+
+from job_runner.setting import SOCKETIO_REDIS_HOST, SOCKETIO_REDIS_PORT
 
 from job_runner.setting import CELERY_BROKER_URL, CELERY_BACKEND_URL, MONGO_HOST, MONGO_PORT, MONGODB_JOBS_DB, MONGODB_PASSWORD, MONGODB_USER
 
@@ -46,80 +57,12 @@ celery_app = Celery(
 @celery_app.task(name="add_task")
 def add(job_id, x, y):
     print("Job ID:", job_id)
-    print("array:", x)
-
     for i in range(5):
         time.sleep(1)
         print(i)
-    
     print(x)
     print(y)
-    return 5
-
-@celery_app.task(name="compile_lfr")
-def compile_lfr(
-    job_id: str,
-    source_file_s3object_locations: List[str],
-    config_file_s3object_locations: str,
-    args: List[str],
-) -> Dict[str, str]:
-    print("Executing compile_lfr task, Job ID:", job_id)
-    print("Source File IDs:", source_file_s3object_locations)
-    print("Config File ID:", config_file_s3object_locations)
-    print("Args:", args)
-
-    # Create a new directory for the job and download all the input files to the directory
-    job_path = Path(f"./jobs-tmp/{job_id}")
-    output_path = job_path.joinpath("output")
-    job_path.mkdir(parents=True, exist_ok=True)
-    output_path.mkdir(parents=True, exist_ok=True)
-    
-    # Download all the input files to the directory
-    for s3_object_name in source_file_s3object_locations:
-        local_file_name = s3_object_name.split("-")[-1]
-        download_file_using_client(s3_object_name, local_file_name, job_path)
-
-    # Dowload the config file to the directory
-    config_file_name = config_file_s3object_locations.split("-")[-1]
-    download_file_using_client(config_file_s3object_locations, config_file_name, job_path)
-
-    # Start a subprocess to execute the test.sh script and pipe the output to a variable.
-    io = Emitter({'host': SOCKETIO_REDIS_HOST, 'port': SOCKETIO_REDIS_PORT})
-    with subprocess.Popen(
-        ["fluigi", "--help"],
-        # ["/bin/bash", "test.sh", str(output_path.absolute())], 
-        # bufsize=1, 
-        stdout=subprocess.PIPE, 
-        stderr=subprocess.PIPE
-    ) as process, open(str(output_path.joinpath('output.log')), 'a+') as logfile:
-        while process.poll() is None:
-            stdout_line = ""
-            stderr_line = ""
-            if process.stdout is not None:
-                stdout_line = process.stdout.readline().decode("utf-8")
-            if process.stderr is not None:
-                stderr_line = process.stderr.readline().decode("utf-8")
-            stdout_data = stdout_line + stderr_line
-            logfile.write(stdout_data)
-            io.To(job_id).Emit('stdout', stdout_data)
-    
-    logfile.close()
-
-    # Upload the output files from the job directory to the s3 bucket
-    # Loop through all the files in the output directory and upload them to the s3 bucket
-    s3_object_names: Dict[str, str] = {}
-    for file in output_path.glob("*"):
-        s3_object_name = upload_file_using_client(file.absolute())
-        
-        s3_object_names[file.name]=s3_object_name
-    
-    # Delete the job directory and all its contents
-    shutil.rmtree(str(job_path.absolute()))
-    
-    # Send the final Signal to the monitor that the job is complete
-    io.Emit('EOP', "This is finished !")
-    
-    return s3_object_names
+    return x + y
 
 @celery_app.task(name="execute_task")
 def execute(
