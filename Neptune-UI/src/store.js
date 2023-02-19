@@ -13,6 +13,7 @@ export default new Vuex.Store({
     currentFile: null,
     currentWorkspace: null,
     currentUser: null,
+    authToken:''
   },
   mutations: {
     SET_BAR_IMAGE (state, payload) {
@@ -39,6 +40,9 @@ export default new Vuex.Store({
     },
     SET_CURRENT_USER(state, payload){
       state.currentUser = payload
+    },
+    SET_AUTH_TOKEN(state, payload){
+      state.authToken = payload
     }
   },
   getters: {
@@ -47,6 +51,7 @@ export default new Vuex.Store({
     currentFile: state => state.currentFile,
     currentWorkspace: state => state.currentWorkspace,
     currentUser: state => state.currentUser,
+    authToken: state => state.authToken
   },
   actions: {
 
