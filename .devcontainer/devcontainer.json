@@ -13,7 +13,7 @@
 
 	// The 'service' property is the name of the service for the container that VS Code should
 	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
-	"service": "neptune",
+	"service": "dev",
 
 	// The optional 'workspaceFolder' property is the path VS Code should open by default when
 	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
@@ -29,9 +29,33 @@
 	"shutdownAction": "stopCompose",
 
 	// Uncomment the next line to run commands after the container is created - for example installing curl.
-	"postCreateCommand": "cd flask-reimplementation && poetry install --no-interaction --no-ansi && cd ../job-runner && pip install .",
+	// "postCreateCommand": "cd flask-reimplementation && poetry install --no-interaction --no-ansi && cd ../job-runner && pip install .",
 
 	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
-	"extensions": ["GitHub.copilot-labs","GitHub.copilot","LeoJhonSong.python-extension-pack","littlefoxteam.vscode-python-test-adapter","njqdev.vscode-python-typehint","redhat.vscode-yaml","streetsidesoftware.code-spell-checker","yzhang.markdown-all-in-one","VisualStudioExptTeam.vscodeintellicode","GitHub.vscode-pull-request-github"]
+	"customizations":{"vscode": {
+			"extensions": [
+				"GitHub.copilot",
+				"LeoJhonSong.python-extension-pack",
+				"littlefoxteam.vscode-python-test-adapter",
+				"njqdev.vscode-python-typehint",
+				"redhat.vscode-yaml",
+				"streetsidesoftware.code-spell-checker",
+				"yzhang.markdown-all-in-one",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"GitHub.vscode-pull-request-github",
+				"bungcip.better-toml",
+				"njpwerner.autodocstring",
+				"ms-python.python",
+				"VisualStudioExptTeam.vscodeintellicode"
+			]
+		}
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/git-lfs:1": {},
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+	}
 }

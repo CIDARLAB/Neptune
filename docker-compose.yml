@@ -74,7 +74,7 @@ services:
     worker:
       build: 
         context: .
-        dockerfile: ./job-runner/Dockerfile
+        dockerfile: ./backend/Dockerfile.job-runner
       container_name: async-worker
       command: python /runner/job_runner/server.py #celery --app=simple worker --loglevel=info
       volumes:

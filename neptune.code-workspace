@@ -13,7 +13,7 @@
 			"path": "pyfluigi"
 		},
 		{
-			"path": "flask-reimplementation"
+			"path": "backend"
 		}
 	],
 	"settings": {}

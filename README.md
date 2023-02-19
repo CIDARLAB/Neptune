@@ -45,15 +45,19 @@ On launching the development containaer one can start the development using the 
 
 #### Notes
 - Ensure that ports `8080` and `8081` are forwarded to ensure that you can see development Backend and frontend respectively.
-- Ensure that port `27017` is forwarded to ensure that you can see the mongodb database. You can use [mongodb compass](https://www.mongodb.com/products/compass) to connect to the database and keep track of the changes going on in it.
+- Ensure that `host:port` (`backend-database:27017`) is forwarded to ensure that you can see the mongodb database. You can use [mongodb compass](https://www.mongodb.com/products/compass) to connect to the database and keep track of the changes going on in it.
   - user: `root`
   - password: `rootpassword`
   - database: `none`
-- In order to have the cloud application's virtual filesystem working, you need to create the bucket on minio / S3 beforehand. Here are the details to access the minio server (simulates s3 locally)
+- In order to have the cloud application's virtual filesystem working, you need to create the bucket on minio / S3 beforehand. Here are the details to access the minio server (simulates s3 locally). You need to ensure that `host:port` (`s3local:9001`) so that you can access the management console.
   - admin panel url: `http://localhost:9001`
   - user: `minio`
   - password: `minio123`
   - bucket: `fluigi`. If this is not there create it, if you use another name, make sure the environment variable `AWS_S3_BUCKET_NAME` is set to the name of the bucket you created.
+
+### REST API Development
+
+This project follows a specification-first development pattern that relies on autogenerating code from the OpenAPI specification file. The specification file is located at `neptune.openapi.yaml`. The specification file is used to generate the backend codebase. We are currently utilizing [Swagger CodeGen](https://editor-next.swagger.io/). (TODO: We need to include the codegen tooling within the dev environment).
 
 ### Running individual services
 
