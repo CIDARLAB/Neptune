@@ -11,6 +11,9 @@
 		},
 		{
 			"path": "pyfluigi"
+		},
+		{
+			"path": "backend"
 		}
 	],
 	"settings": {}

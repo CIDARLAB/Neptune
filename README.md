@@ -15,6 +15,8 @@ This is the getting orientation guide to the massive set of repositories that ar
 1. [LFR TestCases](https://github.com/CIDARLAB/LFR-TestCases) - Repository of LFR Test Cases used for Testing the LFR compiler
 1. [MINT TestCases](https://github.com/CIDARLAB/MINT-TestCases) - Repository of the MINT Test Cases used for testing the MINT Compiler
 
+## Development Guide
+
 ### Cloning and tracking for development
 
 First, run the following commands for recursively cloning all the required dependencies for the project and set up the sub repo branch tracking for development:
@@ -22,22 +24,40 @@ First, run the following commands for recursively cloning all the required depen
 ```
 git clone --recurse-submodules -j8 https://github.com/cidarlab/Neptune
 cd Neptune
-git submodule update --init
+git submodule update --init --recursive
 git submodule foreach -q --recursive 'git checkout $(git config -f $toplevel/.gitmodules submodule.$name.branch || echo master)'
 ```
 [Submodule Recipe Reference](https://gist.github.com/slavafomin/08670ec0c0e75b500edbaa5d43a5c93c)
 
+### Neptune Webapplication Development
 
-### How to Build
+The top-level development environment for the repo is for developing the cloud based application. The development container reuses the docker-compose components from the repo, i.e. `mongodb`, `minio` and `redis`. That means that you can only make edits to the neptune cloud application and **not the other components**. Its been intended to be done this way so that you utilize fluigi repo/3DuF repos for development for their corresponding components. This way you don't pollute the codebases and adhere the Pull Request discipline necessary for making changes to these code bases.
 
-Since there are there many packages in the project, building this project is going to be a pain. Use the docker to complete builds, but please be aware that this can take a substantial amount of time to build.
+On launching the development containaer one can start the development using the following commands:
 
-TBA Rest of the guide...
+#### Steps
+1. Goto the job-runner directory and run `python job_runner/server.py` (TODO-Update with debugging config in the future).
+1. Goto the flask application directory and run `poetry lock --no-update` to install the dependencies.
+2. Open the `server.py` file and run the debugger on it (Use the saved vscode debugger profile `Python: Flask`).
+3. Goto the Neptune-UI directory and run `npm ci` to install the dependencies.
+4. Run `npm run dev` frontend development server.
 
-### Contact
 
-Reach out to [@rkrishnasanka](https://github.com/rkrishnasanka) for more details.
+#### Notes
+- Ensure that ports `8080` and `8081` are forwarded to ensure that you can see development Backend and frontend respectively.
+- Ensure that `host:port` (`backend-database:27017`) is forwarded to ensure that you can see the mongodb database. You can use [mongodb compass](https://www.mongodb.com/products/compass) to connect to the database and keep track of the changes going on in it.
+  - user: `root`
+  - password: `rootpassword`
+  - database: `none`
+- In order to have the cloud application's virtual filesystem working, you need to create the bucket on minio / S3 beforehand. Here are the details to access the minio server (simulates s3 locally). You need to ensure that `host:port` (`s3local:9001`) so that you can access the management console.
+  - admin panel url: `http://localhost:9001`
+  - user: `minio`
+  - password: `minio123`
+  - bucket: `fluigi`. If this is not there create it, if you use another name, make sure the environment variable `AWS_S3_BUCKET_NAME` is set to the name of the bucket you created.
 
+### REST API Development
+
+This project follows a specification-first development pattern that relies on autogenerating code from the OpenAPI specification file. The specification file is located at `neptune.openapi.yaml`. The specification file is used to generate the backend codebase. We are currently utilizing [Swagger CodeGen](https://editor-next.swagger.io/). (TODO: We need to include the codegen tooling within the dev environment).
 
 ### Running individual services
 
@@ -49,13 +69,27 @@ docker run -i containername:dev --env-file=myenvfile
 docker exec -ti <container name> /bin/bash
 ```
 
-#### Running Pritives-Server Service
+### How-To Mini Guides
 
-Typically when one needs to convert MINT files to JSON, one needs to run the Pritives-Server service to pull component parameters from the 3DuF Implementation
+#### Converting MINT Benchmaks to Parchmint 
+
+In order to convert the benchmarks to ParchMint, you need to be able to use `pyfluigi` and `primitives-server`. In order to spawn a new instance of the Pritives-Server service to pull component parameters from the latest tracked 3DuF Implementation, you need to run the following command:
 
 ```bash
 docker-compose up primitives-server
 ```
 
-This server can then be accessed at `http://localhost:6060`
+This server can now be accessed at `http://localhost:6060` (You can verify this on the browser).
 
+Now setup the required environment for `pyfluigi` to run (Dedicated Docker Dev Environment Coming Soon). This can be done by running the following command:
+
+```bash
+cd pyfluigi
+poetry install
+poetry shell
+fluigi convert-to-parchmint <mint-file> --assign-terminals --generate-graph-view --outpath <output-location>
+```
+
+### Contact
+
+Reach out to [@rkrishnasanka](https://github.com/rkrishnasanka) for more details.

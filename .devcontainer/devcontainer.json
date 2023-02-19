@@ -1,26 +1,61 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.194.3/containers/ubuntu
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.245.2/containers/docker-existing-docker-compose
+// If you want to run as a non-root user in the container, see .devcontainer/docker-compose.yml.
 {
-	"name": "Ubuntu",
-	"build": {
-		"dockerfile": "Dockerfile",
-		// Update 'VARIANT' to pick an Ubuntu version: hirsute, focal, bionic
-		"args": { "VARIANT": "focal" }
-	},
+	"name": "Neptune Dev - Existing Docker Compose (Extend)",
 
-	// Set *default* container specific settings.json values on container create.
-	"settings": {},
+	// Update the 'dockerComposeFile' list if you have more compose files or use different names.
+	// The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"docker-compose.extend.yml"
+	],
 
+	// The 'service' property is the name of the service for the container that VS Code should
+	// use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+	"service": "dev",
 
-	// Add the IDs of extensions you want installed when the container is created.
-	"extensions": [],
+	// The optional 'workspaceFolder' property is the path VS Code should open by default when
+	// connected. This is typically a file mount in .devcontainer/docker-compose.yml
+	"workspaceFolder": "/workspace",
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
 
-	// Use 'postCreateCommand' to run commands after the container is created.
-	// "postCreateCommand": "uname -a",
+	// Uncomment the next line if you want start specific services in your Docker Compose config.
+	"runServices": ["s3local", "broker", "backend-database"],
 
-	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-	//"remoteUser": "vscode"
+	// Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+	"shutdownAction": "stopCompose",
+
+	// Uncomment the next line to run commands after the container is created - for example installing curl.
+	// "postCreateCommand": "cd flask-reimplementation && poetry install --no-interaction --no-ansi && cd ../job-runner && pip install .",
+
+	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
+	// "remoteUser": "vscode"
+	"customizations":{"vscode": {
+			"extensions": [
+				"GitHub.copilot",
+				"LeoJhonSong.python-extension-pack",
+				"littlefoxteam.vscode-python-test-adapter",
+				"njqdev.vscode-python-typehint",
+				"redhat.vscode-yaml",
+				"streetsidesoftware.code-spell-checker",
+				"yzhang.markdown-all-in-one",
+				"VisualStudioExptTeam.vscodeintellicode",
+				"GitHub.vscode-pull-request-github",
+				"bungcip.better-toml",
+				"njpwerner.autodocstring",
+				"ms-python.python",
+				"VisualStudioExptTeam.vscodeintellicode"
+			]
+		}
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/git-lfs:1": {},
+		"ghcr.io/devcontainers/features/node:1": {},
+		"ghcr.io/devcontainers/features/python:1": {},
+		"ghcr.io/devcontainers-contrib/features/poetry:2": {}
+	}
 }

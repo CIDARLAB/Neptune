@@ -9,7 +9,6 @@
         <v-img
           :src="require(`@/assets/Neptune-logo-white-text.png`)"
           height="300px"
-          contain="true"
           />
       </v-slide-y-transition>
     </v-row>
@@ -39,6 +38,19 @@
         },
       ],
     }),
+    mounted () {
+      console.log('Landing.vue mounted hook')
+      this.$socket.client.emit('echo', 'Hello World!')
+    },
+    sockets: {
+      connect () {
+        console.log('socket connected')
+      },
+      echo (val) {
+        console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+        console.log(val)
+      },
+    },
     methods:{
       login: function(event){
         console.log("TEST")
