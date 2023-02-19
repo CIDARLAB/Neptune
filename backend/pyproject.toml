@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "api"
+name = "neptune_backend"
 version = "0.1.0"
 description = ""
 authors = ["Radhakrishna Sanka <rkrishnasanka@gmail.com>"]
@@ -7,6 +7,11 @@ license = "BSD-3-Clause"
 include = [
     "fluigi_cloud/**/*.py",
     "app/**/*.py",
+]
+packages = [
+    { include = "core" },
+    { include = "api" },
+    { include = "job_runner" }
 ]
 
 [tool.poetry.dependencies]
